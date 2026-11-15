@@ -1,0 +1,35 @@
+# Publishes a GitHub Release for every file in docs/release-notes/ that does not have one yet.
+# Each notes file names its version title, the commit it ships from and the APK path in that commit.
+name: Publish releases
+on:
+  push:
+    branches: [main]
+    paths: ['docs/release-notes/**', '.github/workflows/release.yml']
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Create any missing releases
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -e
+          for f in $(ls docs/release-notes/*.md | sort -V); do
+            tag=$(basename "$f" .md)
+            if gh release view "$tag" >/dev/null 2>&1; then echo "$tag already published"; continue; fi
+            title=$(sed -n 's/^title: //p' "$f" | head -1)
+            commit=$(sed -n 's/^commit: //p' "$f" | head -1)
+            apk=$(sed -n 's/^apk: //p' "$f" | head -1)
+            if [ -z "$commit" ] || [ "$commit" = "HEAD" ]; then commit="$GITHUB_SHA"; fi
+            awk 'f;/^---$/ && ++n==2{f=1}' "$f" > /tmp/body.md
+            out="/tmp/$(basename "$apk")"
+            git show "$commit:$apk" > "$out"
+            gh release create "$tag" "$out" --target "$commit" --title "$title" --notes-file /tmp/body.md
+            echo "published $tag from $commit"
+          done
