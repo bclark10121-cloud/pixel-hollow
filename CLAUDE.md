@@ -37,11 +37,11 @@ Pixel Hollow is a quiet exploration and collecting game in pixel art, with no co
 
 ## Test gate
 
-Three levels, as in Brian's games since 2026-11-15. Test what changed. The full run is for every 5th release and production.
+Three levels (G7.9, Brian 2026-11-15). Test what changed. The full run is only for an Android production release or when Brian asks. No release count triggers it.
 
 1. Quick check, every build: `bash tools/common/sync_common.sh --check .` prints `COMMON check ok`. `bash tools/common/check_secrets.sh` prints `SECRETS check ok`. `python3 tests/t34_split.py pixel` prints `errors []`: the title card, one view, the save keys, Settings, and play with only the kit's pretend Xbox controller (G5.8).
 2. Release check, every release: the quick check, a new suite or check for what changed, and the older suites for the areas it touched. `t22_fit` for any menu change. `t27_reach` for anything placed in the world. View a screenshot of each new screen.
-3. Full gate: `bash tests/gate.sh` (copy `tests/` to `/home/claude/test/` first) plus `bot2.py`. Every 5th release (v0.15.0 is release 1), before Google Play and when Brian asks.
+3. Full gate: `bash tests/gate.sh` (copy `tests/` to `/home/claude/test/` first) plus `bot2.py`. Only before a Google Play or other Android production release, or when Brian asks (G7.9). A change to saves or world building runs the suites for those parts, not the full gate.
 
 A failed check reruns alone once before it counts. Two fails stop the release and Brian hears about it before any game code changes.
 

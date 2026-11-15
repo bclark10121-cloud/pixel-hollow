@@ -37,3 +37,4 @@ Updated 2026-11-15 with v0.15.0. Brian decides the order.
 - 2026-11-15: the pixel game becomes Pixel Hollow and the angled game becomes By Lantern's Glow, each in one public repo under the shared standards. Both start fresh with new Android packages. Old Helena Hollow installs stay as they are.
 - 2026-11-15: both start at v0.15.0, after Helena Hollow v0.14.8.
 - 2026-11-15: three test levels: a quick check every build, a release check every release, the full gate every 5th release and before production.
+- 2026-11-15 (later): the every 5th release full gate is withdrawn. The full gate runs only before an Android production release or when Brian asks (G7.9).
