@@ -1,44 +1,37 @@
 # Pixel Hollow: backlog
 
-Updated 2026-11-15 with v0.15.0. BC decides the order.
+Updated 2026-11-16 with v0.16.0. BC decides the order.
 
 ## Done
 
 - v0.1 to v0.14.8 as Helena Hollow, the 2D game with a pixel view and an angled view: six regions, 148 finds in 28 sets, museum, cabin, garden, fishing, bugs, neighbors, festivals, cooking, the merchant, photo mode, the Christmas theme.
 - v0.15.0 (2026-11-15): split out as Pixel Hollow, its own public repo and game page. The pixel view only. Its own Android package and save. View opens the Menu like the Menu button.
+- v0.16.0 (staged 2026-11-16, ships when the release steps in `HANDOFF.md` finish): the standards catch-up, with no new content (Release 4, BC 2026-11-15, 11:44 PM: "move forward with the last games"). The By Lantern's Glow v0.16.0 pattern on kit 1.9.1. Its own app icon: an open pixel treasure chest on a grassy hill at night. Five save slots with Delete. One Menu button that opens a row at the top. The shared Settings menu: Music and Sound in five levels, Frame rate, Rumble, Text size, Reduce motion, Controls and Reset settings. Tester tools behind a code in test builds. Hints for the device in use. A pause when the controller drops. The second press before anything is lost. Test hooks only with `?test`. A privacy page. GitHub Releases. The source moved to the private `game-studio` repo. Version code 2.
 
 ## Now
 
-1. Open items in `STANDARDS_OVERRIDES.md`: test hooks only with `?test` (G7.8), one Menu button with a row (G5.1), controls on the title card (G5.4, G5.5).
+1. BC tries v0.16.0 on a real phone and an Xbox controller.
+2. Open items in `STANDARDS_OVERRIDES.md`: Patch.gg music (G8.1).
 
 ## Asked for by BC, not built yet
 
-1. A new app icon of its own. Today it uses the Helena Hollow icon.
+1. Nothing waiting. The app icon of its own shipped in v0.16.0.
 
 ## Ideas to choose from (BC picks by number)
 
-1. A short what's-new card the first time a player opens v0.15.0.
-2. A Google Play listing of its own.
+1. A short what's-new card the first time a player opens a new version.
 
-## Unfinished standards items (2026-11-15)
+## Unfinished standards items (2026-11-16)
 
 From the Open items in `STANDARDS_OVERRIDES.md`, plus what has not been tried on a real device. Each line comes off when it is done. BC picks when.
 
-- The standards catch-up (Release 4, BC said go on 2026-11-15, 11:44 PM): the By Lantern's Glow v0.16.0 pattern on kit 1.9.1.
-- G1.7: move the source into the private `game-studio` repo. This repo keeps the page, the builds, the release notes and the backlog.
-- G5.1, G5.2: one Menu button at the top right that opens a row, in place of Journal, Map and Menu.
-- G5.4, G5.5: the controls for the device in use on the title card.
-- G5.9 to G5.17: kit Settings, five save slots, Tester tools, device hints, the pause on controller loss, the Menu order and the second press.
-- G6.10: an icon of its own. The old Helena Hollow lantern is its only icon today.
-- G7.8: `window.__game` and every test switch only with the whole-word `?test` flag.
-- G1.4, G6.13: a privacy page linked from the game page.
-- G2.10, G1.12: GitHub Releases with the APK and the newest two APKs on the page.
 - G8.1: music and sounds are made in code, not tracks from Patch.gg.
-- Real device check: a phone, the Retroid, an Xbox controller and sound.
+- G5.11: Rumble on an Xbox controller in the Android app. The browser uses the browser's gamepad rumble. The Android app vibrates the phone only.
+- Real device check: a phone, the Retroid, an Xbox controller and sound. Nothing has been tried on a real device since the split.
 
 ## Later
 
-1. Google Play: a listing and a 14 day closed test with 12 testers.
+1. Nothing yet.
 
 ## Not planned (they break the pillars)
 
@@ -47,6 +40,7 @@ From the Open items in `STANDARDS_OVERRIDES.md`, plus what has not been tried on
 3. Timed challenges that hold back a reward.
 4. Leaderboards and opponents.
 5. Copying characters, names, art, music or maps from any other game.
+6. Google Play (BC, 2026-11-15, 10:07 PM: there is no Google Play store).
 
 ## Decisions from BC
 
@@ -54,3 +48,13 @@ From the Open items in `STANDARDS_OVERRIDES.md`, plus what has not been tried on
 - 2026-11-15: both start at v0.15.0, after Helena Hollow v0.14.8.
 - 2026-11-15: three test levels: a quick check every build, a release check every release, the full gate every 5th release and before production.
 - 2026-11-15 (later): the every 5th release full gate is withdrawn. The full gate runs only before an Android production release or when BC asks (G7.9).
+- 2026-11-15, 10:07 PM: no Google Play store and no end-to-end testing in this project. Every Proposed override row agreed, row 1 included.
+- 2026-11-15, 11:44 PM: "move forward with the last games". Pixel Hollow gets its catch-up now. Unfinished items go in each game's backlog.
+
+## Judgment calls made in v0.16.0 (BC to confirm or change)
+
+1. The game file is By Lantern's Glow's v0.16.0 file with this game's names, save keys, tag line and pixel view. The two files were about 20 lines apart at v0.15.0.
+2. The icon is new pixel art: an open treasure chest on a grassy hill under a night sky. No other game uses it.
+3. On a phone held upright the Menu row uses tighter buttons. The wider pixel font made the row reach two thirds of the screen.
+4. The loading screen reads "Waking the Hollow".
+5. The version code goes from 1 to 2. v0.16.0 installs over v0.15.0 and keeps the saves.
