@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <title>Pixel Hollow</title>
+<link rel="icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAACoElEQVR42u2YT0gUYRjGnxGDoH8aCZ5qtXGdVsUtOli40kEigmIRQgmJ6GDYKQUltIOHiihwPblXDyF1kc4SESjlqVYy27YhCjoEiZoVBIl6mPmEb5hZVp3dnXGe9zTzzTfDO/P85nnf71Oqj15cR4CjBAGPUkABCQgyAYriDgH6h7sAALXuHgnwUyhq6FJBq8DnuUEAQE39fU88lwTUVF3OSkDm/QAAINzwIC8JZGavGs9vHKcHFImAuC86wcxsh0nKUxLgyT5AxKdUOwCgNvrM5Z81ZCDrcr70gNrjbVwN0gN2cXxM9QEATkQfkwBbD9DUK/QAesAWYv5dLwAgcnLY9vrfXzN5TXjfoSYS4KoHRMLtrnjAn+U3AIDzamG+6aS+BgDYX3aGBBS1D/i99FpS/lToYIFSXzFJMMg7UH6WBHiiE9SqjxQk8bdfV2Qz2+Z7kAC3voFw5Uld91VPRwLc8oBv+iPjQB8DAHTvfQIASP7rNMbV69L1zRDjZnR/b81+n2X+MbWfHuCNKmBRKKl32iurOtxnRhL2SjsSwiqww7VAY921Ha0Fln6+8sSLlFecIwFF7QNmJpoBAM9H53Ka//DFsu34ndaynO6P36oHADS1TbMP8PWu8Gb/YKnruZLAKuB3AoTiW/UAEuD3/YCxru3tG2gXKklAUQmIJdak84kO+Xr6y0JeE06PLkh9gIiWEaOhneopIQGudoKxxKp0Pp82FPiRWUQue3X5irjlXOQVS8jeMtVTSgKyls/T0ZvSarB5+L/tlxUhlK8MHzb+yaGUJ15EG4ra5hfRZCKme/eQAImA2y9vrGdT3El5p/D6PCsRrAJOiu825Z2qFgkIivJO80hAUJUnAVYCgqa8mEcCgqq8mEcCgqo8q4AZG+WXJTtvK3uMAAAAAElFTkSuQmCC">
 <style>
 html{font-size:calc(16px * var(--ts,1) * var(--ui,1))}
 /* Pixelify Sans, Copyright 2021 The Pixelify Sans Project Authors, SIL Open Font License 1.1 */
@@ -80,7 +81,6 @@ body.pixfont h1,body.pixfont h2{font-weight:400}body.pixfont .logo{font-weight:7
 @keyframes flipL{from{transform:perspective(43.75rem) rotateY(40deg) translateX(-30px);opacity:.2}to{transform:none;opacity:1}}
 #jpager{display:grid;grid-template-columns:1fr auto 1fr;gap:0.5rem;align-items:center;margin-top:0.375rem}
 #jpager .btn{margin-top:0;font-size:0.875rem;padding:0.4375rem}#jpn{font-size:0.8125rem;text-align:center}
-#tslot{margin-top:0.5rem}#tslot .val{flex:1;min-width:0;font-size:0.8125rem}
 textarea{width:100%;font-family:"Courier New",monospace;font-size:0.6875rem;color:#3a2a1d;background:#fff8e6;border:0.125rem solid #3a2a1d;border-radius:0.5rem;padding:0.375rem;margin-top:0.375rem;resize:none;word-break:break-all;-webkit-user-select:text;user-select:text}
 body.iso{font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-weight:600;color:#f1e7d0}
 body.iso .pill,body.iso .card,body.iso #dialog,body.iso #toast{background:rgba(22,20,30,.9);color:#f1e7d0;border:0.0625rem solid rgba(241,231,208,.3);box-shadow:0 0.375rem 1.125rem rgba(0,0,0,.5);border-radius:0.75rem}
@@ -97,22 +97,22 @@ body.iso textarea,body.iso .srow input{background:rgba(0,0,0,.35);color:#f1e7d0;
 body.iso #bprev{background:transparent;border-bottom:0.0625rem solid rgba(241,231,208,.3)}body.iso #bcv{image-rendering:auto;background:#2f4a2c;border:0.0625rem solid rgba(241,231,208,.3)}
 body.iso #count.near{background:rgba(120,40,30,.9);border-color:#f2c14e}
 body.iso .ov{background:rgba(6,8,14,.72)}body.iso #title{background:rgba(6,8,14,.35)}
-#temb,#tgap{display:none}
+#tgap{display:none}
+/* v0.16.0: the title card shows the game's own icon in the pixel view too */
+#temb{display:block;width:5.25rem;height:5.25rem;margin:0 auto 0.375rem;image-rendering:pixelated;border-radius:12%}
 body.iso #mapcv{background:#0b0e14;border:0.0625rem solid rgba(241,231,208,.3)}
 body.iso #title{background:linear-gradient(rgba(6,8,14,.78),rgba(6,8,14,.1) 34%,rgba(6,8,14,0) 50%,rgba(6,8,14,.86) 78%);padding:0}
 body.iso #title .card{background:none;border:0;box-shadow:none;display:flex;flex-direction:column;min-height:100%;margin:0 auto;padding:1.375rem 1.125rem 0.875rem}
-body.iso #temb{display:block;width:5.25rem;height:5.25rem;margin:0 auto 0.375rem;border-radius:22%;box-shadow:0 0 0 0.0625rem rgba(241,231,208,.35),0 0.5rem 1.625rem rgba(0,0,0,.6)}
+body.iso #temb{display:block;width:5.25rem;height:5.25rem;margin:0 auto 0.375rem;border-radius:22%;image-rendering:pixelated;box-shadow:0 0 0 0.0625rem rgba(241,231,208,.35),0 0.5rem 1.625rem rgba(0,0,0,.6)}
 body.iso #tgap{display:block;flex:1 1 auto;min-height:0.75rem}
 body.iso .logo{font-family:Georgia,"Times New Roman",serif;font-size:2.375rem!important;letter-spacing:0.125rem;font-weight:700;background:linear-gradient(#fff0c2,#e9b755 55%,#b9772a);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0.125rem 0.375rem rgba(0,0,0,.8))}
 body.iso #title .sub{letter-spacing:0.1875rem;text-transform:uppercase;font-size:0.6875rem;opacity:.85;text-shadow:0 0.0625rem 0.25rem #000}
 body.iso #title .btn,body.iso #title .srow{backdrop-filter:blur(0.1875rem)}
-@media (orientation:landscape) and (max-height:520px){body.iso #title{background:linear-gradient(90deg,rgba(6,8,14,0) 30%,rgba(6,8,14,.88) 62%)}body.iso #title .card{margin:0 0 0 auto;max-width:18.75rem;padding:0.5rem 0.875rem}body.iso #temb{width:2.75rem;height:2.75rem;margin-bottom:0.125rem}body.iso .logo{font-size:1.625rem!important}body.iso #title .sub{margin-bottom:0.125rem}body.iso #title .btn{padding-top:0.3125rem;padding-bottom:0.3125rem;margin-top:0.3125rem}body.iso #title .ver{margin-top:0.125rem}body.iso #tgap{min-height:0.125rem}}
+@media (orientation:landscape) and (max-height:520px){body.iso #title{background:linear-gradient(90deg,rgba(6,8,14,0) 30%,rgba(6,8,14,.88) 62%)}body.iso #title .card{margin:0 0 0 auto;max-width:18.75rem;padding:0.5rem 0.875rem}#temb,body.iso #temb{width:2.75rem;height:2.75rem;margin-bottom:0.125rem}body.iso .logo{font-size:1.625rem!important}body.iso #title .sub{margin-bottom:0.125rem}body.iso #title .btn{padding-top:0.3125rem;padding-bottom:0.3125rem;margin-top:0.3125rem}body.iso #title .ver{margin-top:0.125rem}body.iso #tgap{min-height:0.125rem}}
 body.iso .card{background:rgba(22,20,30,.97)}body.iso #journal .card{background:rgba(22,20,30,.98)}
 body.panel #count,body.panel #hudr,body.panel #abtn,body.panel #stick{display:none!important}
 body.iso #title .btn,body.iso #title .srow{-webkit-backdrop-filter:blur(3px)}
-.pbtns #presume{margin-top:.5rem}
 @media (orientation:landscape) and (max-height:600px){
- #pause .card{max-width:36rem}.pbtns{display:grid;grid-template-columns:1fr 1fr;column-gap:.5rem}.pbtns #presume{grid-column:1/3}
  #map .card{max-width:none!important}.mapwrap{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:.75rem;align-items:start}.mapwrap #mapinfo{margin-top:0}
  .card h1{margin-bottom:.35rem}}
 #mapcv{margin:0 auto}
@@ -141,33 +141,547 @@ body.iso #title{padding:var(--st) var(--sr) var(--sb) var(--sl)}
 .req b{font-size:.9rem}.req .rs{grid-row:1/3;grid-column:2;font-size:.75rem;padding:.2rem .5rem;border-radius:.5rem;background:rgba(58,42,29,.12);white-space:nowrap}
 .req .rw{opacity:.8;grid-column:1}.req.done .rs{background:rgba(79,163,74,.28)}.req.ready .rs{background:rgba(242,193,78,.5)}.req.new b{opacity:.7}
 body.iso .req .rs{background:rgba(241,231,208,.1)}body.iso .req.done .rs{background:rgba(120,190,120,.3)}body.iso .req.ready .rs{background:rgba(242,193,78,.4);color:#fff3c4}
+/* v0.16.0 standards catch-up: loading screen (G5.18), Menu row (G5.1, G5.16), title keys (G5.4), second press (G5.17) */
+#status-progress{position:fixed;inset:0;z-index:99;display:flex;align-items:center;justify-content:center;background:#0b0e14;color:#f1e7d0;font:600 1.1rem system-ui,sans-serif;text-align:center}
+#status-progress b{display:block;font:700 1.8rem Georgia,serif;color:#e9b755;margin-bottom:.4rem}#status-progress span{opacity:.8}
+#status-progress i{display:block;width:12rem;height:.35rem;margin:.9rem auto 0;border-radius:.2rem;background:linear-gradient(90deg,#c98a2e 0 40%,rgba(241,231,208,.2) 40%);background-size:200% 100%;animation:ld 1.2s linear infinite}
+@keyframes ld{from{background-position:100% 0}to{background-position:-100% 0}}
+#pause{background:linear-gradient(rgba(6,8,14,.85),rgba(6,8,14,.25) 45%,rgba(6,8,14,0) 75%)!important;flex-direction:column;align-items:stretch;justify-content:flex-start}
+.mrow{display:flex;flex-wrap:wrap;gap:.4rem;padding-right:5.5rem}
+.mrow .btn{width:auto;margin:0;padding:.55rem .8rem;font-size:.95rem;flex:0 0 auto;min-height:3rem}
+/* v0.16.0: the pixel font is wider, so on a phone held upright the Menu row uses tighter buttons to stay in the top half */
+@media (max-width:430px){body:not(.iso) .mrow{gap:.3rem}body:not(.iso) .mrow .btn{padding:.45rem .5rem;font-size:.82rem}}
+#pwho{position:static;align-self:flex-start;margin-top:.5rem;font-size:.85rem;max-width:100%}
+body.menuopen #hudr{display:flex!important;z-index:8}
+body.iso #title #tkeys,#tkeys{margin:.35rem 0 0;font-size:.8rem;opacity:.85;text-transform:none;letter-spacing:0}
+#slist .srow{white-space:normal;line-height:1.25}
+.btn.armed,.srow.armed{background:#d9483b!important;color:#fff!important}
+#hbody .nav{display:block;padding:.35rem .4rem;border-radius:.5rem}#hbody h2{margin:.6rem 0 .2rem}#hbody p{font-size:.875rem;line-height:1.4;margin:.15rem 0}
+.srow{min-height:3rem}
 </style>
 </head>
 <body>
+<div id="status-progress"><div><b>Pixel Hollow</b><span>Waking the Hollow</span><i></i></div></div>
+<script>/*bc-debug-gate*/window.BC_GATE={salt:"32096b5c6ebcdb86",hash:"de5a3179db3a8c0ffd6756b9e52afd3b4ca36f69f45b16113e9ac37c7218833f"};</script>
+<script>
+/* BC kit for plain HTML games (G5.9 to G5.17, G6.13, G7.8). Pulled from game-studio/common/web into web/bc_common/.
+   Never edit it in a game (G10.3). tools/common/build_html.py writes it into the game's page where the page has the
+   marker comment bc-kit, so the browser build and the APK each stay one file.
+
+   The kit draws its rows as plain elements with the class names a game passes in, so the game's own look and its own
+   focus code (D-pad, A, B) work on them. A row element gets .adj(d) for left and right and .act() for A.
+
+     BC.testing                      true only with the whole-word ?test flag and never in the Android app (G7.8)
+     BC.hasFlag("fast")              any other test switch, only together with ?test
+     BC.store.read(key) / write(key, obj) / erase(key)      JSON with a backup copy under key + "_bak"
+     BC.confirmPress(btn, "Press again to delete", fn)       the second-press confirm (G5.17)
+     BC.input.set("keys" | "pad" | "touch"); BC.input.pick(keys, pad, touch)   prompts follow the device (G5.14)
+     BC.input.onPadLost(fn)          called when the controller in use disconnects (G5.15)
+     BC.rumble(ms)                   phone vibration and controller rumble, only while Rumble is on (G5.11)
+     var set = BC.settings({...})    the shared Settings rows (G5.11, G5.13)
+     var slots = BC.slots({...})     five save slots with Delete on a second press (G5.12)
+     var dbg = BC.debug({...})       Tester tools behind the code, test builds only (G5.9, G5.10)
+   See each function for its options.
+*/
+(function () {
+"use strict";
+var BC = window.BC = {version: "1.9.0"};
+
+/* ---------- G7.8 test flag ---------- */
+BC.hasFlag = function (flag) {
+  if (window.Android) return false;
+  try { return new URLSearchParams(window.location.search).has(flag); } catch (e) { return false; }
+};
+BC.testing = BC.hasFlag("test");
+BC.flag = function (flag) { return BC.testing && BC.hasFlag(flag); };
+
+/* ---------- store: JSON with a backup copy (E6.7 for HTML games) ---------- */
+BC.store = {
+  read: function (key) {
+    var keys = [key, key + "_bak"];
+    for (var i = 0; i < keys.length; i++) {
+      try {
+        var raw = localStorage.getItem(keys[i]);
+        if (raw === null) continue;
+        var d = JSON.parse(raw);
+        if (d && typeof d === "object" && !Array.isArray(d)) return d;
+      } catch (e) { /* a broken file falls through to its backup */ }
+    }
+    return null;
+  },
+  write: function (key, obj) {
+    try { var raw = JSON.stringify(obj); localStorage.setItem(key, raw); localStorage.setItem(key + "_bak", raw); return true; }
+    catch (e) { return false; }
+  },
+  erase: function (key) {
+    try { localStorage.removeItem(key); localStorage.removeItem(key + "_bak"); } catch (e) { }
+  },
+  has: function (key) { return BC.store.read(key) !== null; }
+};
+
+/* ---------- G5.17 second-press confirm ---------- */
+var armed = [];
+BC.confirmPress = function (btn, armedText, fn) {
+  btn._cpText = null;
+  btn._cpGo = function () {
+    if (btn._cpText !== null) { BC.disarm(btn); fn(); return; }
+    BC.disarmAll();
+    btn._cpText = btn.textContent;
+    btn.textContent = armedText;
+    btn.classList.add("armed");
+    armed.push(btn);
+    var n = btn._cpN = (btn._cpN || 0) + 1;
+    setTimeout(function () { if (btn._cpN === n) BC.disarm(btn); }, 4000);
+  };
+  btn.addEventListener("click", function (e) { e.stopPropagation(); btn._cpGo(); });
+  btn.act = btn._cpGo;
+};
+BC.disarm = function (btn) {
+  if (btn._cpText === null || btn._cpText === undefined) return;
+  btn.textContent = btn._cpText; btn._cpText = null; btn.classList.remove("armed");
+  var i = armed.indexOf(btn); if (i >= 0) armed.splice(i, 1);
+};
+/* Call it when the focus moves or a panel closes, so an armed button never stays armed out of sight. */
+BC.disarmAll = function (except) { armed.slice().forEach(function (b) { if (b !== except) BC.disarm(b); }); };
+
+/* ---------- G5.14 and G5.15 the device in use ---------- */
+var padLost = [];
+BC.input = {
+  last: (window.matchMedia && window.matchMedia("(pointer:coarse)").matches) ? "touch" : "keys",
+  set: function (kind) { BC.input.last = kind; },
+  pick: function (keys, pad, touch) { return BC.input.last === "pad" ? pad : BC.input.last === "touch" ? touch : keys; },
+  onPadLost: function (fn) { padLost.push(fn); },
+  /* The Android app calls this when a controller drops out. The browser fires gamepaddisconnected. */
+  padGone: function () { if (BC.input.last === "pad") padLost.forEach(function (f) { try { f(); } catch (e) { } }); },
+  padConnected: function () {
+    try { var g = navigator.getGamepads ? navigator.getGamepads() : []; for (var i = 0; i < g.length; i++) if (g[i] && g[i].connected) return true; } catch (e) { }
+    return !!BC.input._androidPad;
+  }
+};
+window.addEventListener("gamepaddisconnected", function () { BC.input.padGone(); });
+
+/* ---------- sha256, for the Tester tools code (a pure copy, so it runs on file pages and old WebViews) ---------- */
+BC.sha256 = function (ascii) {
+  function rr(v, n) { return (v >>> n) | (v << (32 - n)); }
+  var K = [], H = [], i, j, isP = {}, c = 0;
+  for (var cand = 2; c < 64; cand++) {
+    if (!isP[cand]) { for (i = 0; i < 313; i += cand) isP[i] = cand; H[c] = (Math.pow(cand, 0.5) * 4294967296) | 0; K[c++] = (Math.pow(cand, 1 / 3) * 4294967296) | 0; }
+  }
+  H = H.slice(0, 8);
+  var bytes = unescape(encodeURIComponent(ascii)), words = [], bitLen = bytes.length * 8;
+  bytes += "\x80"; while (bytes.length % 64 - 56) bytes += "\x00";
+  for (i = 0; i < bytes.length; i++) { j = bytes.charCodeAt(i); words[i >> 2] |= j << ((3 - i) % 4) * 8; }
+  words[words.length] = (bitLen / 4294967296) | 0; words[words.length] = bitLen;
+  for (j = 0; j < words.length;) {
+    var w = words.slice(j, j += 16), old = H.slice(0);
+    for (i = 0; i < 64; i++) {
+      var w15 = w[i - 15], w2 = w[i - 2], a = H[0], e = H[4];
+      var t1 = H[7] + (rr(e, 6) ^ rr(e, 11) ^ rr(e, 25)) + ((e & H[5]) ^ (~e & H[6])) + K[i] +
+        (w[i] = (i < 16) ? w[i] : (w[i - 16] + (rr(w15, 7) ^ rr(w15, 18) ^ (w15 >>> 3)) + w[i - 7] + (rr(w2, 17) ^ rr(w2, 19) ^ (w2 >>> 10))) | 0);
+      var t2 = (rr(a, 2) ^ rr(a, 13) ^ rr(a, 22)) + ((a & H[1]) ^ (a & H[2]) ^ (H[1] & H[2]));
+      H = [(t1 + t2) | 0].concat(H); H[4] = (H[4] + t1) | 0; H.length = 8;
+    }
+    for (i = 0; i < 8; i++) H[i] = (H[i] + old[i]) | 0;
+  }
+  var out = "";
+  for (i = 0; i < 8; i++) for (j = 3; j + 1; j--) { var b = (H[i] >> (j * 8)) & 255; out += (b < 16 ? "0" : "") + b.toString(16); }
+  return out;
+};
+
+/* ---------- small helpers ---------- */
+function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text !== undefined) e.textContent = text; return e; }
+/* Small labels at the top centre, one under the other, clear of a game's top corners (its counter and Menu button). */
+function corner(id, row, color) {
+  var d = document.getElementById(id);
+  if (!d) {
+    d = el("div"); d.id = id;
+    d.style.cssText = "position:fixed;z-index:60;pointer-events:none;font:600 16px system-ui,sans-serif;padding:2px 8px;border-radius:6px;" +
+      "background:rgba(0,0,0,.6);display:none;left:50%;transform:translateX(-50%);white-space:nowrap;" +
+      "top:calc(env(safe-area-inset-top,0px) + " + (4 + row * 28) + "px);color:" + color;
+    document.body.appendChild(d);
+  }
+  return d;
+}
+var LEVELS = ["Off", "Low", "Medium", "High", "Full"];
+BC.LEVELS = LEVELS;
+BC.LEVEL_VOLUME = [0, 0.25, 0.5, 0.75, 1];
+BC.TEXT_SIZES = ["Normal", "Large", "Larger"];
+
+/* ---------- G5.11 rumble ---------- */
+var S0 = null;   // the settings object, once made
+BC.rumble = function (ms) {
+  if (S0 && !S0.value("rumble")) return;
+  ms = Math.max(1, Math.min(500, ms | 0));
+  try { if (window.Android && window.Android.vibrate) window.Android.vibrate(ms); else if (navigator.vibrate) navigator.vibrate(ms); } catch (e) { }
+  try {
+    var g = navigator.getGamepads ? navigator.getGamepads() : [];
+    for (var i = 0; i < g.length; i++) {
+      var a = g[i] && g[i].vibrationActuator;
+      if (a && a.playEffect) a.playEffect("dual-rumble", {duration: ms, strongMagnitude: 0.6, weakMagnitude: 0.6}).catch(function () { });
+    }
+  } catch (e) { }
+};
+
+/* ---------- G5.11 frame rate number ---------- */
+var fps = {on: false, n: 0, t0: 0, raf: 0};
+function fpsTick(now) {
+  if (!fps.on) return;
+  fps.n++;
+  if (!fps.t0) fps.t0 = now;
+  if (now - fps.t0 >= 500) { corner("bc-fps", 1, "#bfffbf").textContent = Math.round(fps.n * 1000 / (now - fps.t0)) + " fps"; fps.n = 0; fps.t0 = now; }
+  fps.raf = requestAnimationFrame(fpsTick);
+}
+function showFps(on) {
+  fps.on = !!on; fps.n = 0; fps.t0 = 0;
+  corner("bc-fps", 1, "#bfffbf").style.display = on ? "block" : "none";
+  cancelAnimationFrame(fps.raf); if (on) fps.raf = requestAnimationFrame(fpsTick);
+}
+
+/* ---------- G5.11 full screen (browser only) ---------- */
+var FS = {
+  can: function () { var d = document.documentElement; return !window.Android && !!(d.requestFullscreen || d.webkitRequestFullscreen); },
+  on: function () { return !!(document.fullscreenElement || document.webkitFullscreenElement); },
+  toggle: function (blocked) {
+    try {
+      if (FS.on()) (document.exitFullscreen || document.webkitExitFullscreen).call(document);
+      else { var d = document.documentElement, r = (d.requestFullscreen || d.webkitRequestFullscreen).call(d, {navigationUI: "hide"}); if (r && r.catch) r.catch(function () { if (blocked) blocked(); }); }
+    } catch (e) { if (blocked) blocked(); }
+  }
+};
+BC.fullscreen = FS;
+
+/* ---------- G5.11 and G5.13 the Settings rows ----------
+   var set = BC.settings({
+     values: CFG,              the game's settings object. The kit keeps its own keys in it: music, sound, fps, rumble,
+                               shake, text_size and reduce_motion. Any of them may be renamed with keys: {music: "mus_lv"}
+     save: saveCfg,            writes the settings to their own storage key (device settings, shared by every slot)
+     apply: fn(key, value),    the game applies a change: sound levels, text size, reduce motion and its own settings
+     list: element,            the rows are drawn here, in order
+     row: "srow nav", head: "h2", note: "ver",   class names for a row, a heading and the About line
+     name, version, kit, about,   the About line
+     shake: false, reduceMotion: true,   show these switches only where the game has them
+     tester: fn                Tester tools button, shown only when given (pass it only when BC.debug says available)
+     blocked: fn               called when the browser refuses full screen
+   });
+   set.add({key: "camera", text: "Camera", names: ["Close", "Normal"], first: 1})   the game's own settings, in order
+   set.add({text: "Controls", act: fn})       a button that opens a page
+   set.add({node: element})                   a row the game draws itself
+   set.finish(old)  builds the rows. old: a function that fills the kit keys on the first run from older settings
+   set.value(key), set.set(key, v), set.refresh(), set.reset()
+*/
+BC.settings = function (o) {
+  var V = o.values, items = [], K = o.keys || {}, built = false;
+  function k(key) { return K[key] || key; }
+  var me = {items: items};
+  function add(it) { items.push(it); return me; }
+  me.add = function (it) { it.kind = it.node ? "node" : it.act ? "action" : it.names ? "choice" : "toggle"; return add(it); };
+  add({key: "music", text: "Music", names: LEVELS, first: 4, kind: "choice", std: 1});
+  add({key: "sound", text: "Sound", names: LEVELS, first: 4, kind: "choice", std: 1});
+  add({key: "fullscreen", text: "Full screen", kind: "toggle", std: 1});
+  add({key: "fps", text: "Frame rate", first: 0, kind: "toggle", std: 1});
+  add({key: "rumble", text: "Rumble", first: 1, kind: "toggle", std: 1});
+  add({key: "shake", text: "Screen shake", first: 1, kind: "toggle", std: 1});
+  var stdCount = items.length;
+  me.value = function (key) {
+    if (key === "fullscreen") return FS.on() ? 1 : 0;
+    var it = find(key), v = V[k(key)];
+    if (typeof v !== "number" || !isFinite(v)) return it ? (it.first || 0) : 0;
+    if (it && it.kind === "choice") return Math.max(0, Math.min(it.names.length - 1, Math.round(v)));
+    if (it && it.kind === "toggle") return v ? 1 : 0;
+    return v;
+  };
+  me.volume = function (key) { return BC.LEVEL_VOLUME[me.value(key)] || 0; };
+  function find(key) { for (var i = 0; i < items.length; i++) if (items[i].key === key) return items[i]; return null; }
+  me.set = function (key, v) {
+    if (key === "fullscreen") { if (!!v !== FS.on()) FS.toggle(o.blocked); setTimeout(me.refresh, 300); return; }
+    V[k(key)] = v;
+    if (key === "fps") showFps(v);
+    if (o.save) o.save();
+    if (o.apply) o.apply(key, v);
+    me.refresh();
+  };
+  function shows(it) {
+    if (it.key === "fullscreen") return FS.can();
+    if (it.key === "rumble") return !!window.Android || BC.input.padConnected() || !!o.rumbleAlways;
+    if (it.key === "shake") return !!o.shake;
+    if (it.key === "reduce_motion") return o.reduceMotion !== false;
+    if (it.shows) return !!it.shows();
+    return true;
+  }
+  function label(it) {
+    if (it.kind === "toggle") return it.text + ": " + (me.value(it.key) ? "On" : "Off");
+    if (it.kind === "choice") return it.text + ": " + it.names[me.value(it.key)];
+    return it.text;
+  }
+  me.finish = function (old) {
+    add({key: "text_size", text: "Text size", names: BC.TEXT_SIZES, first: 0, kind: "choice", std: 1, more: 1});
+    add({key: "reduce_motion", text: "Reduce motion", first: 0, kind: "toggle", std: 1});
+    var fresh = typeof V[k("music")] !== "number";
+    if (fresh && old) old(V);
+    items.forEach(function (it) { if (it.key && it.key !== "fullscreen" && typeof V[k(it.key)] !== "number") V[k(it.key)] = it.first || 0; });
+    if (o.save) o.save();
+    build();
+    items.forEach(function (it) { if (it.key && it.key !== "fullscreen" && o.apply) o.apply(it.key, me.value(it.key)); });
+    showFps(me.value("fps"));
+    S0 = me;
+    return me;
+  };
+  function build() {
+    var box = o.list; box.textContent = "";
+    items.forEach(function (it, n) {
+      if (n === stdCount && items.length > stdCount + 2) box.appendChild(el(o.head || "h2", "", o.name || "This game"));
+      if (it.more) box.appendChild(el(o.head || "h2", "", "More"));
+      if (it.kind === "node") { box.appendChild(it.node); it.el = it.node; return; }
+      var b = el("button", o.row || "srow nav");
+      b.dataset.set = it.key || it.text.replace(/\s+/g, "");
+      b.addEventListener("click", function () { b.act(); });
+      if (it.kind === "action") b.act = function () { it.act(); };
+      else if (it.kind === "toggle") b.act = function () { me.set(it.key, me.value(it.key) ? 0 : 1); };
+      else {
+        b.act = function () { me.set(it.key, (me.value(it.key) + 1) % it.names.length); };
+        b.adj = function (d) { var n2 = it.names.length; me.set(it.key, (me.value(it.key) + d + n2) % n2); };
+      }
+      if (it.kind === "toggle") b.adj = function () { b.act(); };
+      it.el = b; box.appendChild(b);
+    });
+    var reset = el("button", o.row || "srow nav", "Reset settings"); reset.dataset.set = "reset";
+    BC.confirmPress(reset, "Press again to reset", function () { me.reset(); });
+    box.appendChild(reset); me.resetBtn = reset;
+    if (o.tester) {
+      var tb = el("button", o.row || "srow nav", "Tester tools"); tb.dataset.set = "tester";
+      tb.addEventListener("click", function () { o.tester(); }); tb.act = function () { o.tester(); };
+      box.appendChild(tb); me.testerBtn = tb;
+    }
+    var about = el("div", o.note || "ver", (o.name || "") + "   version " + (o.version || "") + "   kit " + BC.version);
+    if (o.about) { about.appendChild(document.createElement("br")); about.appendChild(document.createTextNode(o.about)); }
+    box.appendChild(about); me.aboutEl = about;
+    built = true; me.refresh();
+  }
+  me.refresh = function () {
+    if (!built) return;
+    items.forEach(function (it) {
+      if (!it.el) return;
+      it.el.style.display = shows(it) ? "" : "none";
+      if (it.kind !== "node" && !(it.el._cpText)) it.el.textContent = label(it);
+    });
+  };
+  me.reset = function () {
+    items.forEach(function (it) {
+      if (!it.key || it.key === "fullscreen" || it.kind === "action" || it.kind === "node") return;
+      V[k(it.key)] = it.first || 0;
+    });
+    if (o.onReset) o.onReset();
+    if (o.save) o.save();
+    items.forEach(function (it) { if (it.key && it.key !== "fullscreen" && o.apply && it.kind !== "node") o.apply(it.key, me.value(it.key)); });
+    showFps(me.value("fps"));
+    me.refresh();
+  };
+  me.state = function () { var s = {}; items.forEach(function (it) { if (it.key) s[it.key] = me.value(it.key); }); return s; };
+  ["fullscreenchange", "webkitfullscreenchange"].forEach(function (n) { document.addEventListener(n, function () { me.refresh(); }); });
+  window.addEventListener("gamepadconnected", function () { me.refresh(); });
+  return me;
+};
+
+/* ---------- G5.12 five save slots ----------
+   var slots = BC.slots({
+     key: n => "my_save" + n,      the storage key of slot n (1 to 5)
+     current: () => CFG.slot,      the slot in use, kept by the game in its settings
+     line: data => "Robin 12/90",  one line on how far a slot is (data is the slot's saved object)
+     used: data => true,           optional: whether a saved object counts as a game in progress
+     played: data => data.t,       optional: when the slot was last played (milliseconds)
+     list: element, row: "srow nav", btn: "btn nav ghost",   where and how to draw
+     choose: (n, isNew) => {},     the player picked slot n. isNew when it was empty
+     deleted: (n, wasInUse, moveTo) => {}   slot n was deleted. When it was in use, the game loads moveTo
+   });
+   slots.render(), slots.erase(n), slots.data(n), slots.isUsed(n), slots.state()
+*/
+BC.slots = function (o) {
+  var me = {count: 5};
+  me.data = function (n) { return BC.store.read(o.key(n)); };
+  me.isUsed = function (n) { var d = me.data(n); return !!d && (o.used ? !!o.used(d) : true); };
+  function ago(t) {
+    if (!t) return "";
+    var q = (Date.now() - t) / 1000;
+    return q < 90 ? "just now" : q < 3600 ? Math.round(q / 60) + " min ago" : q < 86400 ? Math.round(q / 3600) + " h ago" : q < 172800 ? "1 day ago" : Math.round(q / 86400) + " days ago";
+  }
+  me.summary = function (n) {
+    var d = me.data(n), used = !!d && (o.used ? !!o.used(d) : true);
+    if (!used) return "Slot " + n + ": Empty";
+    var t = o.played ? o.played(d) : d.t;
+    return "Slot " + n + (n === o.current() ? " (in use)" : "") + ": " + o.line(d) + (t ? " \u00b7 Played " + ago(t) : "");
+  };
+  me.erase = function (n) {
+    var wasInUse = n === o.current();
+    BC.store.erase(o.key(n));
+    var moveTo = 0;
+    if (wasInUse) { for (var i = 1; i <= 5; i++) if (i !== n && me.isUsed(i)) { moveTo = i; break; } if (!moveTo) moveTo = 1; }
+    if (o.deleted) o.deleted(n, wasInUse, moveTo);
+    me.render();
+  };
+  me.render = function () {
+    var box = o.list; box.textContent = ""; me.rows = [];
+    for (var n = 1; n <= 5; n++) (function (n) {
+      var line = el("div", "bc-slot");
+      line.style.cssText = "display:flex;gap:.4rem;align-items:stretch";
+      var play = el("button", o.row || "srow nav", me.summary(n)); play.dataset.slot = "Slot" + n;
+      play.style.flex = "1"; play.style.minWidth = "0";
+      play.act = function () { var isNew = !me.isUsed(n); if (o.choose) o.choose(n, isNew); };
+      play.addEventListener("click", play.act);
+      line.appendChild(play);
+      if (me.isUsed(n)) {
+        var del = el("button", o.btn || "btn nav ghost", "Delete"); del.dataset.slot = "Delete" + n;
+        del.style.width = "auto"; del.style.marginTop = play.style.marginTop; del.style.flex = "0 0 auto"; del.style.minWidth = "5.5rem";
+        BC.confirmPress(del, "Press again", function () { me.erase(n); });
+        line.appendChild(del);
+      }
+      box.appendChild(line); me.rows.push(line);
+    })(n);
+  };
+  me.state = function () { var s = []; for (var n = 1; n <= 5; n++) s.push(me.isUsed(n) ? 1 : 0); return {used: s, current: o.current()}; };
+  return me;
+};
+
+/* ---------- G5.9 and G5.10 Tester tools ----------
+   Available only in a test build: build_html.py writes the gate (a salt and a hash of the code from config/debug.properties
+   in game-studio, never the code) into the page. A production build has no gate, so BC.debug(...).available is false.
+   var dbg = BC.debug({
+     box: element,             the panel body the kit draws into (the game opens and closes the panel itself)
+     btn: "btn nav", ghost: "btn nav ghost", head: "h2", note: "sub",   class names
+     info: {name, version, code, kit},   build info
+     close: fn,                the Close button
+     report: () => ({Place: "Meadow", Slot: 2})   what Copy bug report adds (G5.10)
+   });
+   dbg.action(section, text, fn), dbg.toggle(section, text, get, set), dbg.choice(section, text, names, get, set)
+   dbg.saveTools(resetFn, testSaveFn), dbg.show() when the panel opens, dbg.key(k) for keyboard digits
+   BC.speed is the game speed (1, 2 or 4). Multiply the frame step by it.
+*/
+BC.speed = 1;
+BC.debugAvailable = function () { var g = window.BC_GATE; return !!(g && typeof g.salt === "string" && typeof g.hash === "string" && g.hash.length === 64); };
+BC.debug = function (o) {
+  var me = {available: BC.debugAvailable(), unlocked: false, entry: "", report: "", sections: {}, refreshers: []};
+  var box = o.box, padBox = el("div"), toolBox = el("div"), dots = el("div", o.note || "sub", "Enter the code"), note = el("div", o.note || "sub", "");
+  var tag = corner("bc-debug", 0, "#ff6a5c"); tag.textContent = "DEBUG";
+  var stats = corner("bc-stats", 2, "#bfffbf");
+  var statsOn = false, statsN = 0, statsT0 = 0;
+  function statsTick(now) {
+    if (!statsOn) return;
+    statsN++;
+    if (!statsT0) statsT0 = now;
+    if (now - statsT0 >= 500) {
+      var mem = performance && performance.memory ? Math.round(performance.memory.usedJSHeapSize / 1048576) + " MB" : "memory not shown by this browser";
+      stats.textContent = Math.round(statsN * 1000 / (now - statsT0)) + " fps   " + mem + "   speed x" + BC.speed;
+      statsN = 0; statsT0 = now;
+    }
+    requestAnimationFrame(statsTick);
+  }
+  function section(name) {
+    if (me.sections[name]) return me.sections[name];
+    var s = el("div"); s.appendChild(el(o.head || "h2", "", name)); toolBox.appendChild(s); me.sections[name] = s; return s;
+  }
+  function button(sec, text, cls) { var b = el("button", cls || o.ghost || "btn nav ghost", text); b.dataset.dbg = "Dbg_" + text.replace(/\s+/g, "_"); section(sec).appendChild(b); return b; }
+  me.action = function (sec, text, fn) { var b = button(sec, text); b.addEventListener("click", function () { fn(); me.refresh(); }); b.act = function () { b.click(); }; return b; };
+  me.toggle = function (sec, text, get, set) {
+    var b = button(sec, text);
+    var r = function () { b.textContent = text + ": " + (get() ? "On" : "Off"); };
+    b.addEventListener("click", function () { set(!get()); me.refresh(); }); b.act = function () { b.click(); }; b.adj = b.act;
+    me.refreshers.push(r); r(); return b;
+  };
+  me.choice = function (sec, text, names, get, set) {
+    var b = button(sec, text);
+    var r = function () { b.textContent = text + ": " + names[Math.max(0, Math.min(names.length - 1, get()))]; };
+    b.addEventListener("click", function () { set((get() + 1) % names.length); me.refresh(); }); b.act = function () { b.click(); };
+    b.adj = function (d) { set((get() + d + names.length) % names.length); me.refresh(); };
+    me.refreshers.push(r); r(); return b;
+  };
+  me.saveTools = function (reset, test) { me.action("Save", "Reset the save", reset); me.action("Save", "Load the test save", test); };
+  me.refresh = function () { me.refreshers.forEach(function (f) { f(); }); };
+  me.copyReport = function () {
+    var g = o.info || {}, lines = ["Bug report", "Game: " + (g.name || "") + " " + (g.version || "") + " (build " + (g.code || "") + "), kit " + BC.version,
+      "Device: " + (window.Android ? "Android app" : "browser") + ", " + navigator.userAgent,
+      "Screen: " + innerWidth + " x " + innerHeight + ", pixel ratio " + (window.devicePixelRatio || 1),
+      "Input: " + BC.input.last];
+    var extra = o.report ? o.report() : {};
+    for (var key in extra) lines.push(key + ": " + extra[key]);
+    if (S0) lines.push("Settings: " + JSON.stringify(S0.state()));
+    lines.push("What happened: ");
+    me.report = lines.join("\n");
+    var ok = false;
+    try { if (window.Android && window.Android.copy) { window.Android.copy(me.report); ok = true; } } catch (e) { }
+    if (!ok) try { navigator.clipboard.writeText(me.report).catch(function () { }); ok = true; } catch (e) { }
+    note.textContent = ok ? "Copied. Paste it into the chat." : "Copy did not work here. The report is below.";
+    reportBox.textContent = me.report; reportBox.style.display = "block";
+  };
+  var reportBox = el("pre", o.note || "sub"); reportBox.style.cssText = "display:none;white-space:pre-wrap;text-align:left;font-size:.75rem;user-select:text;-webkit-user-select:text";
+  function digit(d) {
+    if (me.unlocked) return;
+    if (me.entry.length >= 8) me.entry = "";
+    me.entry += String(d);
+    var g = window.BC_GATE;
+    if (g && BC.sha256(g.salt + ":" + me.entry) === g.hash) { me.unlocked = true; me.entry = ""; tag.style.display = "block"; if (o.unlocked) o.unlocked(); me.show(); }
+    else showDots();
+  }
+  function showDots() { dots.textContent = me.entry ? me.entry.replace(/./g, "● ").trim() : "Enter the code"; }
+  me.key = function (k) {
+    if (me.unlocked) return false;
+    if (/^[0-9]$/.test(k)) { digit(+k); return true; }
+    if (k === "backspace") { me.entry = me.entry.slice(0, -1); showDots(); return true; }
+    return false;
+  };
+  me.show = function () {
+    padBox.style.display = me.unlocked ? "none" : "";
+    toolBox.style.display = me.unlocked ? "" : "none";
+    if (me.unlocked) me.refresh(); else showDots();
+  };
+  me.state = function () { return {avail: me.available, unlocked: me.unlocked, digits: me.entry.length, speed: BC.speed, report: me.report.length}; };
+  /* the code pad: digits, Clear and Back, all reachable with the D-pad */
+  box.textContent = "";
+  box.appendChild(padBox); box.appendChild(toolBox);
+  padBox.appendChild(dots);
+  var grid = el("div"); grid.style.cssText = "display:grid;grid-template-columns:repeat(3,1fr);gap:.4rem";
+  ["1", "2", "3", "4", "5", "6", "7", "8", "9", "Clear", "0", "Back"].forEach(function (t) {
+    var b = el("button", o.ghost || "btn nav ghost", t); b.style.marginTop = "0"; b.dataset.dbg = "Pad_" + t;
+    b.addEventListener("click", function () {
+      if (t === "Clear") { me.entry = ""; showDots(); } else if (t === "Back") { if (o.close) o.close(); } else digit(+t);
+    });
+    grid.appendChild(b);
+  });
+  padBox.appendChild(grid);
+  var close = el("button", o.btn || "btn nav", "Close"); close.dataset.dbg = "Dbg_Close";
+  close.addEventListener("click", function () { if (o.close) o.close(); });
+  toolBox.appendChild(close);
+  var g = o.info || {};
+  section("Build").appendChild(el("div", o.note || "sub", (g.name || "") + "   version " + (g.version || "") + "   build " + (g.code || "") + "   kit " + BC.version));
+  me.toggle("Build", "Frame rate and memory readout", function () { return statsOn; }, function (on) {
+    statsOn = on; stats.style.display = on ? "block" : "none"; statsN = 0; statsT0 = 0; if (on) requestAnimationFrame(statsTick);
+  });
+  me.choice("Build", "Game speed", ["x1", "x2", "x4"], function () { return [1, 2, 4].indexOf(BC.speed); }, function (i) { BC.speed = [1, 2, 4][i]; });
+  me.action("Build", "Copy bug report", me.copyReport);
+  section("Build").appendChild(note); section("Build").appendChild(reportBox);
+  me.show();
+  return me;
+};
+})();
+</script>
 <canvas id="c"></canvas><div id="saprobe"></div>
 <div id="count" class="pill">0/15</div>
-<div id="hudr"><button id="jbtn" class="pill">Journal</button><button id="mapbtn" class="pill">Map</button><button id="mbtn" class="pill">Menu</button></div>
+<div id="hudr"><button id="mbtn" class="pill">Menu</button></div>
 <div id="toast" class="pill"></div>
 <div id="dialog" class="pill"><span id="dtext"></span><small id="dhint">Tap to close</small></div>
 <div id="stick"><div id="knob"></div></div>
 <button id="abtn" aria-label="Action">A</button>
 <div id="title" class="ov"><div class="card">
   <canvas id="temb" width="256" height="256"></canvas><h1 class="logo">Pixel Hollow</h1><div class="sub">A quiet treasure hunt</div><div id="tgap"></div>
-  <button class="btn nav" id="tcont">Continue</button><button class="btn nav" id="tnew">Start</button>
-  <div class="srow nav" id="tslot"><span class="nm" style="flex:0 0 auto">Save</span><button class="pm">&lt;</button><span class="val" id="tslotv"></span><button class="pm">&gt;</button></div>
-  <button class="btn nav ghost" id="txmas">Christmas theme: Off</button><button class="btn nav ghost" id="tset">Settings</button><button class="btn nav ghost" id="tfull" style="display:none">Full screen</button><button class="btn nav ghost" id="tquit">Quit</button>
-  <div class="ver">v0.15.0</div></div></div>
-<div id="pause" class="ov"><div class="card">
-  <h1>Paused</h1><div id="pwho" class="sub" style="text-align:left"></div>
-  <div class="pbtns"><button class="btn nav" id="presume">Resume</button><button class="btn nav ghost" id="pjournal">Journal</button><button class="btn nav ghost" id="pmap">Map</button><button class="btn nav ghost" id="pvil">Village</button>
-  <button class="btn nav ghost" id="pchar">Character</button><button class="btn nav ghost" id="pphoto">Photo mode</button><button class="btn nav ghost" id="palbum">Album</button><button class="btn nav ghost" id="pset">Settings</button><button class="btn nav ghost" id="pfull" style="display:none">Full screen</button><button class="btn nav ghost" id="ptitle">Title Screen</button></div></div></div>
+  <div id="tkeys" class="sub"></div>
+  <button class="btn nav" id="tcont">Continue</button><button class="btn nav" id="tplay">Play</button><button class="btn nav ghost" id="tset">Settings</button><button class="btn nav ghost" id="tquit">Quit</button>
+  <div class="ver" id="tver"></div></div></div>
+<div id="pause" class="ov"><div class="mrow"><button class="btn nav" id="presume">Resume</button><button class="btn nav ghost" id="pset">Settings</button><button class="btn nav ghost" id="phow">How to play</button><button class="btn nav ghost" id="pjournal">Journal</button><button class="btn nav ghost" id="pmap">Map</button><button class="btn nav ghost" id="pvil">Village</button><button class="btn nav ghost" id="pchar">Character</button><button class="btn nav ghost" id="pphoto">Photo mode</button><button class="btn nav ghost" id="palbum">Album</button><button class="btn nav ghost" id="ptitle">Title</button></div><div id="pwho" class="pill"></div></div>
 <div id="journal" class="ov"><div class="card">
   <h1 id="jtitle">Journal</h1><div id="jsum"></div>
   <div id="jpager"><button class="btn nav ghost" id="jprev">&lt; Back</button><div id="jpn"></div><button class="btn nav ghost" id="jnext">Next &gt;</button></div>
   <div id="jsets"></div><div id="jinfo"></div><div id="jup"></div>
   <button class="btn nav" id="jclose">Close</button></div></div>
 <div id="settings" class="ov"><div class="card">
-  <h1>Settings</h1><div id="srows"></div><div class="ver">Font: Pixelify Sans, SIL Open Font License 1.1</div>
+  <h1>Settings</h1><div id="srows"></div>
   <button class="btn nav" id="sback">Back</button></div></div>
 <div id="map" class="ov"><div class="card" style="max-width:35rem">
   <h1 id="mtitle">Map</h1><div class="mapwrap"><div class="mapl"><canvas id="mapcv" width="120" height="60"></canvas></div><div class="mapr"><div id="mapinfo"></div><h2>Fast travel</h2><div id="mapgo" class="three"></div>
@@ -200,13 +714,22 @@ body.iso .req .rs{background:rgba(241,231,208,.1)}body.iso .req.done .rs{backgro
 <div id="album" class="ov"><div class="card">
   <h1>Photo album</h1><div id="alinfo" class="sub"></div><div id="algrid" class="grid"></div><img id="alview" alt="">
   <div class="two"><button class="btn nav ghost" id="aldel">Remove photo</button><button class="btn nav" id="alclose">Close</button></div></div></div>
+<div id="slots" class="ov"><div class="card">
+  <h1>Save slots</h1><div class="sub" style="text-align:left">Pick a slot to play. Each slot saves by itself as you play.</div><div id="slist"></div>
+  <button class="btn nav" id="slback">Back</button></div></div>
+<div id="howto" class="ov"><div class="card" style="max-width:32rem">
+  <h1>How to play</h1><div id="hbody"></div>
+  <button class="btn nav" id="hback">Back</button></div></div>
+<div id="dbg" class="ov"><div class="card">
+  <h1>Tester tools</h1><div id="dbgbox"></div></div></div>
 <div id="confirm" class="ov"><div class="card">
   <div id="ctext"></div><button class="btn nav" id="cyes">OK</button><button class="btn nav ghost" id="cno">Cancel</button></div></div>
 <script>
 "use strict";
 /* v0.15.0: split out of Helena Hollow. Copies the old browser save, settings and album once, so a browser player keeps their progress. */
-(function(){try{for(const o of ["wandervalley_save_v1","wandervalley_save_v1_s2","wandervalley_save_v1_s3","wandervalley_cfg_v1","wandervalley_album_v1"]){const n="pixelhollow"+o.slice(12);if(localStorage.getItem(n)===null&&localStorage.getItem(o)!==null)localStorage.setItem(n,localStorage.getItem(o))}}catch(e){}})();
+(function(){try{if(localStorage.getItem("pixelhollow_moved"))return;for(const o of ["wandervalley_save_v1","wandervalley_save_v1_s2","wandervalley_save_v1_s3","wandervalley_cfg_v1","wandervalley_album_v1"]){const n="pixelhollow"+o.slice(12);if(localStorage.getItem(n)===null&&localStorage.getItem(o)!==null)localStorage.setItem(n,localStorage.getItem(o))}localStorage.setItem("pixelhollow_moved","1")}catch(e){}})();
 /* ---------- helpers ---------- */
+const VERSION="0.16.0",VERSION_CODE=2;const ICON_URI="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMAAAADACAYAAABS3GwHAAAESElEQVR42u3dz4sWdRzA8c/IIwRmaqzgKdftcX1aFbfooOJKB5EIikUIJSSiQ2KnFBSpDh5KRMH15F49hNRFOkuIoJQn28hs2x7CoEOQpK0FQqH+A98R5mGenh/f1+s4+/DMw8y+9zt8mGe2GHvutUcBmVriECAAEAAIAAQAuWhEFI4CVgAQAAgABAACgGHXKIrhnAK1f/g4ub258RNnHSsACAABOAQIAAQA+Smao6/7RliNfr75UXL7+k2fOg59eBysALgEAgGAAEAAkI1i/bo3ujoFWvj+w+T28c0nHP2IWPjurfTx2XLBwbECgABAACAAEABEnVOgafcCRY7Tp32Rnj59bgUAAYAAQAAgAAjPBRp8P83tTW7fMPlFZn/6RpObc/t9sALgEggEAAIAAUA2ig3P73EvEFYAEAAIAAQAAoBwLxD0zo9zR5LbX5g8bQUAAYAAQAAgAKiiaDXfdC8QVgAQAAgABAACgHAv0P/r1reHk9snXjxTy/v/89d1Z/0Jlq3YagUAAYAAQAAgABhGxcT43qG8F+jve98kt+9uar4Tl9oPk9ufXrnNCgACAAGAAEAAEO4F6r77d7+OKtOel0afcdY7shjp6VB62rZ81XYrAAgABAACAAFAmAL1TmtsxFnvwI3bi5VePyi/V1YAXAKBAEAAIADIRmNYGyj7BtOldttZ97fVCgACQAAOAQIAAUC4F2hY/No+lf5B+3xy88GnPktun32wP/0+zXcqvX+psvcpcfC3Xd39nBU/z9rm0XAvELgEAgGAAEAAEKZAvVNxyjHb3h+1TGOaNX3OErNRz/SmtilT+EYYuAQCAYAAQAAwEIotG98e6P8RdvePK85iH1q1+hUrAAgABAACAAFAeC5Q912/uCO5/ctzN3vyeU5+da+W9zm2a2VPPv/0+5uS27fuuea5QOASCAQAAgABQPhGGNHp84ui2nN4ejUdCt8IA5dAIAAQAAgAwhSI6HiqE312L1CYAoFLIBAACAAEAGEKNEhaYyM92e/590YG4/i8uiZMgcAlEAgABAACgDAF6rqpmYeVXn9xX7X3n//ljrP+pONz7k6l5wKV2Xk2/dDxq4eWWAFAACAAEAAIAGIYnw49NfNfpdffmk9PIX5f+LOWz3Pj9qKz3oHpiq8vO49TM9Xuibp6qGEFAAGAAEAAIACoQ/Hy5IFK/yl+x5l/a5kGlCmb9qwZfza5ff74nLPYh1rHJ2s5vxOtalOja4eXWgFAACAAEAAIAFKKDy6/+6ibU52oadpTF/sd7v1WnRpZAXAJBAIAAYAAIBuNuqY6phD22w/7tQKAAEAAIAAQAETpc4FMIew33/1aAXAJBAIAAYAAIEyBTCHsN4P9WgFwCQQCAAGAACCynwKZQthvDvu1AuASCAQAAgABQDYapgH2m/N+rQC4BAIBgABAAJCNhmmA/ea8XysALoFAACAAEABk4zGuQCY7FUXxeQAAAABJRU5ErkJggg=="; // G6.11: same as android/app/build.gradle and the game page
 const T=16, MW=120, MH=140, SAVE_KEY="pixelhollow_save_v1";const SA={t:0,r:0,b:0,l:0};
 function rng(seed){return function(){seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
 function hash(x,y){let h=(Math.imul(x,73856093)^Math.imul(y,19349663))>>>0;h^=h>>>13;h=Math.imul(h,0x5bd1e995)>>>0;return (h^(h>>>15))>>>0}
@@ -906,8 +1429,9 @@ const groundCv=[0,1].map(f=>mk(MW*T,MH*T,g=>{
 
 /* ---------- settings store ---------- */
 const CFG_KEY="pixelhollow_cfg_v1";
-const CFG={xmas:0,calm:0,plbl:0,bkt:0,amb:6,music:6,sfx:8,vib:1,stick:0,size:1,hand:0,zoom:1,dn:1,wx:1,season:0,compass:1,crisp:1,gfx:1,mood:0,run:0,pet:1,radar:0,ts:1,spk:0,font:1,slot:1,bind:{action:0,journal:3,menu:9,back:1,map:2,run:5}};
-(function(){try{const d=JSON.parse(localStorage.getItem(CFG_KEY)||"null");if(d){for(const k in CFG)if(k!=="bind"&&typeof d[k]==="number")CFG[k]=d[k];
+let CFG_OLD=false;const CFG={xmas:0,calm:0,plbl:0,bkt:0,amb:6,music:6,sfx:8,vib:1,stick:0,size:1,hand:0,zoom:1,dn:1,wx:1,season:0,compass:1,crisp:1,gfx:1,mood:0,run:0,pet:1,radar:0,ts:1,spk:0,font:1,slot:1,bind:{action:0,journal:3,menu:9,back:1,map:2,run:5}};
+const CFG_DEF=JSON.parse(JSON.stringify(CFG));
+(function(){try{const d=JSON.parse(localStorage.getItem(CFG_KEY)||"null");if(d){CFG_OLD=true;for(const k in CFG)if(k!=="bind"&&typeof d[k]==="number")CFG[k]=d[k];for(const k of ["mlv","slv","alv","tsz","fps"])if(typeof d[k]==="number")CFG[k]=d[k];
   if(d.bind)for(const k in CFG.bind)if(typeof d.bind[k]==="number")CFG.bind[k]=d.bind[k]}}catch(e){}})();
 CFG.gfx=0; // v0.15.0: Pixel Hollow has the pixel view only
 function saveCfg(){try{localStorage.setItem(CFG_KEY,JSON.stringify(CFG))}catch(e){}}
@@ -917,22 +1441,22 @@ const S={x:START.x*T+8,y:START.y*T+10,dir:0,walk:0,vx:0,vy:0,moving:false,found:
   ch:{name:"Robin",pro:0,body:0,skin:1,hs:0,hc:0,hat:0,shirt:0,bot:0,pc:0,eye:0,gl:0,face:0,pat:0,shoe:0,pack:0}};
 const CHMAX={pro:4,body:2,skin:SKIN.length,hs:8,hc:HAIRC.length,hat:10,shirt:CLOTH.length,bot:3,pc:BOTC.length,eye:EYEC.length,gl:3,face:4,pat:4,shoe:SHOEC.length,pack:PACKC.length};
 const seen=new Uint8Array(30*35); // explored map cells, 4x4 tiles each
-if(!(CFG.slot>=1&&CFG.slot<=3))CFG.slot=1;
+if(!(CFG.slot>=1&&CFG.slot<=5))CFG.slot=1;
 const slotKey=n=>n===1?SAVE_KEY:SAVE_KEY+"_s"+n;
-function load(){try{const d=JSON.parse(localStorage.getItem(slotKey(CFG.slot))||"null");if(d&&d.v===1){S.x=d.x;S.y=d.y;S.play=+d.play||0;if(d.home&&typeof d.home==="object")S.home={sh:d.home.sh||{},fu:d.home.fu||{},wall:(d.home.wall|0)%4,floor:(d.home.floor|0)%3};
+function load(){try{const d=BC.store.read(slotKey(CFG.slot));if(d&&d.v===1){S.x=d.x;S.y=d.y;S.play=+d.play||0;if(d.home&&typeof d.home==="object")S.home={sh:d.home.sh||{},fu:d.home.fu||{},wall:(d.home.wall|0)%4,floor:(d.home.floor|0)%3};
   if(Array.isArray(d.garden))S.garden=[0,1,2,3,4,5].map(i=>{const p=d.garden[i];return p&&SEEDS.some(s=>s[0]===p.k)?{k:p.k,g:Math.max(0,Math.min(3,+p.g||0)),w:p.w|0}:null});S.rod=!!d.rod;S.net=!!d.net;(d.don||[]).forEach(id=>S.don[id]=1);(d.vil||[]).forEach(id=>S.vil[id]=1);S.boots=!!d.boots;S.pet=!!d.pet;S.signs=typeof d.signs==="number"?d.signs:31;S.bridge=!!d.bridge;S.shovel=!!d.shovel;S.lantern=!!d.lantern;S.clock=+d.clock||0;
   if(typeof d.seen==="string"&&d.seen.length===seen.length)for(let i=0;i<seen.length;i++)seen[i]=d.seen.charCodeAt(i)===49?1:0;else if(typeof d.seen==="string"&&d.seen.length===750)for(let i=0;i<750;i++)seen[i]=d.seen.charCodeAt(i)===49?1:0;else for(let r=0;r<15;r++)for(let c=0;c<15;c++)seen[r*30+c]=1;(d.found||[]).forEach(id=>S.found[id]=1);
   S.started=d.started!==undefined?!!d.started:true;S.pn=cleanPet(d.pn);S.sc={};if(d.sc&&typeof d.sc==="object")for(const k of ["ph","fe","nt","rn"])if(typeof d.sc[k]==="number")S.sc[k]=d.sc[k];S.stp=Array.isArray(d.stp)?d.stp.filter(x=>typeof x==="string"):null;S.bkm=Math.max(0,+d.bkm||0);S.pin=typeof d.pin==="string"&&ITEMS.some(i=>i.id===d.pin&&!i.off)?d.pin:null;S.vl=vlFrom(d.vl);
   if(d.ch){for(const k in CHMAX)if(Number.isInteger(d.ch[k])&&d.ch[k]>=0&&d.ch[k]<CHMAX[k])S.ch[k]=d.ch[k];if(typeof d.ch.name==="string")S.ch.name=cleanName(d.ch.name)}}}catch(e){}}
 function cleanName(n){n=String(n).replace(/[\u0000-\u001f<>]/g,"").trim().slice(0,12);return n||"Robin"}
 function buildSprites(){pspr=[false,true].map(bt=>[0,1,2,3].map(d=>({f:[0,1,2,3].map(q=>playerFrame(d,q,false,bt,S.ch)),blink:playerFrame(d,0,true,bt,S.ch)})))}
-function save(){try{localStorage.setItem(slotKey(CFG.slot),JSON.stringify({v:1,x:Math.round(S.x),y:Math.round(S.y),boots:S.boots,play:Math.round(S.play),home:S.home,garden:S.garden,rod:S.rod,net:S.net,don:Object.keys(S.don),vil:Object.keys(S.vil),pet:S.pet,signs:S.signs,bridge:S.bridge,shovel:S.shovel,lantern:S.lantern,clock:Math.round(S.clock),seen:Array.from(seen).join(""),started:S.started,pin:S.pin||null,pn:S.pn||"",sc:S.sc,stp:S.stp,ch:S.ch,found:Object.keys(S.found),vl:S.vl,bkm:S.bkm||0,t:Date.now()}));S.dirty=false}catch(e){}}
+function save(){try{BC.store.write(slotKey(CFG.slot),({v:1,x:Math.round(S.x),y:Math.round(S.y),boots:S.boots,play:Math.round(S.play),home:S.home,garden:S.garden,rod:S.rod,net:S.net,don:Object.keys(S.don),vil:Object.keys(S.vil),pet:S.pet,signs:S.signs,bridge:S.bridge,shovel:S.shovel,lantern:S.lantern,clock:Math.round(S.clock),seen:Array.from(seen).join(""),started:S.started,pin:S.pin||null,pn:S.pn||"",sc:S.sc,stp:S.stp,ch:S.ch,found:Object.keys(S.found),vl:S.vl,bkm:S.bkm||0,t:Date.now()}));S.dirty=false}catch(e){}}
 function afterLoad(){if(!S.sc)S.sc={};if(!Array.isArray(S.stp))stampSync();homeFix();buildSprites();bridgeOpen=S.bridge;if(Object.keys(S.found).length>=12)S.pet=true;for(const st of SETS){if(!ITEMS.some(i=>i.set===st.id)||!ITEMS.filter(i=>i.set===st.id).every(i=>S.found[i.id]))continue;S.boots=true;if(st.area==="autumn")S.lantern=true}UNLOCK.forEach(u=>{if(S.ch[u[0]]===u[1]&&!u[4]())S.ch[u[0]]=0});if(blocked(S.x,S.y)){S.x=START.x*T+8;S.y=START.y*T+10}}
 function fresh(){epoch++;S.pin=null;S.pn="";S.bkm=0;S.sc={};S.stp=[];FB.on=false;S.vl=vlFrom(null);Object.assign(S,{x:START.x*T+8,y:START.y*T+10,dir:0,walk:0,vx:0,vy:0,moving:false,found:{},don:{},vil:{},home:{sh:{},fu:{0:"bed",1:"lamp",2:"table",4:"rug",5:"fern"},wall:0,floor:0},garden:[null,null,null,null,null,null],rod:false,net:false,boots:false,pet:false,signs:0,flash:0,play:0,bridge:false,shovel:false,lantern:false,clock:0,started:false,dirty:false});
   S.ch={name:"Robin",pro:0,body:0,skin:1,hs:0,hc:0,hat:0,shirt:0,bot:0,pc:0,eye:0,gl:0,face:0,pat:0,shoe:0,pack:0};seen.fill(0);PET.init=false}
 function useSlot(n){if(S.started)save();CFG.slot=n;saveCfg();fresh();load();afterLoad();hud();path=null;undoStack.length=0;refreshTitle()}
 function agoStr(t){if(!t)return "";const q=(Date.now()-t)/1000;return q<90?"just now":q<3600?Math.round(q/60)+" min ago":q<86400?Math.round(q/3600)+" h ago":q<172800?"1 day ago":Math.round(q/86400)+" days ago"}
-function peekSlot(n){let d=null;try{d=JSON.parse(localStorage.getItem(slotKey(n))||"null")}catch(e){}const t=d&&d.t?" \u00b7 "+agoStr(d.t):"";
+function peekSlot(n){const d=BC.store.read(slotKey(n));const t=d&&d.t?" \u00b7 "+agoStr(d.t):"";
   if(n===CFG.slot)return S.started?nm()+" "+Object.keys(S.found).length+"/"+ITEMS.length+t:"empty";if(d&&d.started)return ((d.ch&&d.ch.name)||"Robin")+" "+(d.found||[]).length+"/"+ITEMS.length+t;return "empty"}
 load();
 function raining(){const p=S.clock%780;return p>=420&&p<540}
@@ -1041,11 +1565,11 @@ const UL=()=>UNLOCK.map(u=>["New look unlocked: "+u[2],u[4]]).concat(FURN.filter
 function watchUnlocks(fn){const ul=UL(),was=ul.map(u=>u[1]());fn();let n=0;ul.forEach((u,i)=>{if(!was[i]&&u[1]())setTimeout(()=>toast(u[0]+"!"),2800+2600*n++)})}
 /* save backup: a text code that holds the current slot */
 const b64e=t=>btoa(unescape(encodeURIComponent(t))),b64d=t=>decodeURIComponent(escape(atob(t)));
-function makeBackup(){CFG.bkt=Date.now();saveCfg();if(S.started)save();return "WV1:"+b64e(localStorage.getItem(slotKey(CFG.slot))||"{}")}
+function makeBackup(){CFG.bkt=Date.now();saveCfg();if(S.started)save();return "WV1:"+b64e(JSON.stringify(BC.store.read(slotKey(CFG.slot))||{}))}
 function restoreBackup(code){code=String(code).replace(/\s+/g,"");if(code.slice(0,4)!=="WV1:")return "That is not a backup code from the Hollow.";let d;
   try{d=JSON.parse(b64d(code.slice(4)))}catch(e){return "The code is damaged or incomplete."}
   if(!d||d.v!==1||!Array.isArray(d.found)||typeof d.x!=="number")return "The code is damaged or incomplete.";
-  try{localStorage.setItem(slotKey(CFG.slot),JSON.stringify(d))}catch(e){return "The save could not be written."}S.started=false;useSlot(CFG.slot);return ""}
+  if(!BC.store.write(slotKey(CFG.slot),d))return "The save could not be written.";S.started=false;useSlot(CFG.slot);return ""}
 /* villagers, seasons and travel to the far lands */
 const SEAS=["Spring","Summer","Autumn","Winter"];let lastSeason=-1;
 function season(){return CFG.season?CFG.season-1:Math.floor(S.clock/900)%4}
@@ -1125,9 +1649,9 @@ function ambTick(dt){if(!AU.ctx||AU.ctx.state!=="running")return;if(!AS.on)ambIn
   if(rg===REG.home&&P(2.5))ambNoise(2500,1.5,0.03,0.03)}
 function sfx(notes,type,gap){if(CFG.sfx===0||!auInit())return;try{const t0=AU.ctx.currentTime;notes.forEach((n,i)=>tone(AU.sfx,type||"triangle",n,t0+i*(gap||0.09),0.2,0.14))}catch(e){}}
 function auHold(h){AU.held=h;if(!AU.ctx)return;try{if(h)AU.ctx.suspend();else if(!document.hidden)AU.ctx.resume()}catch(e){}}
-window.__pauseAudio=()=>auHold(true);window.__resumeAudio=()=>auHold(false);
-document.addEventListener("visibilitychange",()=>{if(document.hidden){save();if(AU.ctx)AU.ctx.suspend()}else if(AU.ctx&&!AU.held)AU.ctx.resume()});
-function buzz(ms){if(!CFG.vib)return;try{if(window.Android&&Android.vibrate)Android.vibrate(ms);else if(navigator.vibrate)navigator.vibrate(ms)}catch(e){}}
+window.__pauseAudio=()=>{auHold(true);autoPause("Paused while you were away.")};window.__resumeAudio=()=>auHold(false);
+document.addEventListener("visibilitychange",()=>{if(document.hidden){autoPause("Paused while you were away.");if(S.started)save();if(AU.ctx)AU.ctx.suspend()}else if(AU.ctx&&!AU.held)AU.ctx.resume()});
+function buzz(ms){if(CFG.vib)BC.rumble(ms)}
 
 /* ---------- ui basics ---------- */
 const $=id=>document.getElementById(id);
@@ -1156,7 +1680,7 @@ function placeMsgs(){const t=$("toast"),d=$("dialog"),h=$("hudr").getBoundingCli
   /* the block grows upward from a line 40 percent down, so text ends just above the character and never covers it */
   const dv=d.style.display==="block",dh=dv?d.getBoundingClientRect().height:0,dt=Math.max(min,line-dh);d.style.top=dt+"px";
   const th=t.getBoundingClientRect().height||36;t.style.top=(dv?(dt-th-8>=min?dt-th-8:dt+dh+8):Math.max(min,line-th))+"px"}
-let dlg=null;function say(m){$("dtext").textContent=m;$("dhint").textContent=PAD.on?"Press "+BN[CFG.bind.action]+" to close":"Tap to close";$("dialog").style.display="block";dlg={x:S.x,y:S.y};placeMsgs()}
+let dlg=null;function say(m){$("dtext").textContent=m;$("dhint").textContent=BC.input.pick("Press E to close","Press "+BN[CFG.bind.action]+" to close","Tap to close");$("dialog").style.display="block";dlg={x:S.x,y:S.y};placeMsgs()}
 function hush(){$("dialog").style.display="none";dlg=null;placeMsgs()}
 $("dialog").addEventListener("pointerdown",e=>{e.stopPropagation();hush()});
 
@@ -1179,7 +1703,7 @@ function collect(it){if(S.found[it.id])return;if(!it.wild&&!it.gift){if(CFG.dn&&
 function backupTip(){const n=setsDone(),hit=[3,6,10,15,20,25].some(x=>x<=n&&x>(S.bkm||0));if(!hit)return "";S.bkm=n;S.dirty=true;if(Date.now()-(CFG.bkt||0)<7*864e5)return "";
   return "Tip: your journal lives only on this device. Settings > Backup and restore gives you a code to keep somewhere safe."}
 /* v0.14.5 real calendar touches: snow over the title screen in December, falling leaves and pumpkins in October */
-function calMonth(){return typeof window.__month==="number"?window.__month:new Date().getMonth()}
+function calMonth(){return BC.testing&&typeof window.__month==="number"?window.__month:new Date().getMonth()}
 function xmasSnow(){const W=cv.width,H=cv.height,k=Math.max(1,Math.min(W,H)/400);cx.save();cx.setTransform(1,0,0,1,0,0);cx.fillStyle="rgba(255,255,255,.8)";for(let i=0;i<(CFG.calm?24:60);i++){const sp=0.035+(hash(i,3)%100)/1800,x=((hash(i,1)%1000)/1000*W+Math.sin(S.t*0.6+i)*12*k)%W,y=((hash(i,2)%1000)/1000+S.t*sp)%1*H,r=(0.8+hash(i,4)%3*0.5)*k;cx.beginPath();cx.arc(x,y,r,0,6.3);cx.fill()}cx.restore()}
 function calTitle(){if(stack[0]!=="title"){if(CFG.xmas&&!PH.snap){const r=region();if(!caveRg(r)&&!indoor(r))xmasSnow()}return}const m=CFG.xmas?11:calMonth();if(m!==9&&m!==11)return;const W=cv.width,H=cv.height,k=Math.max(1,Math.min(W,H)/400);cx.save();cx.setTransform(1,0,0,1,0,0);
   if(m===11){cx.fillStyle="rgba(255,255,255,.85)";for(let i=0;i<90;i++){const sp=0.04+(hash(i,3)%100)/1500,x=((hash(i,1)%1000)/1000*W+Math.sin(S.t*0.7+i)*14*k)%W,y=((hash(i,2)%1000)/1000+S.t*sp)%1*H,r=(1+hash(i,4)%3)*k;cx.beginPath();cx.arc(x,y,r,0,6.3);cx.fill()}}
@@ -1199,12 +1723,19 @@ function markSeen(){const c=(S.x/T|0)>>2,r=(S.y/T|0)>>2;for(let dy=-3;dy<=3;dy++
 /* ---------- panels and focus ---------- */
 const stack=[];const topP=()=>stack[stack.length-1];let foc=null;const focMem={};
 function navEls(){const p=$(topP());return p?[...p.querySelectorAll(".nav")].filter(e=>e.offsetParent!==null):[]}
-function setFoc(e){if(foc)foc.classList.remove("foc");foc=e;if(e){e.classList.add("foc");if(e.scrollIntoView)e.scrollIntoView({block:"nearest"});focMem[topP()]=e;if(e.onfoc)e.onfoc()}}
-function openPanel(id){if(stack.includes(id))return;if(id==="map")buildMap();if(id==="album")buildAlbum();if(id==="museum")buildMuseum();if(id==="journal")buildJournal();if(id==="settings")refreshSettings();if(id==="builder")refreshBuilder();if(id==="pause")$("pwho").textContent=nm()+(S.ch.pro===3?"":" ("+PR.lab[S.ch.pro]+")")+". "+SEAS[season()]+". Played "+(S.play>=3600?Math.floor(S.play/3600)+" h "+Math.floor(S.play%3600/60)+" min":Math.floor(S.play/60)+" min")+".";
-  path=null;stickEnd();hush();if(id!=="title")$("toast").classList.remove("show");if(stack.length)$(topP()).style.visibility="hidden";stack.push(id);document.body.classList.add("panel");document.body.classList.toggle("ontitle",stack.includes("title"));$(id).style.display="flex";$(id).scrollTop=0;setFoc(navEls()[0]||null);sfx([79],"sine")}
-function closePanel(){if(!stack.length)return;const id=stack.pop();if(id==="photo"){PH.on=false;PHD=null;cv.style.filter="";resize()}document.body.classList.toggle("ontitle",stack.includes("title"));$(id).style.display="none";$(id).style.visibility="";if(stack.length)$(topP()).style.visibility="";else document.body.classList.remove("panel");if(PAD.listen){PAD.listen=null;refreshSettings()}
-  if(id==="builder"){$("bname").blur();$("bpet").blur();S.pn=cleanPet($("bpet").value)||S.pn||"";S.ch.name=cleanName($("bname").value);save();if(builderNew){builderNew=false;setTimeout(()=>toast(PAD.on?"Stick to walk. Press "+BN[CFG.bind.action]+" near things.":"Drag to walk. Press A near things."),400)}}
-  const m=focMem[topP()];setFoc(stack.length?(m&&m.offsetParent!==null?m:navEls()[0]||null):null)}
+function setFoc(e){BC.disarmAll(e);if(foc)foc.classList.remove("foc");foc=e;if(e){e.classList.add("foc");if(e.scrollIntoView)e.scrollIntoView({block:"nearest"});focMem[topP()]=e;if(e.onfoc)e.onfoc()}}
+function openPanel(id){if(stack.includes(id))return;if(id==="map")buildMap();if(id==="album")buildAlbum();if(id==="museum")buildMuseum();if(id==="journal")buildJournal();if(id==="settings")refreshSettings();if(id==="slots"){if(S.started)save();SLOTS.render()}if(id==="howto")buildHow();if(id==="dbg"&&DBG)DBG.show();if(id==="builder")refreshBuilder();if(id==="pause")$("pwho").textContent=nm()+(S.ch.pro===3?"":" ("+PR.lab[S.ch.pro]+")")+". "+SEAS[season()]+". Played "+(S.play>=3600?Math.floor(S.play/3600)+" h "+Math.floor(S.play%3600/60)+" min":Math.floor(S.play/60)+" min")+".";
+  path=null;stickEnd();hush();if(id!=="title")$("toast").classList.remove("show");if(stack.length)$(topP()).style.visibility="hidden";stack.push(id);document.body.classList.add("panel");document.body.classList.toggle("ontitle",stack.includes("title"));$(id).style.display="flex";$(id).scrollTop=0;setFoc(navEls()[0]||null);sfx([79],"sine");menuState()}
+function closePanel(){if(!stack.length)return;BC.disarmAll();const id=stack.pop();if(id==="photo"){PH.on=false;PHD=null;cv.style.filter="";resize()}document.body.classList.toggle("ontitle",stack.includes("title"));$(id).style.display="none";$(id).style.visibility="";if(stack.length)$(topP()).style.visibility="";else document.body.classList.remove("panel");if(PAD.listen){PAD.listen=null;refreshSettings()}
+  if(id==="builder"){$("bname").blur();$("bpet").blur();S.pn=cleanPet($("bpet").value)||S.pn||"";S.ch.name=cleanName($("bname").value);save();if(builderNew){builderNew=false;setTimeout(()=>toast(BC.input.pick("Arrows or WASD to walk. Press E near things.","Stick to walk. Press "+BN[CFG.bind.action]+" near things.","Drag to walk. Tap A near things.")),400)}}
+  const m=focMem[topP()];setFoc(stack.length?(m&&m.offsetParent!==null?m:navEls()[0]||null):null);menuState()}
+/* v0.16.0 (G5.1): the Menu button stays at the top right and reads Close while the Menu row is open */
+function menuState(){document.body.classList.toggle("menuopen",topP()==="pause");hudLabels()}
+/* v0.16.0 (G5.15): the game pauses when the tab or app loses focus and when the controller in use disconnects */
+function autoPause(why){if(stack.length||!S.started)return;openPanel("pause");if(why)$("pwho").textContent=why+" "+$("pwho").textContent}
+addEventListener("blur",()=>autoPause("Paused while you were away."));
+BC.input.onPadLost(()=>{if(stack.length){toast("The controller disconnected.");return}autoPause("The controller disconnected. Connect it and press A, or tap Resume.")});
+function focName(){return foc?(foc.id||foc.dataset.set||foc.dataset.slot||foc.dataset.dbg||foc.textContent):null}
 function closeAll(){while(stack.length)closePanel()}
 function back(){if(PAD.listen){PAD.listen=null;refreshSettings();return}if(!stack.length||topP()==="title")return;sfx([67],"sine");closePanel()}
 function activate(){if(!foc)return;if(foc.act)foc.act();else if(foc.adj)foc.adj(1,true);else foc.click()}
@@ -1223,31 +1754,25 @@ $("cyes").addEventListener("click",()=>{const f=askFn;askFn=null;closePanel();if
 $("cno").addEventListener("click",()=>{askFn=null;closePanel()});
 
 /* title and pause */
-function refreshTitle(){$("txmas").textContent="Christmas theme: "+(CFG.xmas?"On":"Off");const has=S.started;$("tcont").style.display=has?"":"none";$("tnew").textContent=has?"New Game":"Start";$("tslotv").textContent="Slot "+CFG.slot+": "+peekSlot(CFG.slot)}
-$("txmas").addEventListener("click",()=>{CFG.xmas=CFG.xmas?0:1;applyCfg("xmas");refreshTitle();sfx(CFG.xmas?[72,76,79,84]:[72],"sine")});
+function refreshTitle(){const has=S.started;$("tcont").style.display=has?"":"none";$("tcont").textContent="Continue (slot "+CFG.slot+")";$("tquit").style.display=window.Android?"":"none";$("tver").textContent="Version "+VERSION;
+  $("tkeys").textContent=BC.input.pick("Arrows or WASD walk. E acts. J journal. M map. Esc opens the Menu.","Left stick walks. "+BN[CFG.bind.action]+" acts. "+BN[CFG.bind.journal]+" journal. "+BN[CFG.bind.map]+" map. "+BN[CFG.bind.menu]+" opens the Menu.","Drag to walk. Tap A near things. Menu sits at the top right.")}
 function showTitle(){refreshTitle();openPanel("title")}
-$("tslot").adj=d=>{useSlot(((CFG.slot-1+d+3)%3)+1);sfx([86],"sine")};
-$("tslot").querySelectorAll(".pm")[0].addEventListener("click",()=>$("tslot").adj(-1));$("tslot").querySelectorAll(".pm")[1].addEventListener("click",()=>$("tslot").adj(1));
 let builderNew=false;
 function newGame(){epoch++;S.pin=null;S.pn="";S.bkm=0;S.sc={};S.stp=[];FB.on=false;UNLOCK.forEach(u=>{if(S.ch[u[0]]===u[1])S.ch[u[0]]=0});S.play=0;S.found={};S.don={};S.vil={};S.home={sh:{},fu:{0:"bed",1:"lamp",2:"table",4:"rug",5:"fern"},wall:0,floor:0};S.garden=[null,null,null,null,null,null];homeFix();S.rod=S.net=false;F.on=false;S.boots=false;S.pet=false;S.signs=0;PET.init=false;S.bridge=bridgeOpen=false;S.shovel=false;S.lantern=false;S.clock=0;seen.fill(0);S.x=START.x*T+8;S.y=START.y*T+10;S.dir=0;S.started=true;buildSprites();save();hud();closeAll();builderNew=true;openPanel("builder")}
 $("tcont").addEventListener("click",()=>{closeAll()});
-$("tnew").addEventListener("click",()=>{if(S.started)ask("Start a new game? This erases your current save.","Start over",newGame);else newGame()});
+$("tplay").addEventListener("click",()=>openPanel("slots"));$("slback").addEventListener("click",()=>closePanel());$("hback").addEventListener("click",()=>closePanel());$("phow").addEventListener("click",()=>openPanel("howto"));
 $("tset").addEventListener("click",()=>openPanel("settings"));
-$("tquit").addEventListener("click",()=>{save();if(window.Android&&Android.quit)Android.quit();else ask("This is the browser preview. Close the tab to quit.","OK",null,true)});
+$("tquit").addEventListener("click",()=>{if(S.started)save();if(window.Android&&Android.quit)Android.quit()});
 $("presume").addEventListener("click",()=>closePanel());
 /* full screen (browser only. The Android app already runs full screen) */
-const FS={can:!window.Android&&!!(document.documentElement.requestFullscreen||document.documentElement.webkitRequestFullscreen)};
-const fsOn=()=>!!(document.fullscreenElement||document.webkitFullscreenElement);
-function fsLabel(){for(const id of ["tfull","pfull"]){const e=$(id);e.style.display=FS.can?"":"none";e.textContent=fsOn()?"Exit full screen":"Full screen"}$("tquit").style.display=FS.can?"none":""}
-function toggleFull(){const no=()=>toast("Full screen was blocked. Tap the Full screen button or press F.");try{if(fsOn())(document.exitFullscreen||document.webkitExitFullscreen).call(document);else{const el=document.documentElement,r=(el.requestFullscreen||el.webkitRequestFullscreen).call(el,{navigationUI:"hide"});if(r&&r.catch)r.catch(no)}}catch(e){no()}}
-["fullscreenchange","webkitfullscreenchange"].forEach(n=>document.addEventListener(n,()=>{fsLabel();resize()}));
-$("tfull").addEventListener("click",toggleFull);$("pfull").addEventListener("click",toggleFull);fsLabel();
+function toggleFull(){BC.fullscreen.toggle(()=>toast("Full screen was blocked. Use Settings, Full screen, or press F."))}
+["fullscreenchange","webkitfullscreenchange"].forEach(n=>document.addEventListener(n,()=>resize()));
 $("pjournal").addEventListener("click",()=>openPanel("journal"));
 
 /* photo mode (v0.14): the game pauses, the HUD hides, the camera pans and zooms, filters preview live */
 const PH={on:false,ox:0,oy:0,f:0,zi:0,hide:false,label:true},PHF=[["Natural",""],["Warm","sepia(.25) saturate(1.35) hue-rotate(-8deg)"],["Cool","saturate(1.1) hue-rotate(14deg) brightness(1.05)"],["Sepia","sepia(.85) contrast(1.05)"],["Mono","grayscale(1) contrast(1.12)"],["Dream","saturate(1.45) brightness(1.08) contrast(.95)"]],PHZ=[["Normal",1],["Close",1.35],["Closer",1.75],["Wide",0.8]];let PHD=null;
 function phRefresh(){$("phf").textContent="Filter: "+PHF[PH.f][0];$("phz").textContent="Zoom: "+PHZ[PH.zi][0];$("phh").textContent=PH.hide?"Show me":"Hide me";$("phl").textContent="Label: "+(PH.label?"On":"Off");cv.style.filter=PHF[PH.f][1];
-  $("phtop").textContent=PAD.on?"Stick: look around   "+BN[CFG.bind.action]+": photo   "+BN[CFG.bind.map]+": filter   "+BN[CFG.bind.journal]+": hide me   LB/RB: zoom   "+BN[CFG.bind.back]+": done":document.body.classList.contains("keymode")?"Arrows: look around   E: photo   Q: filter   H: hide me   Z: zoom   L: label   Esc: done":"Drag to look around. Tap Take photo to save it."}
+  $("phtop").textContent=BC.input.last==="pad"?"Stick: look around   "+BN[CFG.bind.action]+": photo   "+BN[CFG.bind.map]+": filter   "+BN[CFG.bind.journal]+": hide me   LB/RB: zoom   "+BN[CFG.bind.back]+": done":BC.input.last==="keys"?"Arrows: look around   E: photo   Q: filter   H: hide me   Z: zoom   L: label   Esc: done":"Drag to look around. Tap Take photo to save it."}
 function openPhoto(){closeAll();Object.assign(PH,{on:true,ox:0,oy:0,zi:0,hide:false});openPanel("photo");phRefresh();resize();setFoc($("phs"))}
 function phClamp(){const vw=cv.width/IK,vh=cv.height/IK;PH.ox=Math.max(-vw*0.6,Math.min(vw*0.6,PH.ox));PH.oy=Math.max(-vh*0.6,Math.min(vh*0.6,PH.oy))}
 function phFilter(d){PH.f=(PH.f+d+PHF.length)%PHF.length;phRefresh();sfx([84],"sine")}
@@ -1274,12 +1799,10 @@ function buildAlbum(){const a=albumGet(),box=$("algrid");box.innerHTML="";alSel=
     const show=()=>{alSel=i;box.querySelectorAll(".slot").forEach(o=>o.classList.toggle("sel",o===d));const v=$("alview");v.src=p.u;v.style.display="block";$("aldel").style.display="";$("alinfo").textContent=p.d+" \u00b7 "+agoStr(p.t)+"."};
     d.addEventListener("click",()=>{show();sfx([76],"sine")});d.onfoc=()=>{if(document.body.classList.contains("keymode"))show()};box.appendChild(d)})}
 $("palbum").addEventListener("click",()=>openPanel("album"));$("alclose").addEventListener("click",()=>closePanel());
-$("aldel").addEventListener("click",()=>{if(alSel<0)return;const i=alSel;ask("Remove this photo from the album? The full photo in your gallery stays.","Remove",()=>{const a=albumGet();a.splice(i,1);albumPut(a);buildAlbum();setFoc(navEls()[0]||null)})});
+BC.confirmPress($("aldel"),"Press again to remove",()=>{if(alSel<0)return;const a=albumGet();a.splice(alSel,1);albumPut(a);buildAlbum();setFoc(navEls()[0]||null)});
 $("pchar").addEventListener("click",()=>openPanel("builder"));$("pvil").addEventListener("click",openAlmanac);
 $("pset").addEventListener("click",()=>openPanel("settings"));
-$("ptitle").addEventListener("click",()=>{save();closeAll();showTitle()});
-$("jbtn").addEventListener("click",()=>openPanel("journal"));
-$("mapbtn").addEventListener("click",()=>openPanel("map"));
+$("ptitle").addEventListener("click",()=>{if(S.started)save();closeAll();showTitle()});
 $("pmap").addEventListener("click",()=>openPanel("map"));
 $("mapclose").addEventListener("click",()=>closePanel());
 $("muclose").addEventListener("click",()=>closePanel());
@@ -1290,9 +1813,9 @@ $("bkcopy").addEventListener("click",()=>{const t=$("bkout").value,ok=()=>{$("bk
 $("bkshare").addEventListener("click",()=>{try{Android.share($("bkout").value)}catch(e){}});
 $("bkpaste").addEventListener("click",()=>{const put=t=>{if(t){$("bkin").value=t;$("bkmsg").textContent="Code pasted. Press Restore."}else $("bkmsg").textContent="Nothing to paste. Long-press the box and choose Paste."};
   try{if(window.Android&&Android.paste)put(Android.paste());else if(navigator.clipboard&&navigator.clipboard.readText)navigator.clipboard.readText().then(put,()=>put(""));else put("")}catch(e){put("")}});
-$("bkrestore").addEventListener("click",()=>{const code=$("bkin").value;if(!code.trim()){$("bkmsg").textContent="Paste a backup code first.";return}
-  ask("Restore this backup? It replaces the save in slot "+CFG.slot+".","Restore",()=>{const err=restoreBackup(code);if(err){$("bkmsg").textContent=err;return}closeAll();showTitle();toast("Backup restored.")})});
-$("mbtn").addEventListener("click",()=>openPanel("pause"));
+$("bkrestore").addEventListener("click",e=>{if(!$("bkin").value.trim()){$("bkmsg").textContent="Paste a backup code first.";e.stopImmediatePropagation()}});
+BC.confirmPress($("bkrestore"),"Press again to replace this slot",()=>{const err=restoreBackup($("bkin").value);if(err){$("bkmsg").textContent=err;return}closeAll();showTitle();toast("Backup restored.")});$("bkrestore").act=()=>$("bkrestore").click();
+$("mbtn").addEventListener("click",()=>{if(topP()==="pause")closePanel();else openPanel("pause")});
 $("jclose").addEventListener("click",()=>closePanel());
 $("sback").addEventListener("click",()=>closePanel());
 
@@ -1452,7 +1975,7 @@ function randomName(){let n;do{n=NAMES[Math.random()*NAMES.length|0]}while(n===S
   const tb=$("bthemes");THEMES.forEach(t=>{const b=document.createElement("button");b.className="btn nav ghost";b.textContent=t[0];
     b.addEventListener("click",()=>{pushUndo();for(const k in t[1])if(!LOCK[k]){const c=t[1][k].filter(v=>chOK(k,v));S.ch[k]=c[Math.random()*c.length|0]}afterCh([76,81,84])});tb.appendChild(b)})})();
 function refreshBuilder(){brefresh.forEach(f=>f());$("bearn").textContent="Looks to earn: "+UNLOCK.map(u=>u[2]+(u[4]()?" (unlocked)":" ("+u[3]+")")).join(", ")+".";$("bundo").disabled=!undoStack.length;$("bundo").style.opacity=undoStack.length?1:.45;
-  $("bhint").textContent=PAD.on?BN[CFG.bind.action]+" rolls a row. "+BN[CFG.bind.journal]+" locks it. Locked rows stay put.":"Dice rolls one row. Lock keeps a row when you randomize."}
+  $("bhint").textContent=BC.input.last==="pad"?BN[CFG.bind.action]+" rolls a row. "+BN[CFG.bind.journal]+" locks it. Locked rows stay put.":"Dice rolls one row. Lock keeps a row when you randomize."}
 $("brand").addEventListener("click",()=>{pushUndo();LOOK.forEach(k=>{if(!LOCK[k])S.ch[k]=rndVal(k)});afterCh([79,84,88])});
 $("ball").addEventListener("click",()=>{pushUndo();LOOK.concat(["body"]).forEach(k=>{if(!LOCK[k])S.ch[k]=rndVal(k)});randomName();afterCh([72,79,84,91])});
 $("bundo").addEventListener("click",()=>{if(!undoStack.length)return;Object.assign(S.ch,JSON.parse(undoStack.pop()));afterCh([67,64])});
@@ -1468,45 +1991,93 @@ const LBL={gen:BN.slice(),xbox:["A","B","X","Y","LB","RB","LT","RT","View","Menu
   nin:["B","A","Y","X","L","R","ZL","ZR","\u2212","+","LS","RS","Up","Down","Left","Right"]};
 const FAMN={gen:"Standard",xbox:"Xbox",ps:"PlayStation",nin:"Nintendo / Retroid"};
 function padFam(){if(CFG.plbl===1)return "xbox";if(CFG.plbl===2)return "ps";if(CFG.plbl===3)return "nin";const n=String(PAD.name||"").toLowerCase();
-  if(/retroid|nintendo|switch|joy-?con|pro controller/.test(n))return "nin";if(/xbox|xinput|microsoft|x-box/.test(n))return "xbox";if(/playstation|dualsense|dualshock|sony|wireless controller|ps[345]/.test(n))return "ps";return "gen"}
+  if(/retroid|nintendo|switch|joy-?con|pro controller/.test(n))return "nin";if(/xbox|xinput|microsoft|x-box/.test(n))return "xbox";if(/playstation|dualsense|dualshock|sony|wireless controller|ps[345]/.test(n))return "ps";return "xbox"}/* v0.16.0 (G5.8): Xbox names unless the controller says otherwise */
+let SET=null,SLOTS=null,DBG=null;
 function setBN(){const L=LBL[padFam()];for(let i=0;i<16;i++)BN[i]=L[i];if(typeof PAD!=="undefined"){hudLabels();if(topP()==="settings")refreshSettings()}}
-const TEN=[0,1,2,3,4,5,6,7,8,9,10];
-const OPTS=[{h:"Sound"},{k:"music",n:"Music",vals:TEN,clamp:1},{k:"sfx",n:"Sounds",vals:TEN,clamp:1},{k:"amb",n:"Ambience",vals:TEN,clamp:1},{k:"vib",n:"Vibration",vals:["Off","On"]},
-  {h:"Touch controls"},{k:"stick",n:"Joystick",vals:["Floating","Fixed","Tap to walk"]},{k:"size",n:"Control size",vals:["Small","Medium","Large"]},{k:"hand",n:"Layout",vals:["Right hand","Left hand"]},
-  {h:"Play"},{k:"run",n:"Auto-run",vals:["Off","On"]},{k:"radar",n:"Treasure radar",vals:["Off","On"]},{k:"compass",n:"Compass dots on map",vals:["Off","On"]},{k:"pet",n:"Companion",vals:["Off","Dog","Cat"]},
-  {h:"Display"},{k:"mood",n:"Mood",vals:["Moody","Bright"]},{k:"crisp",n:"Pixel outlines",vals:["Off","On"]},{k:"zoom",n:"Camera",vals:["Close","Normal","Wide"]},{k:"dn",n:"Day and night",vals:["Off","On"]},{k:"wx",n:"Rain",vals:["Off","On"]},{k:"season",n:"Season",vals:["Cycle","Spring","Summer","Autumn","Winter"]},{k:"ts",n:"Text size",vals:["Small","Normal","Large"]},{k:"spk",n:"Sparkles",vals:["Classic","Bold","Blue","Pink"]},{k:"font",n:"Font",vals:["Pixel","Classic"]},{k:"calm",n:"Reduce motion",vals:["Off","On"]},{k:"xmas",n:"Christmas theme",vals:["Off","On"]},
-  {h:"Controller"},{stat:1},{k:"plbl",n:"Button labels",vals:["Auto","Xbox","PlayStation","Nintendo / Retroid"]},{b:"action",n:"Action / Confirm"},{b:"journal",n:"Journal"},{b:"map",n:"Map"},{b:"run",n:"Run (hold)"},{b:"menu",n:"Menu / Pause"},{b:"back",n:"Back / Cancel"},{reset:1},{h:"Save data"},{backup:1}];
 const srefresh=[];
-function applyLook(){document.body.classList.toggle("iso",CFG.gfx===1);document.body.classList.toggle("calm",CFG.calm===1);document.body.classList.toggle("pixfont",CFG.font===0);document.documentElement.style.setProperty("--ts",[1,1.15,1.32][CFG.ts]);document.documentElement.style.setProperty("--ui",Math.max(1,Math.min(1.6,Math.min(innerWidth,innerHeight)/720)).toFixed(3))}
+function applyLook(){document.body.classList.toggle("iso",CFG.gfx===1);document.body.classList.toggle("calm",CFG.calm===1);document.body.classList.toggle("pixfont",CFG.font===0);document.documentElement.style.setProperty("--ts",[1,1.15,1.32,1.45][CFG.ts]||1.15);document.documentElement.style.setProperty("--ui",Math.max(1,Math.min(1.6,Math.min(innerWidth,innerHeight)/720)).toFixed(3))}
 function applyCfg(k){saveCfg();applyLook();if(k==="plbl")setBN();if(k==="pet")PET.init=false;if(k==="music"||k==="sfx")auVol();if(k==="sfx")sfx([81]);if(k==="vib"&&CFG.vib)buzz(40);if(k==="zoom"||k==="gfx")resize();else layoutTouch();if(k==="floor"||k==="xmas")ICACHE.clear();hudLabels()}
-(function buildSettings(){const box=$("srows");
-  OPTS.forEach(o=>{
-    if(o.h){const h=document.createElement("h2");h.textContent=o.h;box.appendChild(h);return}
-    if(o.stat){const d=document.createElement("div");d.id="padstat";box.appendChild(d);return}
-    if(o.backup){const b=document.createElement("button");b.className="btn nav ghost";b.textContent="Backup and restore";b.addEventListener("click",()=>{$("bkout").value=makeBackup();$("bkin").value="";$("bkmsg").textContent="";$("bkshare").style.display=window.Android&&Android.share?"":"none";openPanel("backup")});box.appendChild(b);return}
-    if(o.reset){const b=document.createElement("button");b.className="btn nav ghost";b.textContent="Reset controller buttons";
-      b.addEventListener("click",()=>{CFG.bind={action:0,journal:3,menu:9,back:1,map:2,run:5};applyCfg();refreshSettings()});box.appendChild(b);return}
-    if(o.b){const r=document.createElement("button");r.className="srow nav";r.innerHTML="<span class='nm'></span><span class='val'></span>";r.children[0].textContent=o.n;
-      r.addEventListener("click",()=>{PAD.listen=PAD.listen===o.b?null:o.b;refreshSettings()});
-      srefresh.push(()=>{r.children[1].textContent=PAD.listen===o.b?"Press a button":BN[CFG.bind[o.b]]});box.appendChild(r);return}
-    const r=document.createElement("div");r.className="srow nav";r.innerHTML="<span class='nm'></span><button class='pm'>&lt;</button><span class='val'></span><button class='pm'>&gt;</button>";
-    r.children[0].textContent=o.n;
-    r.adj=(d,wrap)=>{const n=o.vals.length;let v=CFG[o.k]+d;if(o.clamp&&!wrap)v=Math.max(0,Math.min(n-1,v));else v=(v+n)%n;if(v===CFG[o.k])return;CFG[o.k]=v;applyCfg(o.k);refreshSettings()};
-    r.children[1].addEventListener("click",()=>r.adj(-1,false));r.children[3].addEventListener("click",()=>r.adj(1,false));
-    srefresh.push(()=>{r.children[2].textContent=o.vals[CFG[o.k]]});box.appendChild(r)})})();
-function refreshSettings(){srefresh.forEach(f=>f());$("padstat").textContent=PAD.name?"Connected: "+PAD.name.slice(0,48)+". "+FAMN[padFam()]+" button names.":"No controller found yet. Press any button on it. Pick a row below, then press the button you want."}
+
+/* ---------- v0.16.0 standards catch-up: the kit's Settings rows, five save slots and Tester tools ---------- */
+const LV=[0,3,5,8,10],lvOf=v=>{let b=0;LV.forEach((x,i)=>{if(Math.abs(x-v)<Math.abs(LV[b]-v))b=i});return b};
+let kitSetup=true;
+function h2(t){const h=document.createElement("h2");h.textContent=t;return h}
+function kitApply(key,v){
+  if(key==="music")CFG.music=LV[v];else if(key==="sound")CFG.sfx=LV[v];else if(key==="alv")CFG.amb=LV[v];else if(key==="text_size")CFG.ts=v+1;
+  if(kitSetup)return;
+  const map={music:"music",sound:"sfx",alv:"amb",text_size:"ts",rumble:"vib",reduce_motion:"calm"};
+  if(key==="fps")return;applyCfg(map[key]||key);if(key==="xmas")sfx(CFG.xmas?[72,76,79,84]:[72],"sine")}
+function setupKit(){
+  const D=CFG_DEF,tog=(key,text)=>({key,text,first:D[key]}),ch=(key,text,names)=>({key,text,names,first:D[key]});
+  SET=BC.settings({values:CFG,save:saveCfg,apply:kitApply,list:$("srows"),row:"srow nav",head:"h2",note:"ver",
+    keys:{music:"mlv",sound:"slv",rumble:"vib",text_size:"tsz",reduce_motion:"calm"},
+    name:"Pixel Hollow",version:VERSION,about:"Font: Pixelify Sans, SIL Open Font License 1.1. No data collected: see Privacy on the game page.",
+    shake:false,reduceMotion:true,blocked:()=>toast("Full screen was blocked. Press F or try again."),
+    tester:BC.debugAvailable()?()=>openPanel("dbg"):null,onReset:()=>{CFG.bind={action:0,journal:3,menu:9,back:1,map:2,run:5};setBN()}});
+  SET.add({key:"alv",text:"Ambience",names:BC.LEVELS,first:2});
+  SET.add({node:h2("Touch controls")});SET.add(ch("stick","Joystick",["Floating","Fixed","Tap to walk"]));SET.add(ch("size","Control size",["Small","Medium","Large"]));SET.add(ch("hand","Layout",["Right hand","Left hand"]));
+  SET.add({node:h2("Play")});SET.add(tog("run","Auto-run"));SET.add(tog("radar","Treasure radar"));SET.add(tog("compass","Compass dots on map"));SET.add(ch("pet","Companion",["Off","Dog","Cat"]));
+  SET.add({node:h2("Display")});SET.add(ch("mood","Mood",["Moody","Bright"]));SET.add(tog("crisp","Pixel outlines"));SET.add(ch("zoom","Camera",["Close","Normal","Wide"]));SET.add(tog("dn","Day and night"));SET.add(tog("wx","Rain"));
+  SET.add(ch("season","Season",["Cycle","Spring","Summer","Autumn","Winter"]));SET.add(ch("spk","Sparkles",["Classic","Bold","Blue","Pink"]));SET.add(ch("font","Font",["Pixel","Classic"]));SET.add(tog("xmas","Christmas theme"));
+  SET.add({node:h2("Controller")});const st=document.createElement("div");st.id="padstat";SET.add({node:st});SET.add(ch("plbl","Button labels",["Auto","Xbox","PlayStation","Nintendo / Retroid"]));
+  [["action","Action / Confirm"],["journal","Journal"],["map","Map"],["run","Run (hold)"],["menu","Menu / Pause"],["back","Back / Cancel"]].forEach(([b,n])=>{const r=document.createElement("button");r.className="srow nav";r.innerHTML="<span class='nm'></span><span class='val'></span>";r.children[0].textContent=n;r.dataset.set="bind_"+b;
+    r.addEventListener("click",()=>{PAD.listen=PAD.listen===b?null:b;refreshSettings()});srefresh.push(()=>{r.children[1].textContent=PAD.listen===b?"Press a button":BN[CFG.bind[b]]});SET.add({node:r})});
+  const rb=document.createElement("button");rb.className="btn nav ghost";rb.textContent="Reset controller buttons";rb.addEventListener("click",()=>{CFG.bind={action:0,journal:3,menu:9,back:1,map:2,run:5};applyCfg();refreshSettings()});SET.add({node:rb});
+  SET.add({node:h2("Save data")});SET.add({text:"Backup and restore",act:()=>{$("bkout").value=makeBackup();$("bkin").value="";$("bkmsg").textContent="";$("bkshare").style.display=window.Android&&Android.share?"":"none";openPanel("backup")}});
+  SET.add({text:"Controls",act:()=>openPanel("howto")});
+  SET.finish(V=>{if(!CFG_OLD)return;V.mlv=lvOf(CFG.music);V.slv=lvOf(CFG.sfx);V.alv=lvOf(CFG.amb);V.tsz=Math.max(0,Math.min(2,CFG.ts-1))});
+  kitSetup=false;saveCfg();
+  SLOTS=BC.slots({key:slotKey,current:()=>CFG.slot,list:$("slist"),row:"srow nav",btn:"btn nav ghost",
+    line:d=>((d.ch&&typeof d.ch.name==="string"&&d.ch.name)||"Robin")+", "+(Array.isArray(d.found)?d.found.length:0)+" of "+ITEMS.length+" treasures",
+    used:d=>d.v===1&&d.started!==false,played:d=>d.t,
+    choose:(n,isNew)=>{useSlot(n);if(isNew)newGame();else closeAll()},
+    deleted:(n,inUse,to)=>{if(inUse){CFG.slot=to;saveCfg();fresh();load();afterLoad();hud();path=null;undoStack.length=0}refreshTitle();setTimeout(()=>setFoc(navEls()[0]||null),0)}});
+  setupDebug()}
+/* How to play and Controls (G5.13, G5.16): every key, Xbox button and touch control */
+function buildHow(){const b=$("hbody"),X=LBL.xbox,B=CFG.bind,cur=BC.input.last;b.textContent="";
+  const sec=(head,lines,on)=>{const d=document.createElement("div");d.className="nav";d.appendChild(h2(head+(on?" (in use)":"")));lines.forEach(l=>{const p=document.createElement("p");p.textContent=l;d.appendChild(p)});b.appendChild(d)};
+  sec("What to do",["Walk the Hollow and find treasures. Each find goes in your journal.","Finish a set to earn an upgrade, such as Trail Boots or a Lantern. Upgrades open new places.","Nothing can hurt you and nothing runs out. Take your time."]);
+  sec("Keyboard",["Arrows or WASD: walk. E, Space or Enter: act near things.","J: journal. M: map. Esc or P: the Menu. F: full screen in a browser.","In menus: arrows move, Enter chooses, Esc goes back."],cur==="keys");
+  sec("Xbox controller",["Left stick or D-pad: walk. "+X[B.action]+": act near things. Hold "+X[B.run]+": run.",X[B.journal]+": journal. "+X[B.map]+": map. Menu or View: the Menu.","In menus: the D-pad moves, A chooses, B goes back. LB and RB turn journal pages."],cur==="pad");
+  sec("Touch",["Drag on the screen to walk, or pick Tap to walk in Settings.","Tap the A button near things. The Menu button sits at the top right."],cur==="touch")}
+/* Tester tools (G5.9, G5.10): test builds only. The page carries a salted hash of the code, never the code */
+function dbgGo(x,y,name){travelTo(x,y,name)}
+function dbgFind(n){const left=ITEMS.filter(i=>!S.found[i.id]);left.slice(0,n).forEach(i=>{S.found[i.id]=1});afterLoad();hud();save();toast("Tester tools: "+Math.min(n,left.length)+" found.")}
+function dbgReset(){BC.store.erase(slotKey(CFG.slot));fresh();afterLoad();hud();closeAll();showTitle();toast("Slot "+CFG.slot+" is empty now.")}
+function dbgTestSave(){epoch++;fresh();S.started=true;S.ch.name="Tester";ITEMS.slice(0,ITEMS.length-3).forEach(i=>{S.found[i.id]=1});Object.assign(S,{boots:true,lantern:true,rod:true,net:true,shovel:true,bridge:true,pet:true,signs:(1<<SIGNS.length)-1,clock:600*5+60});bridgeOpen=true;seen.fill(1);afterLoad();buildSprites();hud();save();closeAll();toast("Tester tools: test save loaded. Three treasures left.")}
+function setupDebug(){if(!BC.debugAvailable())return;
+  DBG=BC.debug({box:$("dbgbox"),btn:"btn nav",ghost:"btn nav ghost",head:"h2",note:"sub",info:{name:"Pixel Hollow",version:VERSION,code:VERSION_CODE},close:()=>closePanel(),
+    unlocked:()=>setTimeout(()=>setFoc(navEls()[0]||null),0),
+    report:()=>({Place:region().name+" at tile "+(S.x/T|0)+", "+(S.y/T|0),Slot:CFG.slot,Treasures:count()+" of "+ITEMS.length,Day:day()+", "+SEAS[season()],"Open panels":stack.join(" ")||"none"})});
+  [["Start",START.x,START.y],["Cabin door",CABIN.x+2,CABIN.y+CABIN.h],["Museum door",MUS.x+2,MUS.y+MUS.h],["The Cave",CAVE_IN.x,CAVE_IN.y],["Deep Cave",DEEP_IN.x,DEEP_IN.y],["Snowy Peaks",SNOW_IN.x,SNOW_IN.y],["Sunny Canyon",DES_IN.x,DES_IN.y]].forEach(g=>DBG.action("Go to",g[0],()=>dbgGo(g[1],g[2],g[0])));
+  SIGNS.forEach((s,i)=>{if(s.name)DBG.action("Go to","Sign: "+s.name,()=>travel(i))});
+  [["boots","Trail Boots"],["lantern","Lantern"],["rod","Fishing rod"],["net","Bug net"],["shovel","Shovel"],["pet","Companion"]].forEach(([k,n])=>DBG.toggle("Tools",n,()=>!!S[k],v=>{S[k]=v;S.dirty=true;save()}));
+  DBG.toggle("Tools","Bridge repaired",()=>!!S.bridge,v=>{S.bridge=bridgeOpen=v;save()});
+  DBG.action("Tools","Every signpost for fast travel",()=>{S.signs=(1<<SIGNS.length)-1;save();toast("Every signpost is on the map.")});
+  DBG.action("Treasures","Collect the next treasure",()=>dbgFind(1));DBG.action("Treasures","Collect 10 treasures",()=>dbgFind(10));
+  DBG.action("Treasures","Collect all but one",()=>dbgFind(ITEMS.filter(i=>!S.found[i.id]).length-1));
+  DBG.toggle("Options","Christmas theme",()=>!!CFG.xmas,v=>{CFG.xmas=v?1:0;applyCfg("xmas");SET.refresh()});
+  DBG.toggle("Options","Day and night",()=>!!CFG.dn,v=>{CFG.dn=v?1:0;applyCfg("dn");SET.refresh()});
+  DBG.toggle("Options","Rain",()=>!!CFG.wx,v=>{CFG.wx=v?1:0;applyCfg("wx");SET.refresh()});
+  DBG.choice("Options","Time of day",["Morning","Noon","Dusk","Night"],()=>{const p=(S.clock%600)/600;return p<0.2?0:p<0.52?1:p<0.68?2:3},i=>{S.clock=S.clock-S.clock%600+[0.05,0.3,0.6,0.75][i]*600;S.dirty=true});
+  DBG.action("Options","Start the rain",()=>{S.clock=S.clock-S.clock%780+430;CFG.wx=1;saveCfg();SET.refresh();toast("Rain for a while.")});
+  DBG.choice("Options","Season",["Cycle","Spring","Summer","Autumn","Winter"],()=>CFG.season,i=>{CFG.season=i;applyCfg("season");SET.refresh()});
+  DBG.saveTools(dbgReset,dbgTestSave)}
+function refreshSettings(){if(SET)SET.refresh();srefresh.forEach(f=>f());$("padstat").textContent=PAD.name?"Connected: "+PAD.name.slice(0,48)+". "+FAMN[padFam()]+" button names.":"No controller found yet. Press any button on it. Pick a row below, then press the button you want."}
 function setBind(n,i){const old=CFG.bind[n];for(const k in CFG.bind)if(CFG.bind[k]===i)CFG.bind[k]=old;CFG.bind[n]=i;PAD.listen=null;applyCfg();refreshSettings();sfx([84,88])}
-function hudLabels(){$("jbtn").textContent=PAD.on?BN[CFG.bind.journal]+" Journal":"Journal";$("mbtn").textContent=PAD.on?BN[CFG.bind.menu]+" Menu":"Menu";$("mapbtn").textContent=PAD.on?BN[CFG.bind.map]+" Map":"Map"}
+function hudLabels(){$("mbtn").textContent=topP()==="pause"?"Close":BC.input.last==="pad"?BN[CFG.bind.menu]+" Menu":"Menu"}
 
 /* ---------- input ---------- */
 const keys={};let jx=0,jy=0,stickId=null,sx0=0,sy0=0;
 const NP={k:[],ax:[0,0],hat:[0,0],lt:0,rt:0,name:""};
 window.__padKey=(i,d)=>{NP.k[i]=!!d};
 window.__padAxes=(x,y,hx,hy,lt,rt)=>{NP.ax=[x,y];NP.hat=[hx,hy];NP.lt=lt;NP.rt=rt};
-window.__padName=n=>{NP.name=String(n)};
+window.__padName=n=>{NP.name=String(n);BC.input._androidPad=true};
 window.__back=()=>{if(stack.length)back();else if(dlg)hush();else openPanel("pause")};
 const PAD={b:new Array(16).fill(false),p:new Array(16).fill(false),x:0,y:0,name:"",on:false,navT:0,navD:null,listen:null};
 function keyMode(on){document.body.classList.toggle("keymode",on)}
+/* v0.16.0 (G5.14): the device used last picks every hint and the title card controls */
+function devUsed(kind){if(BC.input.last===kind)return;BC.input.set(kind);hudLabels();if(stack.includes("title"))refreshTitle();if(topP()==="howto")buildHow()}
 function setPad(on){if(PAD.on===on)return;PAD.on=on;hudLabels();if(on){keyMode(true);toast("Controller ready. "+BN[CFG.bind.action]+" action, "+BN[CFG.bind.journal]+" journal, "+BN[CFG.bind.menu]+" menu.");if(stack.length&&!foc)setFoc(navEls()[0]||null)}}
 /* v0.15.0, G5.8: the View button (8) works like Menu when no action is set to it */
 function viewHit(){return PAD.b[8]&&!PAD.p[8]&&!Object.values(CFG.bind).includes(8)}
@@ -1520,7 +2091,7 @@ function pollPad(dt){const b=PAD.b,prev=PAD.p;for(let i=0;i<16;i++){prev[i]=b[i]
   if(name!==PAD.name){PAD.name=name;setBN()}
   const m=Math.hypot(ax,ay),dz=0.22;if(m<dz){ax=ay=0}else{const k=Math.min(1,(m-dz)/(1-dz))/m;ax*=k;ay*=k}
   PAD.x=ax+(b[15]?1:0)-(b[14]?1:0);PAD.y=ay+(b[13]?1:0)-(b[12]?1:0);
-  if(b.some(v=>v)||m>=dz){if(!PAD.on)setPad(true);auInit()}
+  if(b.some(v=>v)||m>=dz){if(!PAD.on)setPad(true);devUsed("pad");auInit()}
   if(PAD.listen){for(let i=0;i<12;i++)if(b[i]&&!prev[i]){setBind(PAD.listen,i);break}return}
   const hit=n=>{const i=CFG.bind[n];return b[i]&&!prev[i]};
   let d=null;if(PAD.y<-0.55)d="up";else if(PAD.y>0.55)d="down";else if(PAD.x<-0.55)d="left";else if(PAD.x>0.55)d="right";
@@ -1529,11 +2100,12 @@ function pollPad(dt){const b=PAD.b,prev=PAD.p;for(let i=0;i<16;i++){prev[i]=b[i]
   if(stack.length){if(topP()==="journal"){if(b[4]&&!prev[4])jflip(-1);if(b[5]&&!prev[5])jflip(1)}if(fire)nav(fire);if(hit("action"))activate();else if(hit("journal")&&foc&&foc.alt)foc.alt();else if(hit("back")||hit("menu")||viewHit())back();else if((hit("journal")&&topP()==="journal")||(hit("map")&&topP()==="map"))back()}
   else{if(hit("action"))action();else if(hit("journal"))openPanel("journal");else if(hit("map"))openPanel("map");else if(hit("menu")||viewHit())openPanel("pause");else if(hit("back")&&dlg)hush()}}
 
-addEventListener("keydown",e=>{const k=e.key.toLowerCase();auInit();
+addEventListener("keydown",e=>{const k=e.key.toLowerCase();auInit();if(!/INPUT|TEXTAREA/.test((e.target&&e.target.tagName)||""))devUsed("keys");
   if(e.target&&/INPUT|TEXTAREA/.test(e.target.tagName)){if(k==="enter"||k==="escape"){e.target.blur();e.preventDefault()}return}
   keyMode(true);
   if(PAD.listen){if(k==="escape")back();e.preventDefault();return}
-  if(k==="f"&&FS.can){if(!e.repeat)toggleFull();e.preventDefault();return}
+  if(topP()==="dbg"&&DBG&&DBG.key(k)){e.preventDefault();return}
+  if(k==="f"&&BC.fullscreen.can()){if(!e.repeat)toggleFull();e.preventDefault();return}
   if(PH.on&&topP()==="photo"){e.preventDefault();if(["arrowleft","arrowright","arrowup","arrowdown","w","a","s","d"].includes(k)){keys[k]=1;return}if(e.repeat)return;
     if(k==="e"||k==="enter"||k===" ")phSnap();else if(k==="q")phFilter(1);else if(k==="h")phHide();else if(k==="z")phZoom(1);else if(k==="l"){PH.label=!PH.label;phRefresh()}else if(k==="escape"||k==="backspace")back();return}
   if(stack.length){const dir={arrowup:"up",w:"up",arrowdown:"down",s:"down",arrowleft:"left",a:"left",arrowright:"right",d:"right"}[k];
@@ -1543,7 +2115,7 @@ addEventListener("keydown",e=>{const k=e.key.toLowerCase();auInit();
   if(k===" "||k==="enter"||k==="e"){e.preventDefault();action()}else if(k==="j")openPanel("journal");else if(k==="m")openPanel("map");else if(k==="escape"||k==="p")openPanel("pause")});
 addEventListener("keyup",e=>{if(e.target&&/INPUT|TEXTAREA/.test(e.target.tagName))return;keys[e.key.toLowerCase()]=0;if(stack.length&&e.key===" ")e.preventDefault()});
 addEventListener("blur",()=>{for(const k in keys)keys[k]=0});
-document.addEventListener("pointerdown",()=>{auInit();keyMode(false);if(PAD.on){PAD.on=false;hudLabels()}const ae=document.activeElement;if(ae&&ae.blur&&!/INPUT|TEXTAREA/.test(ae.tagName))ae.blur()},true);
+document.addEventListener("pointerdown",()=>{auInit();keyMode(false);devUsed("touch");if(PAD.on){PAD.on=false;hudLabels()}const ae=document.activeElement;if(ae&&ae.blur&&!/INPUT|TEXTAREA/.test(ae.tagName))ae.blur()},true);
 function stickEnd(){stickId=null;jx=jy=0;if(CFG.stick===2)return;if(CFG.stick===1)$("knob").style.transform="translate(0,0)";else $("stick").style.display="none"}
 cv.addEventListener("pointerdown",e=>{if(PH.on){PHD={x:e.clientX,y:e.clientY,ox:PH.ox,oy:PH.oy,id:e.pointerId};try{cv.setPointerCapture(e.pointerId)}catch(_){}return}if(dlg){hush()}if(stickId!==null)return;const s=$("stick");
   if(CFG.stick===2){stickId=e.pointerId;tapWalk(e);return}
@@ -1739,7 +2311,7 @@ function render(){
   if(ow){for(let i=0;i<3;i++){const ph=(S.t*0.3+i/3)%1,sz=2+(ph*3|0);cx.globalAlpha=(1-ph)*0.55;cx.fillStyle="#f2efe6";cx.fillRect(snap(CABIN.x*T+60+Math.sin(ph*5+i)*2)-camX,snap((CABIN.y+CABIN.h)*T-74-ph*20)-camY,sz,sz)}cx.globalAlpha=1}
   if(confT>0){const cc=["#d9483b","#f7d354","#4b7bd8","#4fa34a","#e58fb4","#ffffff"];cx.globalAlpha=Math.min(1,confT);for(let i=0;i<46;i++){const x=((i*61.7+Math.sin((2-confT)*3+i)*8)%(VW+10))-5,y=(((2-confT)*(60+(i%7)*14)+i*37.3)%(VH+20))-10;cx.fillStyle=cc[i%6];cx.fillRect(snap(x),snap(y),2,(i%3)+1)}cx.globalAlpha=1}
   if(fadeT>0){cx.fillStyle="rgba(18,14,24,"+Math.min(1,fadeT/0.3).toFixed(3)+")";cx.fillRect(0,0,VW+1,VH+1)}
-  window.__last={sx:(px-camX)*Z,sy:(py-camY)*Z,cam:camX*Z};
+  if(BC.testing)window.__last={sx:(px-camX)*Z,sy:(py-camY)*Z,cam:camX*Z};
 }
 /* ================= angled renderer: isometric view, smooth art, lighting ================= */
 const ITW=76,ITH=38,IZ=44,ICACHE=new Map();let IK=1,ICX=0,ICY=0,ig=cx;
@@ -2525,10 +3097,10 @@ function renderIso(){
 }
 
 let last=performance.now();
-function frame(now){if(PH.on)phTick(Math.max(0,Math.min(0.05,(now-last)/1000)));const dt=Math.max(0,Math.min(0.05,(now-last)/1000));last=now;if(CFG.calm){confT=0;if(S.flash>0.25)S.flash=0.25;if(fadeT>0.15)fadeT=0.15}if(fadeT>0)fadeT=Math.max(0,fadeT-dt);if(confT>0)confT=Math.max(0,confT-dt);for(let i=FXP.length-1;i>=0;i--){const p=FXP[i];p.t+=dt;p.x+=p.vx*dt;p.y+=p.vy*dt;if(p.t>p.life)FXP.splice(i,1)}pollPad(dt);update(dt);ambTick(dt);if(CFG.gfx===1)renderIso();else render();calTitle();if(topP()==="builder")drawPreview();else if(topP()==="map")drawMap();requestAnimationFrame(frame)}
-afterLoad();applyLook();setBN();emblem($("temb").getContext("2d"),256,0,1.12);addEventListener("resize",resize);resize();hud();hudLabels();showTitle();requestAnimationFrame(frame);
+function frame(now){if(PH.on)phTick(Math.max(0,Math.min(0.05,(now-last)/1000)));const dt=Math.max(0,Math.min(0.05,(now-last)/1000));last=now;if(CFG.calm){confT=0;if(S.flash>0.25)S.flash=0.25;if(fadeT>0.15)fadeT=0.15}if(fadeT>0)fadeT=Math.max(0,fadeT-dt);if(confT>0)confT=Math.max(0,confT-dt);for(let i=FXP.length-1;i>=0;i--){const p=FXP[i];p.t+=dt;p.x+=p.vx*dt;p.y+=p.vy*dt;if(p.t>p.life)FXP.splice(i,1)}pollPad(dt);for(let i=0;i<BC.speed;i++)update(dt);ambTick(dt);if(CFG.gfx===1)renderIso();else render();calTitle();if(topP()==="builder")drawPreview();else if(topP()==="map")drawMap();requestAnimationFrame(frame)}
+setupKit();afterLoad();applyLook();setBN();{const im=new Image();im.onload=()=>{const g=$("temb").getContext("2d");g.imageSmoothingEnabled=false;g.clearRect(0,0,256,256);g.drawImage(im,0,0,256,256)};im.src=ICON_URI}/* v0.16.0: the title shows the game's own icon (G6.10) */addEventListener("resize",resize);resize();hud();hudLabels();showTitle();requestAnimationFrame(frame);$("status-progress").remove();
 window.__safe=(t,r,b,l)=>{setSA(t,r,b,l);layoutTouch();if(topP()==="map")requestAnimationFrame(fitMap)};
-window.__game={XSPOTS,XDECO,CRIT,spotCrit,updateCrit,STAMPS,stampHas,stampSync,calTitle,calMonth,padFam,setBN,LBL,albumGet,albumAdd,backupTip,peekSlot,agoStr,VIC,vicon,reqList,REQ,placeName,travelTo,PETN,cleanPet,SA,setSA,CLEARED,CASES,MUS_IN,CURATOR,exhibit,enterMuseum,AS,ambTick,EXN,PH,FB,hintFor,pinSpot,togglePin,throwBall,openPhoto,phSnap,deep:()=>({PIT,PIT_OUT,BRAM,DEEP_IN,DLAD}),caveRg,PROPS,STOVE,BENCH,RECIPES,CRAFTS,vl,day,hearts,totalHearts,festNow,merchantOpen,propAct,openStove,openBench,openBoard,openCart,readMail,petAnimal,dishCount,hintText,emblem,ip:(x,y)=>ip(x,y),isoState:()=>({IK,ICX,ICY,n:ICACHE.size}),makeBackup,restoreBackup,FXP,VIL,ARCH,BOAT,DBOAT,SNOW_IN,DES_IN,season,regAt,hop,talk,REG,DISP,FSLOT,GARD,FURN,HOME_IN,region,tendPlot,enterHome,F,MUS,ROD,NET,donate,waterAhead,PET,TUNNELS,avail,findPath,getPath:()=>path,useSlot,UNLOCK,RIP,AMB,nearest,wob,S,ITEMS,SIGNS,SETS,solidTile,collect,T,CFG,PAD,stack,NP,reachFrom,ground,obj,MW,MH,SHOVEL,CAVE_IN,BRX,BRIDGE_Y,seen,openBridge:v=>{bridgeOpen=v},sprites:()=>pspr,playerFrame};
+if(BC.testing)window.__game={SET:()=>SET,SLOTS:()=>SLOTS,DBG:()=>DBG,VERSION,focName,autoPause,XSPOTS,XDECO,CRIT,spotCrit,updateCrit,STAMPS,stampHas,stampSync,calTitle,calMonth,padFam,setBN,LBL,albumGet,albumAdd,backupTip,peekSlot,agoStr,VIC,vicon,reqList,REQ,placeName,travelTo,PETN,cleanPet,SA,setSA,CLEARED,CASES,MUS_IN,CURATOR,exhibit,enterMuseum,AS,ambTick,EXN,PH,FB,hintFor,pinSpot,togglePin,throwBall,openPhoto,phSnap,deep:()=>({PIT,PIT_OUT,BRAM,DEEP_IN,DLAD}),caveRg,PROPS,STOVE,BENCH,RECIPES,CRAFTS,vl,day,hearts,totalHearts,festNow,merchantOpen,propAct,openStove,openBench,openBoard,openCart,readMail,petAnimal,dishCount,hintText,emblem,ip:(x,y)=>ip(x,y),isoState:()=>({IK,ICX,ICY,n:ICACHE.size}),makeBackup,restoreBackup,FXP,VIL,ARCH,BOAT,DBOAT,SNOW_IN,DES_IN,season,regAt,hop,talk,REG,DISP,FSLOT,GARD,FURN,HOME_IN,region,tendPlot,enterHome,F,MUS,ROD,NET,donate,waterAhead,PET,TUNNELS,avail,findPath,getPath:()=>path,useSlot,UNLOCK,RIP,AMB,nearest,wob,S,ITEMS,SIGNS,SETS,solidTile,collect,T,CFG,PAD,stack,NP,reachFrom,ground,obj,MW,MH,SHOVEL,CAVE_IN,BRX,BRIDGE_Y,seen,openBridge:v=>{bridgeOpen=v},sprites:()=>pspr,playerFrame};
 </script>
 </body>
 </html>
