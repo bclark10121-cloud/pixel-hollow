@@ -20,6 +20,22 @@ Updated 2026-11-15 with v0.15.0. BC decides the order.
 1. A short what's-new card the first time a player opens v0.15.0.
 2. A Google Play listing of its own.
 
+## Unfinished standards items (2026-11-15)
+
+From the Open items in `STANDARDS_OVERRIDES.md`, plus what has not been tried on a real device. Each line comes off when it is done. BC picks when.
+
+- The standards catch-up (Release 4, BC said go on 2026-11-15, 11:44 PM): the By Lantern's Glow v0.16.0 pattern on kit 1.9.1.
+- G1.7: move the source into the private `game-studio` repo. This repo keeps the page, the builds, the release notes and the backlog.
+- G5.1, G5.2: one Menu button at the top right that opens a row, in place of Journal, Map and Menu.
+- G5.4, G5.5: the controls for the device in use on the title card.
+- G5.9 to G5.17: kit Settings, five save slots, Tester tools, device hints, the pause on controller loss, the Menu order and the second press.
+- G6.10: an icon of its own. The old Helena Hollow lantern is its only icon today.
+- G7.8: `window.__game` and every test switch only with the whole-word `?test` flag.
+- G1.4, G6.13: a privacy page linked from the game page.
+- G2.10, G1.12: GitHub Releases with the APK and the newest two APKs on the page.
+- G8.1: music and sounds are made in code, not tracks from Patch.gg.
+- Real device check: a phone, the Retroid, an Xbox controller and sound.
+
 ## Later
 
 1. Google Play: a listing and a 14 day closed test with 12 testers.
