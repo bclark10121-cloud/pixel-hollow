@@ -1,5 +1,6 @@
-# Publishes a GitHub Release for every file in docs/release-notes/ that does not have one yet.
-# Each notes file names its version title, the commit it ships from and the APK path in that commit.
+# Publishes a GitHub Release for every docs/release-notes/v<version>.md that does not have one yet (G2.10).
+# The release is tagged v<version>, uses the notes file as its text and carries the APK named ...-v<version>.apk,
+# taken from the commit that first added it, so an APK later trimmed from docs/downloads (G1.12) is never lost.
 name: Publish releases
 on:
   push:
@@ -20,16 +21,17 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -e
-          for f in $(ls docs/release-notes/*.md | sort -V); do
+          for f in $(ls docs/release-notes/v*.md | sort -V); do
             tag=$(basename "$f" .md)
             if gh release view "$tag" >/dev/null 2>&1; then echo "$tag already published"; continue; fi
-            title=$(sed -n 's/^title: //p' "$f" | head -1)
-            commit=$(sed -n 's/^commit: //p' "$f" | head -1)
-            apk=$(sed -n 's/^apk: //p' "$f" | head -1)
-            if [ -z "$commit" ] || [ "$commit" = "HEAD" ]; then commit="$GITHUB_SHA"; fi
-            awk 'f;/^---$/ && ++n==2{f=1}' "$f" > /tmp/body.md
-            out="/tmp/$(basename "$apk")"
-            git show "$commit:$apk" > "$out"
-            gh release create "$tag" "$out" --target "$commit" --title "$title" --notes-file /tmp/body.md
-            echo "published $tag from $commit"
+            title=$(sed -n 's/^# //p' "$f" | head -1)
+            apk=$(git log --diff-filter=A --name-only --format= -- "docs/downloads/*-$tag.apk" | grep . | head -1 || true)
+            target="$GITHUB_SHA"; files=()
+            if [ -n "$apk" ]; then
+              target=$(git log --diff-filter=A --format=%H -- "$apk" | tail -1)
+              git show "$target:$apk" > "/tmp/$(basename "$apk")"
+              files+=("/tmp/$(basename "$apk")")
+            fi
+            gh release create "$tag" "${files[@]}" --target "$target" --title "${title:-$tag}" --notes-file "$f"
+            echo "published $tag from $target with ${#files[@]} file(s)"
           done
