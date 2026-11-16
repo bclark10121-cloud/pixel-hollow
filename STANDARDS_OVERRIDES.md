@@ -2,7 +2,7 @@
 
 Standards: `GAME_STANDARDS.md` (rule ids start with G) and `ENGINEERING_STANDARDS.md` (rule ids start with E) in the private repo `bclark10121-cloud/game-standards`. This repo holds no copies.
 This file lists where this game does something else, and why. A rule not listed here applies in full.
-Order of authority: Brian in the chat, then this file, then the standards.
+Order of authority: BC in the chat, then this file, then the standards.
 
 Last reviewed: v0.15.0 (2026-11-15).
 Checked against: game-standards version 2026-11-15 (commit b2c2865).
@@ -11,9 +11,9 @@ Checked against: game-standards version 2026-11-15 (commit b2c2865).
 
 | # | Rule | Standard says | This game does | Why | Ends when | Agreed |
 |---|---|---|---|---|---|---|
-| 1 | G6.1 | Landscape, 1280 x 720 base | Plays upright and sideways. Menus fit 12 screen sizes from 320 x 568 to 1920 x 1080 (`t22_fit`) | The game was built for a phone held upright since v0.1. Locking it sideways would change how every player holds it | Brian asks for landscape only | Proposed |
+| 1 | G6.1 | Landscape, 1280 x 720 base | Plays upright and sideways. Menus fit 12 screen sizes from 320 x 568 to 1920 x 1080 (`t22_fit`) | The game was built for a phone held upright since v0.1. Locking it sideways would change how every player holds it | BC asks for landscape only | Proposed |
 
-A Proposed row is not in force. The standard applies until Brian agrees.
+A Proposed row is not in force. The standard applies until BC agrees.
 
 ## Open items (rule applies, work not finished)
 
@@ -54,11 +54,11 @@ Not checked: G5.7 (units in player text). Sound. A real device. Not run this rel
 
 ## How to add an override
 
-1. Flag the conflict to Brian with the options. Do not override by yourself.
-2. Add the row as Proposed and list it as a judgment call in the report to Brian.
+1. Flag the conflict to BC with the options. Do not override by yourself.
+2. Add the row as Proposed and list it as a judgment call in the report to BC.
 3. Once he agrees, put the date in the Agreed column.
 4. When an override ends, move its row to Ended overrides with the date.
-5. When an override fits every game, ask Brian to make it a standard. Then end the override.
+5. When an override fits every game, ask BC to make it a standard. Then end the override.
 
 ## Ended overrides
 

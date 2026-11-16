@@ -12,7 +12,7 @@ async def main():
         ev=lambda s: pg.evaluate(s)
         await pg.goto("file:///home/claude/game/index.html"); await pg.wait_for_timeout(1200)
         await pg.tap("#tcont"); await pg.wait_for_timeout(200)
-        await ev("__game.S.ch.name='Brian É';__game.collect(__game.ITEMS.find(i=>i.id==='maple'))"); await pg.wait_for_timeout(120); print("fx particles:", await ev("__game.FXP.length")); await pg.screenshot(path="v9_pop.png")
+        await ev("__game.S.ch.name='BC É';__game.collect(__game.ITEMS.find(i=>i.id==='maple'))"); await pg.wait_for_timeout(120); print("fx particles:", await ev("__game.FXP.length")); await pg.screenshot(path="v9_pop.png")
         await pg.tap("#mbtn"); print("pause:", await ev("pwho.textContent")); await pg.tap("#pset"); await pg.wait_for_timeout(150)
         await ev("document.getElementById('settings').scrollTop=99999"); await pg.wait_for_timeout(100)
         btn=await pg.query_selector("#srows .btn:last-of-type"); await btn.tap(); await pg.wait_for_timeout(200)

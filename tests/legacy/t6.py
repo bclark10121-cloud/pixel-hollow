@@ -7,7 +7,7 @@ async def main():
         pg = await ctx.new_page(); errs=[]; pg.on("pageerror", lambda e: errs.append(str(e)))
         ev=lambda s: pg.evaluate(s)
         await pg.goto("file:///home/claude/game/index.html"); await pg.wait_for_timeout(300)
-        await pg.tap("#tnew"); await pg.fill("#bname","Brian")
+        await pg.tap("#tnew"); await pg.fill("#bname","BC")
         row=(await pg.query_selector_all("#brows .srow"))[1]
         for want in ["They","She","Name only","He","Name only"]:
             await (await row.query_selector_all(".pm"))[1 if want!="Name only" or True else 0].tap()

@@ -17,7 +17,7 @@ async def main():
         await pg.tap("#tnew"); await pg.wait_for_timeout(300)
         print("new game ->", await ev("[...__game.stack]"))
         await pg.screenshot(path="v25_builder.png")
-        await pg.fill("#bname","Brian"); 
+        await pg.fill("#bname","BC"); 
         rows = await pg.query_selector_all("#brows .srow")
         async def plus(i,n=1):
             for _ in range(n): await (await rows[i].query_selector_all(".pm"))[1].tap()

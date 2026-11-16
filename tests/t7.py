@@ -1,6 +1,6 @@
 import asyncio, json
 from playwright.async_api import async_playwright
-SEED="if(!localStorage.getItem('seeded')){localStorage.setItem('seeded','1');localStorage.setItem('wandervalley_cfg_v1',JSON.stringify({gfx:0}));localStorage.setItem('wandervalley_save_v1',JSON.stringify({v:1,x:232,y:442,boots:true,started:true,ch:{name:'Brian',pro:0,body:0,skin:1,hs:0,hc:0,hat:0,shirt:0,bot:0,pc:0},found:['daisy','bluebell','poppy','sunflower','clover','scallop','conch','starfish','seaglass','driftwood','acorn','pinecone','mushroom','feather','amber']}))}"
+SEED="if(!localStorage.getItem('seeded')){localStorage.setItem('seeded','1');localStorage.setItem('wandervalley_cfg_v1',JSON.stringify({gfx:0}));localStorage.setItem('wandervalley_save_v1',JSON.stringify({v:1,x:232,y:442,boots:true,started:true,ch:{name:'BC',pro:0,body:0,skin:1,hs:0,hc:0,hat:0,shirt:0,bot:0,pc:0},found:['daisy','bluebell','poppy','sunflower','clover','scallop','conch','starfish','seaglass','driftwood','acorn','pinecone','mushroom','feather','amber']}))}"
 async def main():
     async with async_playwright() as p:
         b = await p.chromium.launch(executable_path="/usr/bin/google-chrome", args=["--no-sandbox"])
