@@ -158,11 +158,41 @@ body.iso #title #tkeys,#tkeys{margin:.35rem 0 0;font-size:.8rem;opacity:.85;text
 .btn.armed,.srow.armed{background:#d9483b!important;color:#fff!important}
 #hbody .nav{display:block;padding:.35rem .4rem;border-radius:.5rem}#hbody h2{margin:.6rem 0 .2rem}#hbody p{font-size:.875rem;line-height:1.4;margin:.15rem 0}
 .srow{min-height:3rem}
+/* v0.17.0: Lantern Hill title card. A painted night sky drawn in code behind the title (BC 2026-11-16 pick, built 2026-11-17) */
+#tsky{display:none}
+body #title{background:#070a1c}
+body #tsky{display:block;position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
+body #title .card{position:relative;z-index:1}
+body #title #temb{display:none}
+body #title .logo{filter:drop-shadow(0 0 0.75rem rgba(255,186,92,.55)) drop-shadow(0 0.125rem 0.375rem rgba(0,0,0,.85));animation:tglow 4.5s ease-in-out infinite}
+@keyframes tglow{0%,100%{filter:drop-shadow(0 0 0.625rem rgba(255,186,92,.45)) drop-shadow(0 0.125rem 0.375rem rgba(0,0,0,.85))}50%{filter:drop-shadow(0 0 1.25rem rgba(255,196,110,.8)) drop-shadow(0 0.125rem 0.375rem rgba(0,0,0,.85))}}
+body.calm #title .logo{animation:none}
+/* v0.17.0: storybook talk box. Parchment, the speaker on a red ribbon, text that writes itself out (BC 2026-11-17) */
+body #dialog.story,body.iso #dialog.story{background:linear-gradient(180deg,#f8ecd0,#ecd9b0);color:#3a2a1d;border:0.125rem solid #6b4a2b;border-radius:0.625rem;
+  box-shadow:inset 0 0 0 0.25rem rgba(255,248,230,.55),inset 0 0 1.5rem rgba(140,96,48,.22),0 0.5rem 1.25rem rgba(0,0,0,.5);padding:0.75rem 1rem 0.625rem;line-height:1.45;font-size:1rem;font-weight:600}
+#dialog.story.named{padding-top:1.125rem;margin-top:0.875rem}
+#dname{display:none;position:absolute;left:0.875rem;top:-0.875rem;background:linear-gradient(180deg,#c2443a,#962c25);color:#fff4e0;font-size:0.8125rem;font-weight:700;letter-spacing:0.06rem;
+  padding:0.1875rem 1.125rem;clip-path:polygon(0 0,100% 0,calc(100% - 0.5rem) 50%,100% 100%,0 100%,0.5rem 50%);box-shadow:0 0.125rem 0 rgba(0,0,0,.3);text-shadow:0 0.0625rem 0 rgba(0,0,0,.35)}
+#dialog.story.named #dname{display:block}
+#dtext .hid{visibility:hidden}
+#dialog.story small{text-align:right;opacity:.7;color:#6b4a2b;font-size:0.75rem;margin-top:0.25rem}
+/* v0.17.0 Pixel Hollow: the start screen layout of By Lantern's Glow in the pixel view (G5.21) */
+body:not(.iso) #title{padding:0}
+body:not(.iso) #title .card{background:none;border:0;box-shadow:none;display:flex;flex-direction:column;min-height:100%;margin:0 auto;padding:1.375rem 1.125rem 0.875rem;color:#f1e7d0}
+body:not(.iso) #tgap{display:block;flex:1 1 auto;min-height:0.75rem}
+body:not(.iso) #title .logo{font-size:2.375rem!important;letter-spacing:0.125rem;color:#f2c46a;text-shadow:0 0.125rem 0 #3a2a1d}
+body:not(.iso) #title .sub{letter-spacing:0.1875rem;text-transform:uppercase;font-size:0.6875rem;opacity:.85;color:#f1e7d0;text-shadow:0 0.0625rem 0.25rem #000}
+body:not(.iso) #title #tkeys{text-transform:none;letter-spacing:0;font-size:0.8rem}
+body:not(.iso) #title .btn{background:#c98a2e;color:#1b1820;border:0.0625rem solid rgba(0,0,0,.4);border-radius:0.625rem;box-shadow:none}
+body:not(.iso) #title .btn.ghost{background:rgba(22,20,30,.62);color:#f1e7d0;border:0.0625rem solid rgba(241,231,208,.3)}
+body:not(.iso) #title .ver{color:rgba(241,231,208,.6)}
+#tsky.px{image-rendering:pixelated;image-rendering:crisp-edges}
+@media (orientation:landscape) and (max-height:520px){body:not(.iso) #title .card{margin:0 0 0 auto;max-width:18.75rem;padding:0.5rem 0.875rem}body:not(.iso) #title .logo{font-size:1.625rem!important}}
 </style>
 </head>
 <body>
 <div id="status-progress"><div><b>Pixel Hollow</b><span>Waking the Hollow</span><i></i></div></div>
-<script>/*bc-debug-gate*/window.BC_GATE={salt:"32096b5c6ebcdb86",hash:"de5a3179db3a8c0ffd6756b9e52afd3b4ca36f69f45b16113e9ac37c7218833f"};</script>
+<script>/*bc-debug-gate*/window.BC_GATE={salt:"339b81af9a71a68b",hash:"3ac67468c4c9259a9dfac574e68bf0cdea285ce2f2d155de6d28091194201df1"};</script>
 <script>
 /* BC kit for plain HTML games (G5.9 to G5.17, G6.13, G7.8). Pulled from game-studio/common/web into web/bc_common/.
    Never edit it in a game (G10.3). tools/common/build_html.py writes it into the game's page where the page has the
@@ -666,10 +696,10 @@ BC.debug = function (o) {
 <div id="count" class="pill">0/15</div>
 <div id="hudr"><button id="mbtn" class="pill">Menu</button></div>
 <div id="toast" class="pill"></div>
-<div id="dialog" class="pill"><span id="dtext"></span><small id="dhint">Tap to close</small></div>
+<div id="dialog" class="pill story"><span id="dname"></span><span id="dtext"></span><small id="dhint">Tap to close</small></div>
 <div id="stick"><div id="knob"></div></div>
 <button id="abtn" aria-label="Action">A</button>
-<div id="title" class="ov"><div class="card">
+<div id="title" class="ov"><canvas id="tsky" aria-hidden="true"></canvas><div class="card">
   <canvas id="temb" width="256" height="256"></canvas><h1 class="logo">Pixel Hollow</h1><div class="sub">A quiet treasure hunt</div><div id="tgap"></div>
   <div id="tkeys" class="sub"></div>
   <button class="btn nav" id="tcont">Continue</button><button class="btn nav" id="tplay">Play</button><button class="btn nav ghost" id="tset">Settings</button><button class="btn nav ghost" id="tquit">Quit</button>
@@ -729,7 +759,7 @@ BC.debug = function (o) {
 /* v0.15.0: split out of Helena Hollow. Copies the old browser save, settings and album once, so a browser player keeps their progress. */
 (function(){try{if(localStorage.getItem("pixelhollow_moved"))return;for(const o of ["wandervalley_save_v1","wandervalley_save_v1_s2","wandervalley_save_v1_s3","wandervalley_cfg_v1","wandervalley_album_v1"]){const n="pixelhollow"+o.slice(12);if(localStorage.getItem(n)===null&&localStorage.getItem(o)!==null)localStorage.setItem(n,localStorage.getItem(o))}localStorage.setItem("pixelhollow_moved","1")}catch(e){}})();
 /* ---------- helpers ---------- */
-const VERSION="0.16.0",VERSION_CODE=2;const ICON_URI="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMAAAADACAYAAABS3GwHAAAESElEQVR42u3dz4sWdRzA8c/IIwRmaqzgKdftcX1aFbfooOJKB5EIikUIJSSiQ2KnFBSpDh5KRMH15F49hNRFOkuIoJQn28hs2x7CoEOQpK0FQqH+A98R5mGenh/f1+s4+/DMw8y+9zt8mGe2GHvutUcBmVriECAAEAAIAAQAuWhEFI4CVgAQAAgABAACgGHXKIrhnAK1f/g4ub258RNnHSsACAABOAQIAAQA+Smao6/7RliNfr75UXL7+k2fOg59eBysALgEAgGAAEAAkI1i/bo3ujoFWvj+w+T28c0nHP2IWPjurfTx2XLBwbECgABAACAAEABEnVOgafcCRY7Tp32Rnj59bgUAAYAAQAAgAAjPBRp8P83tTW7fMPlFZn/6RpObc/t9sALgEggEAAIAAUA2ig3P73EvEFYAEAAIAAQAAoBwLxD0zo9zR5LbX5g8bQUAAYAAQAAgAKiiaDXfdC8QVgAQAAgABAACgHAv0P/r1reHk9snXjxTy/v/89d1Z/0Jlq3YagUAAYAAQAAgABhGxcT43qG8F+jve98kt+9uar4Tl9oPk9ufXrnNCgACAAGAAEAAEO4F6r77d7+OKtOel0afcdY7shjp6VB62rZ81XYrAAgABAACAAFAmAL1TmtsxFnvwI3bi5VePyi/V1YAXAKBAEAAIADIRmNYGyj7BtOldttZ97fVCgACQAAOAQIAAUC4F2hY/No+lf5B+3xy88GnPktun32wP/0+zXcqvX+psvcpcfC3Xd39nBU/z9rm0XAvELgEAgGAAEAAEKZAvVNxyjHb3h+1TGOaNX3OErNRz/SmtilT+EYYuAQCAYAAQAAwEIotG98e6P8RdvePK85iH1q1+hUrAAgABAACAAFAeC5Q912/uCO5/ctzN3vyeU5+da+W9zm2a2VPPv/0+5uS27fuuea5QOASCAQAAgABQPhGGNHp84ui2nN4ejUdCt8IA5dAIAAQAAgAwhSI6HiqE312L1CYAoFLIBAACAAEAGEKNEhaYyM92e/590YG4/i8uiZMgcAlEAgABAACgDAF6rqpmYeVXn9xX7X3n//ljrP+pONz7k6l5wKV2Xk2/dDxq4eWWAFAACAAEAAIAGIYnw49NfNfpdffmk9PIX5f+LOWz3Pj9qKz3oHpiq8vO49TM9Xuibp6qGEFAAGAAEAAIACoQ/Hy5IFK/yl+x5l/a5kGlCmb9qwZfza5ff74nLPYh1rHJ2s5vxOtalOja4eXWgFAACAAEAAIAFKKDy6/+6ibU52oadpTF/sd7v1WnRpZAXAJBAIAAYAAIBuNuqY6phD22w/7tQKAAEAAIAAQAETpc4FMIew33/1aAXAJBAIAAYAAIEyBTCHsN4P9WgFwCQQCAAGAACCynwKZQthvDvu1AuASCAQAAgABQDYapgH2m/N+rQC4BAIBgABAAJCNhmmA/ea8XysALoFAACAAEABk4zGuQCY7FUXxeQAAAABJRU5ErkJggg=="; // G6.11: same as android/app/build.gradle and the game page
+const VERSION="0.17.0",VERSION_CODE=3;const ICON_URI="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMAAAADACAYAAABS3GwHAAAESElEQVR42u3dz4sWdRzA8c/IIwRmaqzgKdftcX1aFbfooOJKB5EIikUIJSSiQ2KnFBSpDh5KRMH15F49hNRFOkuIoJQn28hs2x7CoEOQpK0FQqH+A98R5mGenh/f1+s4+/DMw8y+9zt8mGe2GHvutUcBmVriECAAEAAIAAQAuWhEFI4CVgAQAAgABAACgGHXKIrhnAK1f/g4ub258RNnHSsACAABOAQIAAQA+Smao6/7RliNfr75UXL7+k2fOg59eBysALgEAgGAAEAAkI1i/bo3ujoFWvj+w+T28c0nHP2IWPjurfTx2XLBwbECgABAACAAEABEnVOgafcCRY7Tp32Rnj59bgUAAYAAQAAgAAjPBRp8P83tTW7fMPlFZn/6RpObc/t9sALgEggEAAIAAUA2ig3P73EvEFYAEAAIAAQAAoBwLxD0zo9zR5LbX5g8bQUAAYAAQAAgAKiiaDXfdC8QVgAQAAgABAACgHAv0P/r1reHk9snXjxTy/v/89d1Z/0Jlq3YagUAAYAAQAAgABhGxcT43qG8F+jve98kt+9uar4Tl9oPk9ufXrnNCgACAAGAAEAAEO4F6r77d7+OKtOel0afcdY7shjp6VB62rZ81XYrAAgABAACAAFAmAL1TmtsxFnvwI3bi5VePyi/V1YAXAKBAEAAIADIRmNYGyj7BtOldttZ97fVCgACQAAOAQIAAUC4F2hY/No+lf5B+3xy88GnPktun32wP/0+zXcqvX+psvcpcfC3Xd39nBU/z9rm0XAvELgEAgGAAEAAEKZAvVNxyjHb3h+1TGOaNX3OErNRz/SmtilT+EYYuAQCAYAAQAAwEIotG98e6P8RdvePK85iH1q1+hUrAAgABAACAAFAeC5Q912/uCO5/ctzN3vyeU5+da+W9zm2a2VPPv/0+5uS27fuuea5QOASCAQAAgABQPhGGNHp84ui2nN4ejUdCt8IA5dAIAAQAAgAwhSI6HiqE312L1CYAoFLIBAACAAEAGEKNEhaYyM92e/590YG4/i8uiZMgcAlEAgABAACgDAF6rqpmYeVXn9xX7X3n//ljrP+pONz7k6l5wKV2Xk2/dDxq4eWWAFAACAAEAAIAGIYnw49NfNfpdffmk9PIX5f+LOWz3Pj9qKz3oHpiq8vO49TM9Xuibp6qGEFAAGAAEAAIACoQ/Hy5IFK/yl+x5l/a5kGlCmb9qwZfza5ff74nLPYh1rHJ2s5vxOtalOja4eXWgFAACAAEAAIAFKKDy6/+6ibU52oadpTF/sd7v1WnRpZAXAJBAIAAYAAIBuNuqY6phD22w/7tQKAAEAAIAAQAETpc4FMIew33/1aAXAJBAIAAYAAIEyBTCHsN4P9WgFwCQQCAAGAACCynwKZQthvDvu1AuASCAQAAgABQDYapgH2m/N+rQC4BAIBgABAAJCNhmmA/ea8XysALoFAACAAEABk4zGuQCY7FUXxeQAAAABJRU5ErkJggg=="; // G6.11: same as android/app/build.gradle and the game page
 const T=16, MW=120, MH=140, SAVE_KEY="pixelhollow_save_v1";const SA={t:0,r:0,b:0,l:0};
 function rng(seed){return function(){seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
 function hash(x,y){let h=(Math.imul(x,73856093)^Math.imul(y,19349663))>>>0;h^=h>>>13;h=Math.imul(h,0x5bd1e995)>>>0;return (h^(h>>>15))>>>0}
@@ -1429,7 +1459,7 @@ const groundCv=[0,1].map(f=>mk(MW*T,MH*T,g=>{
 
 /* ---------- settings store ---------- */
 const CFG_KEY="pixelhollow_cfg_v1";
-let CFG_OLD=false;const CFG={xmas:0,calm:0,plbl:0,bkt:0,amb:6,music:6,sfx:8,vib:1,stick:0,size:1,hand:0,zoom:1,dn:1,wx:1,season:0,compass:1,crisp:1,gfx:1,mood:0,run:0,pet:1,radar:0,ts:1,spk:0,font:1,slot:1,bind:{action:0,journal:3,menu:9,back:1,map:2,run:5}};
+let CFG_OLD=false;const CFG={vb:1,xmas:0,calm:0,plbl:0,bkt:0,amb:6,music:6,sfx:8,vib:1,stick:0,size:1,hand:0,zoom:1,dn:1,wx:1,season:0,compass:1,crisp:1,gfx:1,mood:0,run:0,pet:1,radar:0,ts:1,spk:0,font:1,slot:1,bind:{action:0,journal:3,menu:9,back:1,map:2,run:5}};
 const CFG_DEF=JSON.parse(JSON.stringify(CFG));
 (function(){try{const d=JSON.parse(localStorage.getItem(CFG_KEY)||"null");if(d){CFG_OLD=true;for(const k in CFG)if(k!=="bind"&&typeof d[k]==="number")CFG[k]=d[k];for(const k of ["mlv","slv","alv","tsz","fps"])if(typeof d[k]==="number")CFG[k]=d[k];
   if(d.bind)for(const k in CFG.bind)if(typeof d.bind[k]==="number")CFG.bind[k]=d.bind[k]}}catch(e){}})();
@@ -1680,9 +1710,21 @@ function placeMsgs(){const t=$("toast"),d=$("dialog"),h=$("hudr").getBoundingCli
   /* the block grows upward from a line 40 percent down, so text ends just above the character and never covers it */
   const dv=d.style.display==="block",dh=dv?d.getBoundingClientRect().height:0,dt=Math.max(min,line-dh);d.style.top=dt+"px";
   const th=t.getBoundingClientRect().height||36;t.style.top=(dv?(dt-th-8>=min?dt-th-8:dt+dh+8):Math.max(min,line-th))+"px"}
-let dlg=null;function say(m){$("dtext").textContent=m;$("dhint").textContent=BC.input.pick("Press E to close","Press "+BN[CFG.bind.action]+" to close","Tap to close");$("dialog").style.display="block";dlg={x:S.x,y:S.y};placeMsgs()}
-function hush(){$("dialog").style.display="none";dlg=null;placeMsgs()}
-$("dialog").addEventListener("pointerdown",e=>{e.stopPropagation();hush()});
+/* v0.17.0 storybook talk box: "Name: text" from a known speaker shows the name on a ribbon. Long text turns into pages. The action button finishes a page, then turns it, then closes. */
+let dlg=null,TW=null;const TWMS=30;
+function speakers(){const n=new Set(["Ada","Merchant"]);for(const v of VIL)n.add(v.n);return n}
+function pages(t){const ss=t.split(/(?<=[.!?)])\s+/),out=[];let cur="";for(const x of ss){if(cur&&(cur+" "+x).length>150){out.push(cur);cur=x}else cur=cur?cur+" "+x:x}if(cur)out.push(cur);return out.length?out:[""]}
+function blip(who,ch){if(!CFG.vb||CFG.sfx===0||!/[a-z0-9]/i.test(ch)||!auInit())return;try{let h=0;for(const c of who||"Hollow")h=(h*31+c.charCodeAt(0))>>>0;const m=(who?60:67)+(h%10)+((ch.charCodeAt(0)%3)-1);tone(AU.sfx,"square",m,AU.ctx.currentTime,0.045,0.035)}catch(e){}}
+function dlgDraw(){const P=TW.p[TW.i],sh=P.slice(0,TW.n),t=$("dtext");t.textContent="";t.append(sh);if(TW.n<P.length){const h=document.createElement("span");h.className="hid";h.textContent=P.slice(TW.n);t.append(h)}
+  const last=TW.i>=TW.p.length-1,done=TW.n>=P.length;$("dhint").textContent=!done?"":BC.input.pick(last?"Press E to close":"Press E for more \u25B8",last?"Press "+BN[CFG.bind.action]+" to close":"Press "+BN[CFG.bind.action]+" for more \u25B8",last?"Tap to close":"Tap for more \u25B8")}
+function dlgPage(i){clearInterval(TW.iv);TW.i=i;TW.n=CFG.calm?TW.p[i].length:0;dlgDraw();placeMsgs();if(CFG.calm)return;
+  TW.iv=setInterval(()=>{if(!TW||stack.length)return;const P=TW.p[TW.i];if(TW.n>=P.length){clearInterval(TW.iv);return}TW.n=Math.min(P.length,TW.n+2);blip(TW.who,P[TW.n-1]);dlgDraw()},TWMS)}
+function say(m,who){m=String(m);if(!who){const k=/^([A-Z][A-Za-z' ]{1,20}): ([\s\S]+)$/.exec(m);if(k&&speakers().has(k[1])){who=k[1];m=k[2]}}
+  if(TW)clearInterval(TW.iv);TW={p:pages(m.trim()),i:0,n:0,who:who||"",iv:0};$("dname").textContent=who||"";$("dialog").classList.toggle("named",!!who);
+  $("dialog").style.display="block";dlg={x:S.x,y:S.y};dlgPage(0)}
+function dlgNext(){if(!TW){hush();return}const P=TW.p[TW.i];if(TW.n<P.length){clearInterval(TW.iv);TW.n=P.length;dlgDraw();return}if(TW.i<TW.p.length-1){dlgPage(TW.i+1);return}hush()}
+function hush(){if(TW){clearInterval(TW.iv);TW=null}$("dialog").style.display="none";dlg=null;placeMsgs()}
+$("dialog").addEventListener("pointerdown",e=>{e.stopPropagation();dlgNext()});
 
 function collect(it){if(S.found[it.id])return;if(!it.wild&&!it.gift){if(CFG.dn&&nightAmt()>0.5)S.sc.nt=1;if(CFG.wx&&raining())S.sc.rn=1}if(S.pin===it.id)S.pin=null;watchUnlocks(()=>{S.found[it.id]=1});if(it.off)burst(S.x-5,S.y-34,it.img);else burst(it.x*T+3,it.y*T+2,it.img);S.dirty=true;hud();sfx([76,81,88]);buzz(25);
   const set=setOf(it.set),all=ITEMS.filter(i=>i.set===it.set),done=all.every(i=>S.found[i.id]);
@@ -1725,7 +1767,7 @@ const stack=[];const topP=()=>stack[stack.length-1];let foc=null;const focMem={}
 function navEls(){const p=$(topP());return p?[...p.querySelectorAll(".nav")].filter(e=>e.offsetParent!==null):[]}
 function setFoc(e){BC.disarmAll(e);if(foc)foc.classList.remove("foc");foc=e;if(e){e.classList.add("foc");if(e.scrollIntoView)e.scrollIntoView({block:"nearest"});focMem[topP()]=e;if(e.onfoc)e.onfoc()}}
 function openPanel(id){if(stack.includes(id))return;if(id==="map")buildMap();if(id==="album")buildAlbum();if(id==="museum")buildMuseum();if(id==="journal")buildJournal();if(id==="settings")refreshSettings();if(id==="slots"){if(S.started)save();SLOTS.render()}if(id==="howto")buildHow();if(id==="dbg"&&DBG)DBG.show();if(id==="builder")refreshBuilder();if(id==="pause")$("pwho").textContent=nm()+(S.ch.pro===3?"":" ("+PR.lab[S.ch.pro]+")")+". "+SEAS[season()]+". Played "+(S.play>=3600?Math.floor(S.play/3600)+" h "+Math.floor(S.play%3600/60)+" min":Math.floor(S.play/60)+" min")+".";
-  path=null;stickEnd();hush();if(id!=="title")$("toast").classList.remove("show");if(stack.length)$(topP()).style.visibility="hidden";stack.push(id);document.body.classList.add("panel");document.body.classList.toggle("ontitle",stack.includes("title"));$(id).style.display="flex";$(id).scrollTop=0;setFoc(navEls()[0]||null);sfx([79],"sine");menuState()}
+  path=null;stickEnd();hush();if(id!=="title")$("toast").classList.remove("show");if(stack.length)$(topP()).style.visibility="hidden";stack.push(id);document.body.classList.add("panel");document.body.classList.toggle("ontitle",stack.includes("title"));$(id).style.display="flex";$(id).scrollTop=0;if(id==="title")skyStart();setFoc(navEls()[0]||null);sfx([79],"sine");menuState()}
 function closePanel(){if(!stack.length)return;BC.disarmAll();const id=stack.pop();if(id==="photo"){PH.on=false;PHD=null;cv.style.filter="";resize()}document.body.classList.toggle("ontitle",stack.includes("title"));$(id).style.display="none";$(id).style.visibility="";if(stack.length)$(topP()).style.visibility="";else document.body.classList.remove("panel");if(PAD.listen){PAD.listen=null;refreshSettings()}
   if(id==="builder"){$("bname").blur();$("bpet").blur();S.pn=cleanPet($("bpet").value)||S.pn||"";S.ch.name=cleanName($("bname").value);save();if(builderNew){builderNew=false;setTimeout(()=>toast(BC.input.pick("Arrows or WASD to walk. Press E near things.","Stick to walk. Press "+BN[CFG.bind.action]+" near things.","Drag to walk. Tap A near things.")),400)}}
   const m=focMem[topP()];setFoc(stack.length?(m&&m.offsetParent!==null?m:navEls()[0]||null):null);menuState()}
@@ -1757,6 +1799,36 @@ $("cno").addEventListener("click",()=>{askFn=null;closePanel()});
 function refreshTitle(){const has=S.started;$("tcont").style.display=has?"":"none";$("tcont").textContent="Continue (slot "+CFG.slot+")";$("tquit").style.display=window.Android?"":"none";$("tver").textContent="Version "+VERSION;
   $("tkeys").textContent=BC.input.pick("Arrows or WASD walk. E acts. J journal. M map. Esc opens the Menu.","Left stick walks. "+BN[CFG.bind.action]+" acts. "+BN[CFG.bind.journal]+" journal. "+BN[CFG.bind.map]+" map. "+BN[CFG.bind.menu]+" opens the Menu.","Drag to walk. Tap A near things. Menu sits at the top right.")}
 function showTitle(){refreshTitle();openPanel("title")}
+/* v0.17.0 Lantern Hill: night sky, stars, a crescent moon, three hills, far village windows, one lantern on the near hill and fireflies. Runs only while the title card is open. */
+const SKY={stars:null,ff:null,on:false,moon:null};
+function skyFrame(){const c=$("tsky");if(!c||!stack.includes("title")){SKY.on=false;return}
+  const dpr=1/3,W=Math.round(innerWidth*dpr),H=Math.round(innerHeight*dpr);c.classList.add("px");if(c.width!==W||c.height!==H){c.width=W;c.height=H}
+  const g=c.getContext("2d"),t=CFG.calm?0:performance.now()/1000,m=Math.min(W,H),land=innerWidth>innerHeight&&innerHeight<=520,lx=land?W*0.3:W>H*1.15?W*0.2:W*0.5;
+  if(!SKY.stars){const r=rng(4242);SKY.stars=Array.from({length:170},()=>[r(),r()*0.7,0.4+r()*1.2,r()*6.28,0.6+r()*1.6]);SKY.ff=Array.from({length:16},()=>[r(),r(),r()*6.28,0.4+r()*0.8])}
+  let sg=g.createLinearGradient(0,0,0,H);sg.addColorStop(0,"#050817");sg.addColorStop(0.45,"#141a44");sg.addColorStop(0.7,"#3a2c5e");sg.addColorStop(0.82,"#5a3550");g.fillStyle=sg;g.fillRect(0,0,W,H);
+  for(const st of SKY.stars){const a=0.35+0.65*(0.5+0.5*Math.sin(t*st[4]+st[3]));g.fillStyle="rgba(255,246,220,"+(a*0.9).toFixed(3)+")";const z=st[2]*dpr;g.fillRect(Math.round(st[0]*W),Math.round(st[1]*H),Math.max(1,Math.round(z)),Math.max(1,Math.round(z)))}
+  const mx=land?W*0.86:W*0.8,my=H*0.13,mr=m*0.045;const mg=g.createRadialGradient(mx,my,mr*0.5,mx,my,mr*4);mg.addColorStop(0,"rgba(244,236,208,.22)");mg.addColorStop(1,"rgba(244,236,208,0)");g.fillStyle=mg;g.fillRect(mx-mr*4,my-mr*4,mr*8,mr*8);
+  {const k=Math.ceil(mr*2+4);if(!SKY.moon||SKY.moon.width!==k)SKY.moon=mk(k,k,q=>{q.fillStyle="#f4ecd0";q.beginPath();q.arc(k/2,k/2,mr,0,6.283);q.fill();q.globalCompositeOperation="destination-out";q.beginPath();q.arc(k/2+mr*0.5,k/2-mr*0.25,mr*0.9,0,6.283);q.fill()});g.drawImage(SKY.moon,mx-k/2,my-k/2)}
+  const hill=(base,amp,f,ph,col,crest)=>{g.beginPath();g.moveTo(0,H);for(let x=0;x<=W;x+=W/80){let y=base+Math.sin(x/W*f+ph)*amp+Math.sin(x/W*f*2.3+ph*1.7)*amp*0.35;if(crest){const d=(x-lx)/(W*0.32);y=Math.min(y,crest+d*d*H*0.16)}g.lineTo(x,y)}g.lineTo(W,H);g.closePath();g.fillStyle=col;g.fill()};
+  hill(H*0.66,H*0.03,5,1.2,"#2a2450");
+  const wr=rng(77);for(let i=0;i<18;i++){const x=wr()*W,y=H*0.66+Math.sin(x/W*5+1.2)*H*0.03+H*(0.012+wr()*0.03);const on=0.55+0.45*Math.sin(t*0.7+i*1.9);g.fillStyle="rgba(255,200,110,"+(0.35+0.4*on).toFixed(3)+")";g.fillRect(x,y,2.2*dpr,1.8*dpr)}
+  hill(H*0.74,H*0.035,4,3.1,"#171634");
+  const cy=H*0.72;hill(H*0.84,H*0.02,3,0.4,"#0b0b1e",cy);
+  const fl=CFG.calm?1:0.92+0.08*Math.sin(t*9)+0.04*Math.sin(t*23),ph=m*0.17,top=cy-ph,lr=m*0.028;
+  const hg=g.createRadialGradient(lx,top+lr,lr,lx,top+lr,m*0.42*fl);hg.addColorStop(0,"rgba(255,196,104,.42)");hg.addColorStop(0.35,"rgba(255,160,80,.16)");hg.addColorStop(1,"rgba(255,140,60,0)");g.fillStyle=hg;g.fillRect(0,0,W,H);
+  g.strokeStyle="#07070f";g.lineWidth=Math.max(2,m*0.009);g.beginPath();g.moveTo(lx,cy+2);g.lineTo(lx,top-lr*0.4);g.lineTo(lx+lr*1.6,top-lr*0.4);g.stroke();
+  const ax=lx+lr*1.6,ay=top-lr*0.4;g.lineWidth=Math.max(1,m*0.003);g.beginPath();g.moveTo(ax,ay);g.lineTo(ax,ay+lr*0.6);g.stroke();
+  const by=ay+lr*0.6;g.fillStyle="#120d0a";g.fillRect(ax-lr*0.7,by,lr*1.4,lr*0.3);g.fillRect(ax-lr*0.55,by+lr*1.9,lr*1.1,lr*0.3);
+  const lg=g.createRadialGradient(ax,by+lr*1.15,1,ax,by+lr*1.15,lr*1.1);lg.addColorStop(0,"#fff6d0");lg.addColorStop(0.5,"#ffc85a");lg.addColorStop(1,"#d9792a");g.fillStyle=lg;g.fillRect(ax-lr*0.55,by+lr*0.3,lr*1.1,lr*1.6);
+  g.fillStyle="#120d0a";g.fillRect(ax-lr*0.08,by+lr*0.3,lr*0.16,lr*1.6);g.fillRect(ax-lr*0.55,by+lr*1.05,lr*1.1,lr*0.1);
+  const pg=g.createRadialGradient(lx,cy+H*0.02,1,lx,cy+H*0.02,W*0.35);pg.addColorStop(0,"rgba(255,180,90,.18)");pg.addColorStop(1,"rgba(255,180,90,0)");g.fillStyle=pg;g.fillRect(0,0,W,H);
+  {const s=m*0.05,x0=lx-m*0.09,y0=cy+m*0.005;g.fillStyle="#7a4a26";g.fillRect(x0-s*0.6,y0-s*0.75,s*1.2,s*0.75);g.fillStyle="#8f5a2e";g.fillRect(x0-s*0.6,y0-s,s*1.2,s*0.3);g.fillStyle="#120d0a";g.fillRect(x0-s*0.6,y0-s*0.75,s*1.2,Math.max(1,s*0.08));g.fillStyle="#f2c14e";g.fillRect(x0-s*0.1,y0-s*0.8,Math.max(1,s*0.2),Math.max(1,s*0.25))}
+  for(const f of SKY.ff){const x=lx+(f[0]-0.5)*W*0.7+Math.sin(t*0.5*f[3]+f[2])*m*0.05,y=cy-ph*0.2+(f[1]-0.5)*H*0.28+Math.cos(t*0.7*f[3]+f[2])*m*0.03,a=0.3+0.7*Math.max(0,Math.sin(t*1.3*f[3]+f[2]));
+    const fg=g.createRadialGradient(x,y,0,x,y,5*dpr);fg.addColorStop(0,"rgba(230,255,150,"+a.toFixed(3)+")");fg.addColorStop(1,"rgba(230,255,150,0)");g.fillStyle=fg;g.fillRect(x-5*dpr,y-5*dpr,10*dpr,10*dpr)}
+  let bg=g.createLinearGradient(0,0,0,H);bg.addColorStop(0,"rgba(5,8,23,.55)");bg.addColorStop(0.28,"rgba(5,8,23,0)");bg.addColorStop(0.8,"rgba(5,8,23,0)");bg.addColorStop(1,"rgba(5,8,23,.8)");g.fillStyle=bg;g.fillRect(0,0,W,H);
+  if(land){const sg2=g.createLinearGradient(0,0,W,0);sg2.addColorStop(0.45,"rgba(5,8,23,0)");sg2.addColorStop(0.75,"rgba(5,8,23,.75)");g.fillStyle=sg2;g.fillRect(0,0,W,H)}
+  if(CFG.calm){SKY.on=false;return}requestAnimationFrame(skyFrame)}
+function skyStart(){if(SKY.on&&!CFG.calm)return;SKY.on=true;requestAnimationFrame(skyFrame)}
 let builderNew=false;
 function newGame(){epoch++;S.pin=null;S.pn="";S.bkm=0;S.sc={};S.stp=[];FB.on=false;UNLOCK.forEach(u=>{if(S.ch[u[0]]===u[1])S.ch[u[0]]=0});S.play=0;S.found={};S.don={};S.vil={};S.home={sh:{},fu:{0:"bed",1:"lamp",2:"table",4:"rug",5:"fern"},wall:0,floor:0};S.garden=[null,null,null,null,null,null];homeFix();S.rod=S.net=false;F.on=false;S.boots=false;S.pet=false;S.signs=0;PET.init=false;S.bridge=bridgeOpen=false;S.shovel=false;S.lantern=false;S.clock=0;seen.fill(0);S.x=START.x*T+8;S.y=START.y*T+10;S.dir=0;S.started=true;buildSprites();save();hud();closeAll();builderNew=true;openPanel("builder")}
 $("tcont").addEventListener("click",()=>{closeAll()});
@@ -2014,7 +2086,7 @@ function setupKit(){
     name:"Pixel Hollow",version:VERSION,about:"Font: Pixelify Sans, SIL Open Font License 1.1. No data collected: see Privacy on the game page.",
     shake:false,reduceMotion:true,blocked:()=>toast("Full screen was blocked. Press F or try again."),
     tester:BC.debugAvailable()?()=>openPanel("dbg"):null,onReset:()=>{CFG.bind={action:0,journal:3,menu:9,back:1,map:2,run:5};setBN()}});
-  SET.add({key:"alv",text:"Ambience",names:BC.LEVELS,first:2});
+  SET.add({key:"alv",text:"Ambience",names:BC.LEVELS,first:2});SET.add(tog("vb","Voice blips"));
   SET.add({node:h2("Touch controls")});SET.add(ch("stick","Joystick",["Floating","Fixed","Tap to walk"]));SET.add(ch("size","Control size",["Small","Medium","Large"]));SET.add(ch("hand","Layout",["Right hand","Left hand"]));
   SET.add({node:h2("Play")});SET.add(tog("run","Auto-run"));SET.add(tog("radar","Treasure radar"));SET.add(tog("compass","Compass dots on map"));SET.add(ch("pet","Companion",["Off","Dog","Cat"]));
   SET.add({node:h2("Display")});SET.add(ch("mood","Mood",["Moody","Bright"]));SET.add(tog("crisp","Pixel outlines"));SET.add(ch("zoom","Camera",["Close","Normal","Wide"]));SET.add(tog("dn","Day and night"));SET.add(tog("wx","Rain"));
@@ -2117,7 +2189,7 @@ addEventListener("keyup",e=>{if(e.target&&/INPUT|TEXTAREA/.test(e.target.tagName
 addEventListener("blur",()=>{for(const k in keys)keys[k]=0});
 document.addEventListener("pointerdown",()=>{auInit();keyMode(false);devUsed("touch");if(PAD.on){PAD.on=false;hudLabels()}const ae=document.activeElement;if(ae&&ae.blur&&!/INPUT|TEXTAREA/.test(ae.tagName))ae.blur()},true);
 function stickEnd(){stickId=null;jx=jy=0;if(CFG.stick===2)return;if(CFG.stick===1)$("knob").style.transform="translate(0,0)";else $("stick").style.display="none"}
-cv.addEventListener("pointerdown",e=>{if(PH.on){PHD={x:e.clientX,y:e.clientY,ox:PH.ox,oy:PH.oy,id:e.pointerId};try{cv.setPointerCapture(e.pointerId)}catch(_){}return}if(dlg){hush()}if(stickId!==null)return;const s=$("stick");
+cv.addEventListener("pointerdown",e=>{if(PH.on){PHD={x:e.clientX,y:e.clientY,ox:PH.ox,oy:PH.oy,id:e.pointerId};try{cv.setPointerCapture(e.pointerId)}catch(_){}return}if(dlg){dlgNext();return}if(stickId!==null)return;const s=$("stick");
   if(CFG.stick===2){stickId=e.pointerId;tapWalk(e);return}
   if(CFG.stick===1){if(Math.hypot(e.clientX-STK.cx,e.clientY-STK.cy)>STK.d*1.1)return;sx0=STK.cx;sy0=STK.cy}
   else{sx0=e.clientX;sy0=e.clientY;s.style.left=sx0+"px";s.style.top=sy0+"px";s.style.display="block";$("knob").style.transform="translate(0,0)"}
@@ -2157,7 +2229,7 @@ function nearest(){let best=null,bd=1e9;const at=(x,y)=>Math.hypot(x*T+8-S.x,y*T
   const cave=Math.hypot((CAVE.x+2)*T+8-S.x,(CAVE.y+CAVE.h)*T-S.y);if(cave<20&&cave<bd){bd=cave;best=S.lantern?{k:"act",f:enterCave}:{k:"say",t:"Cool air drifts out of the cave. It is too dark to explore without a lantern."}}
   if(!best){const w=waterAhead();if(w)best={k:"fish",w}}
   return best}
-function action(){if(stack.length)return;if(dlg){hush();return}if(F.on){reel();return}const n=nearest();if(!n){throwBall();return}
+function action(){if(stack.length)return;if(dlg){dlgNext();return}if(F.on){reel();return}const n=nearest();if(!n){throwBall();return}
   if(n.k==="fish"){cast(n.w);return}
   if(n.k==="bug"){if(S.net){sfx([88,84]);collect(n.it)}else{sfx([57]);say("Too quick to catch by hand. A bug net would help.")}return}
   if(n.k==="item")collect(n.it);
@@ -3098,7 +3170,7 @@ function renderIso(){
 
 let last=performance.now();
 function frame(now){if(PH.on)phTick(Math.max(0,Math.min(0.05,(now-last)/1000)));const dt=Math.max(0,Math.min(0.05,(now-last)/1000));last=now;if(CFG.calm){confT=0;if(S.flash>0.25)S.flash=0.25;if(fadeT>0.15)fadeT=0.15}if(fadeT>0)fadeT=Math.max(0,fadeT-dt);if(confT>0)confT=Math.max(0,confT-dt);for(let i=FXP.length-1;i>=0;i--){const p=FXP[i];p.t+=dt;p.x+=p.vx*dt;p.y+=p.vy*dt;if(p.t>p.life)FXP.splice(i,1)}pollPad(dt);for(let i=0;i<BC.speed;i++)update(dt);ambTick(dt);if(CFG.gfx===1)renderIso();else render();calTitle();if(topP()==="builder")drawPreview();else if(topP()==="map")drawMap();requestAnimationFrame(frame)}
-setupKit();afterLoad();applyLook();setBN();{const im=new Image();im.onload=()=>{const g=$("temb").getContext("2d");g.imageSmoothingEnabled=false;g.clearRect(0,0,256,256);g.drawImage(im,0,0,256,256)};im.src=ICON_URI}/* v0.16.0: the title shows the game's own icon (G6.10) */addEventListener("resize",resize);resize();hud();hudLabels();showTitle();requestAnimationFrame(frame);$("status-progress").remove();
+setupKit();afterLoad();applyLook();setBN();{const im=new Image();im.onload=()=>{const g=$("temb").getContext("2d");g.imageSmoothingEnabled=false;g.clearRect(0,0,256,256);g.drawImage(im,0,0,256,256)};im.src=ICON_URI}/* v0.16.0: the title shows the game's own icon (G6.10) */addEventListener("resize",resize);addEventListener("resize",()=>{if(stack.includes("title"))skyStart()});resize();hud();hudLabels();showTitle();requestAnimationFrame(frame);$("status-progress").remove();
 window.__safe=(t,r,b,l)=>{setSA(t,r,b,l);layoutTouch();if(topP()==="map")requestAnimationFrame(fitMap)};
 if(BC.testing)window.__game={SET:()=>SET,SLOTS:()=>SLOTS,DBG:()=>DBG,VERSION,focName,autoPause,XSPOTS,XDECO,CRIT,spotCrit,updateCrit,STAMPS,stampHas,stampSync,calTitle,calMonth,padFam,setBN,LBL,albumGet,albumAdd,backupTip,peekSlot,agoStr,VIC,vicon,reqList,REQ,placeName,travelTo,PETN,cleanPet,SA,setSA,CLEARED,CASES,MUS_IN,CURATOR,exhibit,enterMuseum,AS,ambTick,EXN,PH,FB,hintFor,pinSpot,togglePin,throwBall,openPhoto,phSnap,deep:()=>({PIT,PIT_OUT,BRAM,DEEP_IN,DLAD}),caveRg,PROPS,STOVE,BENCH,RECIPES,CRAFTS,vl,day,hearts,totalHearts,festNow,merchantOpen,propAct,openStove,openBench,openBoard,openCart,readMail,petAnimal,dishCount,hintText,emblem,ip:(x,y)=>ip(x,y),isoState:()=>({IK,ICX,ICY,n:ICACHE.size}),makeBackup,restoreBackup,FXP,VIL,ARCH,BOAT,DBOAT,SNOW_IN,DES_IN,season,regAt,hop,talk,REG,DISP,FSLOT,GARD,FURN,HOME_IN,region,tendPlot,enterHome,F,MUS,ROD,NET,donate,waterAhead,PET,TUNNELS,avail,findPath,getPath:()=>path,useSlot,UNLOCK,RIP,AMB,nearest,wob,S,ITEMS,SIGNS,SETS,solidTile,collect,T,CFG,PAD,stack,NP,reachFrom,ground,obj,MW,MH,SHOVEL,CAVE_IN,BRX,BRIDGE_Y,seen,openBridge:v=>{bridgeOpen=v},sprites:()=>pspr,playerFrame};
 </script>
