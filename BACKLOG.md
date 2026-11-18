@@ -1,9 +1,10 @@
 # Pixel Hollow: backlog
 
-Updated 2026-11-17 with v0.17.0. BC decides the order.
+Updated 2026-11-18 with v0.18.0. BC decides the order.
 
 ## Done
 
+- v0.18.0 (Release 7, kit 1.13.0): Records with the 18 stamps and 7 stats, Change controls for keys and buttons, Run with Hold or Toggle, old-save checks, the error log in Copy bug report and sound through the kit mixer.
 - v0.1 to v0.14.8 as Helena Hollow, the 2D game with a pixel view and an angled view: six regions, 148 finds in 28 sets, museum, cabin, garden, fishing, bugs, neighbors, festivals, cooking, the merchant, photo mode, the Christmas theme.
 - v0.15.0 (2026-11-15): split out as Pixel Hollow, its own public repo and game page. The pixel view only. Its own Android package and save. View opens the Menu like the Menu button.
 - v0.16.0 (2026-11-16): the standards catch-up, with no new content (Release 4, BC 2026-11-15, 11:44 PM: "move forward with the last games"). The By Lantern's Glow v0.16.0 pattern on kit 1.9.1. Its own app icon: an open pixel treasure chest on a grassy hill at night. Five save slots with Delete. One Menu button that opens a row at the top. The shared Settings menu: Music and Sound in five levels, Frame rate, Rumble, Text size, Reduce motion, Controls and Reset settings. Tester tools behind a code in test builds. Hints for the device in use. A pause when the controller drops. The second press before anything is lost. Test hooks only with `?test`. A privacy page. GitHub Releases. The source moved to the private `game-studio` repo. Version code 2.
@@ -64,3 +65,17 @@ From the Open items in `STANDARDS_OVERRIDES.md`, plus what has not been tried on
 
 1. The start screen and talk box for the two plain HTML games live in each game file, copied from By Lantern's Glow, not in the shared kit. Only these two HTML games have them.
 2. The pixel start screen draws the night scene at a third of the screen size, so it reads as chunky pixels.
+
+## Judgment calls in v0.18.0 (BC to confirm)
+
+1. Records shows the game's own 18 stamps as its achievements, the same as Keeper of the Hollow. Ten Sets and Curator take longer than two hours. They were in the game before G4.10.
+2. Change controls replaces the old controller rows in Settings, so keys and buttons live on one page. Old button choices carried over.
+3. Menu, View and B cannot be picked, so the Menu and Back always work. Walking stays on the stick and D-pad.
+4. Run has a keyboard key now (Shift), so Hold or Toggle works on keys too.
+5. Sound is made in code, so there are no files for `loudness.py`. The sound runs through the kit mixer.
+6. Backup codes stay the game's own `WV1:` codes (they already meet G5.19).
+
+## Open items from v0.18.0
+
+1. Release 8: Back at the top of every panel and both orientations (G5.30, G6.18). The web kit needs the header first.
+

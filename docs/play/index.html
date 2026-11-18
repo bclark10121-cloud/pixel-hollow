@@ -188,11 +188,12 @@ body:not(.iso) #title .btn.ghost{background:rgba(22,20,30,.62);color:#f1e7d0;bor
 body:not(.iso) #title .ver{color:rgba(241,231,208,.6)}
 #tsky.px{image-rendering:pixelated;image-rendering:crisp-edges}
 @media (orientation:landscape) and (max-height:520px){body:not(.iso) #title .card{margin:0 0 0 auto;max-width:18.75rem;padding:0.5rem 0.875rem}body:not(.iso) #title .logo{font-size:1.625rem!important}}
+.srow .nm small{display:block;opacity:.72;font-size:.78em;font-weight:normal;margin-top:.1rem}
 </style>
 </head>
 <body>
 <div id="status-progress"><div><b>Pixel Hollow</b><span>Waking the Hollow</span><i></i></div></div>
-<script>/*bc-debug-gate*/window.BC_GATE={salt:"339b81af9a71a68b",hash:"3ac67468c4c9259a9dfac574e68bf0cdea285ce2f2d155de6d28091194201df1"};</script>
+<script>/*bc-debug-gate*/window.BC_GATE={salt:"3e2ba1932b83e29f",hash:"d192a8373de2f6fcadb5e4254c93f7616bd55f9b3798f8d9427e58297b40afb3"};</script>
 <script>
 /* BC kit for plain HTML games (G5.9 to G5.17, G6.13, G7.8). Pulled from game-studio/common/web into web/bc_common/.
    Never edit it in a game (G10.3). tools/common/build_html.py writes it into the game's page where the page has the
@@ -211,11 +212,19 @@ body:not(.iso) #title .ver{color:rgba(241,231,208,.6)}
      var set = BC.settings({...})    the shared Settings rows (G5.11, G5.13)
      var slots = BC.slots({...})     five save slots with Delete on a second press (G5.12)
      var dbg = BC.debug({...})       Tester tools behind the code, test builds only (G5.9, G5.10)
+   From kit 1.12.0 (standards review, 2026-11-17):
+     BC.upgrade(file, target, steps)               run save upgrade steps in order (G5.24). steps = {1: fn(d) -> d, ...}
+     BC.code.make(obj, "BLG1:") / BC.code.read(code, "BLG1:")   backup codes (G5.19). read gives null when wrong
+     var ach = BC.achievements(list, slot, onEarn) personal achievements kept in slot.ach (G4.10)
+     var st = BC.stats(list, slot)                 play time and records kept in slot.stats (G4.11)
+     var rm = BC.remap({key, actions})             keys and buttons the player picks, Hold or Toggle (G5.22, G5.23)
+     BC.errors.text(10)                            the last errors and warnings on this device (G5.27)
+     var mix = BC.mixer(audioCtx)                  Music, Sound, Voice and UI gains (G5.28)
    See each function for its options.
 */
 (function () {
 "use strict";
-var BC = window.BC = {version: "1.9.0"};
+var BC = window.BC = {version: "1.12.0"};
 
 /* ---------- G7.8 test flag ---------- */
 BC.hasFlag = function (flag) {
@@ -690,6 +699,171 @@ BC.debug = function (o) {
   me.show();
   return me;
 };
+
+/* ---------- G5.24 save version ---------- */
+BC.upgrade = function (file, target, steps) {
+  var out = JSON.parse(JSON.stringify(file || {}));
+  var at = (typeof out.v === "number" && isFinite(out.v)) ? Math.floor(out.v) : 1;
+  while (at < target) {
+    var step = steps && steps[at];
+    if (typeof step !== "function") break;
+    var nxt; try { nxt = step(out); } catch (e) { break; }
+    if (!nxt || typeof nxt !== "object" || Array.isArray(nxt)) break;
+    out = nxt; at += 1; out.v = at;
+  }
+  return out;
+};
+
+/* ---------- G5.19 backup codes ---------- */
+BC.code = {
+  make: function (obj, prefix) { return prefix + btoa(unescape(encodeURIComponent(JSON.stringify(obj)))); },
+  read: function (code, prefix, maxLen) {
+    var c = String(code || "").trim();
+    if (c.indexOf(prefix) !== 0 || c.length > (maxLen || 200000)) return null;
+    var raw = c.slice(prefix.length).replace(/\s+/g, "");
+    if (!raw || raw.length % 4 || !/^[A-Za-z0-9+\/]+={0,2}$/.test(raw)) return null;
+    try { var d = JSON.parse(decodeURIComponent(escape(atob(raw)))); return (d && typeof d === "object" && !Array.isArray(d)) ? d : null; }
+    catch (e) { return null; }
+  }
+};
+
+/* ---------- G4.10 achievements: list [{id, name, text, hidden, goal}], kept in slot.ach ---------- */
+BC.achievements = function (list, slot, onEarn) {
+  var me = {list: list || [], slot: null};
+  function find(id) { for (var i = 0; i < me.list.length; i++) if (me.list[i].id === id) return me.list[i]; return null; }
+  me.use = function (s) { me.slot = s; if (!s.ach || typeof s.ach !== "object" || Array.isArray(s.ach)) s.ach = {}; };
+  me.has = function (id) { return Object.prototype.hasOwnProperty.call(me.slot.ach, id) && id.indexOf("_n_") !== 0; };
+  me.earn = function (id) {
+    var a = find(id); if (!a || me.has(id)) return false;
+    me.slot.ach[id] = new Date().toISOString().slice(0, 10);
+    if (onEarn) try { onEarn(a); } catch (e) { BC.errors.add("error", "achievement: " + e); }
+    return true;
+  };
+  me.progress = function (id, n) {
+    var a = find(id); if (!a || me.has(id)) return;
+    me.slot.ach["_n_" + id] = Math.max(n, me.slot.ach["_n_" + id] || 0);
+    if (n >= (a.goal || 1)) me.earn(id);
+  };
+  me.count = function () { return me.list.filter(function (a) { return me.has(a.id); }).length; };
+  me.rows = function () {
+    return me.list.map(function (a) {
+      var got = me.has(a.id), hid = a.hidden && !got;
+      return [hid ? "???" : a.name, hid ? "A secret." : (a.text || ""), got ? me.slot.ach[a.id] : "",
+        (a.goal > 1 && !got) ? ((me.slot.ach["_n_" + a.id] || 0) + " of " + a.goal) : ""];
+    });
+  };
+  me.use(slot || {});
+  return me;
+};
+
+/* ---------- G4.11 stats: list [{id, name, unit, decimals, time, low}], kept in slot.stats ---------- */
+BC.stats = function (list, slot) {
+  var me = {list: list || [], slot: null};
+  function find(id) { for (var i = 0; i < me.list.length; i++) if (me.list[i].id === id) return me.list[i]; return {}; }
+  me.use = function (s) { me.slot = s; if (!s.stats || typeof s.stats !== "object" || Array.isArray(s.stats)) s.stats = {}; };
+  me.tick = function (dt) { me.slot.stats.time = (me.slot.stats.time || 0) + Math.min(Math.max(dt, 0), 0.5); };
+  me.add = function (id, n) { me.slot.stats[id] = (me.slot.stats[id] || 0) + n; };
+  me.set = function (id, n) { me.slot.stats[id] = n; };
+  me.best = function (id, n) {
+    var low = !!find(id).low, has = typeof me.slot.stats[id] === "number";
+    if (!has || (low ? n < me.slot.stats[id] : n > me.slot.stats[id])) { me.slot.stats[id] = n; return true; }
+    return false;
+  };
+  me.value = function (id) { return me.slot.stats[id] || 0; };
+  me.playTime = function () { var m = Math.floor(me.value("time") / 60); return m >= 60 ? Math.floor(m / 60) + " h " + (m % 60) + " min" : m + " min"; };
+  me.rows = function () {
+    return [["Play time", me.playTime()]].concat(me.list.map(function (s) {
+      var v = me.slot.stats[s.id];
+      if (typeof v !== "number") return [s.name, "None yet"];
+      if (s.time) { var sec = v % 60; return [s.name, Math.floor(v / 60) + ":" + (sec < 10 ? "0" : "") + sec.toFixed(2)]; }
+      return [s.name, v.toFixed(s.decimals || 0) + (s.unit ? " " + s.unit : "")];
+    }));
+  };
+  me.use(slot || {});
+  return me;
+};
+
+/* ---------- G5.22 and G5.23 remapping: actions [{action, name, key: "Space", pad: 0, hold}] ---------- */
+/* key is a KeyboardEvent.code. pad is a standard Gamepad API button index (0 A, 1 B, 2 X, 3 Y, 4 LB, 5 RB, 12 to 15 the D-pad).
+   Start (9), Back (8) and the guide button (16) can never be picked, so the Menu always opens. */
+BC.PAD_NAMES = {0: "A", 1: "B", 2: "X", 3: "Y", 4: "LB", 5: "RB", 6: "LT", 7: "RT", 10: "Left stick press", 11: "Right stick press", 12: "D-pad up", 13: "D-pad down", 14: "D-pad left", 15: "D-pad right"};
+BC.remap = function (o) {
+  var LOCKED = [8, 9, 16];
+  var me = {actions: o.actions || [], map: {}, toggles: {}, on: {}, prev: {}};
+  function defaults() { me.map = {}; me.actions.forEach(function (a) { me.map[a.action] = {key: a.key, pad: a.pad}; }); }
+  function save() { BC.store.write(o.key, {v: 1, map: me.map, toggles: me.toggles}); }
+  defaults();
+  var d = BC.store.read(o.key);
+  if (d && d.map && typeof d.map === "object") me.actions.forEach(function (a) {
+    var r = d.map[a.action]; if (!r || typeof r !== "object") return;
+    if (typeof r.key === "string" && /^[A-Za-z0-9]{1,24}$/.test(r.key)) me.map[a.action].key = r.key;
+    if (typeof r.pad === "number" && r.pad >= 0 && r.pad < 17 && Math.floor(r.pad) === r.pad && LOCKED.indexOf(r.pad) < 0) me.map[a.action].pad = r.pad;
+  });
+  if (d && d.toggles && typeof d.toggles === "object") me.actions.forEach(function (a) { if (a.hold && d.toggles[a.action] === true) me.toggles[a.action] = true; });
+  me.keyFor = function (action) { return me.map[action] ? me.map[action].key : ""; };
+  me.padFor = function (action) { return me.map[action] ? me.map[action].pad : -1; };
+  me.actionForKey = function (code) { for (var k in me.map) if (me.map[k].key === code) return k; return ""; };
+  me.actionForPad = function (i) { for (var k in me.map) if (me.map[k].pad === i) return k; return ""; };
+  me.label = function (action, kind) {
+    if (!me.map[action]) return "none";
+    if (kind === "pad") return BC.PAD_NAMES[me.map[action].pad] || ("Button " + me.map[action].pad);
+    return me.map[action].key.replace(/^Key/, "").replace(/^Digit/, "").replace(/Left$|Right$/, "").replace("ArrowUp", "Up").replace("ArrowDown", "Down").replace("ArrowLeft", "Left").replace("ArrowRight", "Right");
+  };
+  /* kind "key" with a KeyboardEvent.code, or "pad" with a button index. A clash swaps the two. */
+  me.rebind = function (action, kind, value) {
+    if (!me.map[action]) return false;
+    if (kind === "pad" && (typeof value !== "number" || LOCKED.indexOf(value) >= 0)) return false;
+    if (kind === "key" && (typeof value !== "string" || value === "Escape")) return false;
+    var mine = me.map[action][kind];
+    for (var k in me.map) if (k !== action && me.map[k][kind] === value) me.map[k][kind] = mine;
+    me.map[action][kind] = value; save(); return true;
+  };
+  me.reset = function () { defaults(); me.toggles = {}; me.on = {}; save(); };
+  me.setToggle = function (action, on) { me.toggles[action] = !!on; me.on[action] = false; save(); };
+  /* down: is the key or button down this frame. Returns whether the action counts as held (Hold or Toggle). */
+  me.held = function (action, down) {
+    if (!me.toggles[action]) { me.prev[action] = down; return down; }
+    if (down && !me.prev[action]) me.on[action] = !me.on[action];
+    me.prev[action] = down; return !!me.on[action];
+  };
+  me.rows = function () {
+    return me.actions.map(function (a) { return a.name + ":  " + me.label(a.action, "key") + "  /  " + me.label(a.action, "pad"); })
+      .concat(me.actions.filter(function (a) { return a.hold; }).map(function (a) { return a.name + ": " + (me.toggles[a.action] ? "Toggle" : "Hold"); }));
+  };
+  return me;
+};
+
+/* ---------- G5.27 error log: the last 50 errors and warnings on this device ---------- */
+BC.errors = {
+  key: "bc_errors", list: [], version: "",
+  add: function (kind, msg) {
+    var e = {t: new Date().toISOString().slice(0, 19).replace("T", " "), v: BC.errors.version, kind: kind, msg: String(msg).slice(0, 300)};
+    BC.errors.list.push(e); while (BC.errors.list.length > 50) BC.errors.list.shift();
+    try { localStorage.setItem(BC.errors.key, JSON.stringify(BC.errors.list)); } catch (x) { }
+  },
+  text: function (n) {
+    var l = BC.errors.list.slice(-(n || 10));
+    return l.length ? l.map(function (e) { return e.t + " " + e.v + " " + e.kind + ": " + e.msg; }).join("\n") : "No errors logged.";
+  },
+  clear: function () { BC.errors.list = []; try { localStorage.removeItem(BC.errors.key); } catch (x) { } }
+};
+try {
+  var oldErr = JSON.parse(localStorage.getItem(BC.errors.key) || "[]");
+  if (Array.isArray(oldErr)) BC.errors.list = oldErr.filter(function (e) { return e && typeof e.msg === "string"; }).slice(-50)
+    .map(function (e) { return {t: String(e.t || "").slice(0, 30), v: String(e.v || "").slice(0, 20), kind: String(e.kind || "").slice(0, 10), msg: e.msg.slice(0, 300)}; });
+} catch (x) { }
+window.addEventListener("error", function (e) { BC.errors.add("error", (e.message || "error") + (e.filename ? " (" + String(e.filename).split("/").pop() + ":" + e.lineno + ")" : "")); });
+window.addEventListener("unhandledrejection", function (e) { BC.errors.add("error", "promise: " + (e.reason && e.reason.message || e.reason)); });
+
+/* ---------- G5.28 sound levels: Music, Sound, Voice and UI (Voice and UI follow Sound) ---------- */
+BC.mixer = function (ctx) {
+  var me = {ctx: ctx, master: ctx.createGain(), music: ctx.createGain(), sound: ctx.createGain(), voice: ctx.createGain(), ui: ctx.createGain()};
+  me.master.connect(ctx.destination); me.music.connect(me.master); me.sound.connect(me.master);
+  me.voice.connect(me.sound); me.ui.connect(me.sound);
+  /* level 0 to 4 from the Settings rows: Off, Low, Medium, High, Full */
+  me.set = function (bus, level) { me[bus].gain.value = [0, 0.25, 0.5, 0.75, 1][Math.max(0, Math.min(4, level | 0))]; };
+  return me;
+};
 })();
 </script>
 <canvas id="c"></canvas><div id="saprobe"></div>
@@ -704,7 +878,7 @@ BC.debug = function (o) {
   <div id="tkeys" class="sub"></div>
   <button class="btn nav" id="tcont">Continue</button><button class="btn nav" id="tplay">Play</button><button class="btn nav ghost" id="tset">Settings</button><button class="btn nav ghost" id="tquit">Quit</button>
   <div class="ver" id="tver"></div></div></div>
-<div id="pause" class="ov"><div class="mrow"><button class="btn nav" id="presume">Resume</button><button class="btn nav ghost" id="pset">Settings</button><button class="btn nav ghost" id="phow">How to play</button><button class="btn nav ghost" id="pjournal">Journal</button><button class="btn nav ghost" id="pmap">Map</button><button class="btn nav ghost" id="pvil">Village</button><button class="btn nav ghost" id="pchar">Character</button><button class="btn nav ghost" id="pphoto">Photo mode</button><button class="btn nav ghost" id="palbum">Album</button><button class="btn nav ghost" id="ptitle">Title</button></div><div id="pwho" class="pill"></div></div>
+<div id="pause" class="ov"><div class="mrow"><button class="btn nav" id="presume">Resume</button><button class="btn nav ghost" id="pset">Settings</button><button class="btn nav ghost" id="phow">How to play</button><button class="btn nav ghost" id="pjournal">Journal</button><button class="btn nav ghost" id="pmap">Map</button><button class="btn nav ghost" id="pvil">Village</button><button class="btn nav ghost" id="pchar">Character</button><button class="btn nav ghost" id="pphoto">Photo mode</button><button class="btn nav ghost" id="palbum">Album</button><button class="btn nav ghost" id="precords">Records</button><button class="btn nav ghost" id="ptitle">Title</button></div><div id="pwho" class="pill"></div></div>
 <div id="journal" class="ov"><div class="card">
   <h1 id="jtitle">Journal</h1><div id="jsum"></div>
   <div id="jpager"><button class="btn nav ghost" id="jprev">&lt; Back</button><div id="jpn"></div><button class="btn nav ghost" id="jnext">Next &gt;</button></div>
@@ -750,6 +924,13 @@ BC.debug = function (o) {
 <div id="howto" class="ov"><div class="card" style="max-width:32rem">
   <h1>How to play</h1><div id="hbody"></div>
   <button class="btn nav" id="hback">Back</button></div></div>
+<div id="records" class="ov"><div class="card">
+  <h1>Records</h1><div id="rsum" class="sub"></div><div id="rrows"></div>
+  <button class="btn nav" id="rback">Back</button></div></div>
+<div id="remap" class="ov"><div class="card">
+  <h1>Change controls</h1><div class="sub" id="rmhint" style="text-align:left">Pick one, then press the new key or button. Arrows, Enter, Esc, B, Menu and View always work in menus.</div><div id="rmrows"></div>
+  <button class="btn nav ghost" id="rmreset">Reset controls</button>
+  <button class="btn nav" id="rmback">Back</button></div></div>
 <div id="dbg" class="ov"><div class="card">
   <h1>Tester tools</h1><div id="dbgbox"></div></div></div>
 <div id="confirm" class="ov"><div class="card">
@@ -759,7 +940,7 @@ BC.debug = function (o) {
 /* v0.15.0: split out of Helena Hollow. Copies the old browser save, settings and album once, so a browser player keeps their progress. */
 (function(){try{if(localStorage.getItem("pixelhollow_moved"))return;for(const o of ["wandervalley_save_v1","wandervalley_save_v1_s2","wandervalley_save_v1_s3","wandervalley_cfg_v1","wandervalley_album_v1"]){const n="pixelhollow"+o.slice(12);if(localStorage.getItem(n)===null&&localStorage.getItem(o)!==null)localStorage.setItem(n,localStorage.getItem(o))}localStorage.setItem("pixelhollow_moved","1")}catch(e){}})();
 /* ---------- helpers ---------- */
-const VERSION="0.17.0",VERSION_CODE=3;const ICON_URI="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMAAAADACAYAAABS3GwHAAAESElEQVR42u3dz4sWdRzA8c/IIwRmaqzgKdftcX1aFbfooOJKB5EIikUIJSSiQ2KnFBSpDh5KRMH15F49hNRFOkuIoJQn28hs2x7CoEOQpK0FQqH+A98R5mGenh/f1+s4+/DMw8y+9zt8mGe2GHvutUcBmVriECAAEAAIAAQAuWhEFI4CVgAQAAgABAACgGHXKIrhnAK1f/g4ub258RNnHSsACAABOAQIAAQA+Smao6/7RliNfr75UXL7+k2fOg59eBysALgEAgGAAEAAkI1i/bo3ujoFWvj+w+T28c0nHP2IWPjurfTx2XLBwbECgABAACAAEABEnVOgafcCRY7Tp32Rnj59bgUAAYAAQAAgAAjPBRp8P83tTW7fMPlFZn/6RpObc/t9sALgEggEAAIAAUA2ig3P73EvEFYAEAAIAAQAAoBwLxD0zo9zR5LbX5g8bQUAAYAAQAAgAKiiaDXfdC8QVgAQAAgABAACgHAv0P/r1reHk9snXjxTy/v/89d1Z/0Jlq3YagUAAYAAQAAgABhGxcT43qG8F+jve98kt+9uar4Tl9oPk9ufXrnNCgACAAGAAEAAEO4F6r77d7+OKtOel0afcdY7shjp6VB62rZ81XYrAAgABAACAAFAmAL1TmtsxFnvwI3bi5VePyi/V1YAXAKBAEAAIADIRmNYGyj7BtOldttZ97fVCgACQAAOAQIAAUC4F2hY/No+lf5B+3xy88GnPktun32wP/0+zXcqvX+psvcpcfC3Xd39nBU/z9rm0XAvELgEAgGAAEAAEKZAvVNxyjHb3h+1TGOaNX3OErNRz/SmtilT+EYYuAQCAYAAQAAwEIotG98e6P8RdvePK85iH1q1+hUrAAgABAACAAFAeC5Q912/uCO5/ctzN3vyeU5+da+W9zm2a2VPPv/0+5uS27fuuea5QOASCAQAAgABQPhGGNHp84ui2nN4ejUdCt8IA5dAIAAQAAgAwhSI6HiqE312L1CYAoFLIBAACAAEAGEKNEhaYyM92e/590YG4/i8uiZMgcAlEAgABAACgDAF6rqpmYeVXn9xX7X3n//ljrP+pONz7k6l5wKV2Xk2/dDxq4eWWAFAACAAEAAIAGIYnw49NfNfpdffmk9PIX5f+LOWz3Pj9qKz3oHpiq8vO49TM9Xuibp6qGEFAAGAAEAAIACoQ/Hy5IFK/yl+x5l/a5kGlCmb9qwZfza5ff74nLPYh1rHJ2s5vxOtalOja4eXWgFAACAAEAAIAFKKDy6/+6ibU52oadpTF/sd7v1WnRpZAXAJBAIAAYAAIBuNuqY6phD22w/7tQKAAEAAIAAQAETpc4FMIew33/1aAXAJBAIAAYAAIEyBTCHsN4P9WgFwCQQCAAGAACCynwKZQthvDvu1AuASCAQAAgABQDYapgH2m/N+rQC4BAIBgABAAJCNhmmA/ea8XysALoFAACAAEABk4zGuQCY7FUXxeQAAAABJRU5ErkJggg=="; // G6.11: same as android/app/build.gradle and the game page
+const VERSION="0.18.0",VERSION_CODE=4;const ICON_URI="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMAAAADACAYAAABS3GwHAAAESElEQVR42u3dz4sWdRzA8c/IIwRmaqzgKdftcX1aFbfooOJKB5EIikUIJSSiQ2KnFBSpDh5KRMH15F49hNRFOkuIoJQn28hs2x7CoEOQpK0FQqH+A98R5mGenh/f1+s4+/DMw8y+9zt8mGe2GHvutUcBmVriECAAEAAIAAQAuWhEFI4CVgAQAAgABAACgGHXKIrhnAK1f/g4ub258RNnHSsACAABOAQIAAQA+Smao6/7RliNfr75UXL7+k2fOg59eBysALgEAgGAAEAAkI1i/bo3ujoFWvj+w+T28c0nHP2IWPjurfTx2XLBwbECgABAACAAEABEnVOgafcCRY7Tp32Rnj59bgUAAYAAQAAgAAjPBRp8P83tTW7fMPlFZn/6RpObc/t9sALgEggEAAIAAUA2ig3P73EvEFYAEAAIAAQAAoBwLxD0zo9zR5LbX5g8bQUAAYAAQAAgAKiiaDXfdC8QVgAQAAgABAACgHAv0P/r1reHk9snXjxTy/v/89d1Z/0Jlq3YagUAAYAAQAAgABhGxcT43qG8F+jve98kt+9uar4Tl9oPk9ufXrnNCgACAAGAAEAAEO4F6r77d7+OKtOel0afcdY7shjp6VB62rZ81XYrAAgABAACAAFAmAL1TmtsxFnvwI3bi5VePyi/V1YAXAKBAEAAIADIRmNYGyj7BtOldttZ97fVCgACQAAOAQIAAUC4F2hY/No+lf5B+3xy88GnPktun32wP/0+zXcqvX+psvcpcfC3Xd39nBU/z9rm0XAvELgEAgGAAEAAEKZAvVNxyjHb3h+1TGOaNX3OErNRz/SmtilT+EYYuAQCAYAAQAAwEIotG98e6P8RdvePK85iH1q1+hUrAAgABAACAAFAeC5Q912/uCO5/ctzN3vyeU5+da+W9zm2a2VPPv/0+5uS27fuuea5QOASCAQAAgABQPhGGNHp84ui2nN4ejUdCt8IA5dAIAAQAAgAwhSI6HiqE312L1CYAoFLIBAACAAEAGEKNEhaYyM92e/590YG4/i8uiZMgcAlEAgABAACgDAF6rqpmYeVXn9xX7X3n//ljrP+pONz7k6l5wKV2Xk2/dDxq4eWWAFAACAAEAAIAGIYnw49NfNfpdffmk9PIX5f+LOWz3Pj9qKz3oHpiq8vO49TM9Xuibp6qGEFAAGAAEAAIACoQ/Hy5IFK/yl+x5l/a5kGlCmb9qwZfza5ff74nLPYh1rHJ2s5vxOtalOja4eXWgFAACAAEAAIAFKKDy6/+6ibU52oadpTF/sd7v1WnRpZAXAJBAIAAYAAIBuNuqY6phD22w/7tQKAAEAAIAAQAETpc4FMIew33/1aAXAJBAIAAYAAIEyBTCHsN4P9WgFwCQQCAAGAACCynwKZQthvDvu1AuASCAQAAgABQDYapgH2m/N+rQC4BAIBgABAAJCNhmmA/ea8XysALoFAACAAEABk4zGuQCY7FUXxeQAAAABJRU5ErkJggg=="; // G6.11: same as android/app/build.gradle and the game page
 const T=16, MW=120, MH=140, SAVE_KEY="pixelhollow_save_v1";const SA={t:0,r:0,b:0,l:0};
 function rng(seed){return function(){seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
 function hash(x,y){let h=(Math.imul(x,73856093)^Math.imul(y,19349663))>>>0;h^=h>>>13;h=Math.imul(h,0x5bd1e995)>>>0;return (h^(h>>>15))>>>0}
@@ -1473,16 +1654,21 @@ const CHMAX={pro:4,body:2,skin:SKIN.length,hs:8,hc:HAIRC.length,hat:10,shirt:CLO
 const seen=new Uint8Array(30*35); // explored map cells, 4x4 tiles each
 if(!(CFG.slot>=1&&CFG.slot<=5))CFG.slot=1;
 const slotKey=n=>n===1?SAVE_KEY:SAVE_KEY+"_s"+n;
+/* v0.18.0 Release 7 (kit 1.12.0): Records, Change controls, error log and mixer */
+let REC={ach:{},stats:{}},ACH=null,STS=null,RM=null,MX=null,RUNON=false;const codes={};
+const kd=a=>!!(RM&&codes[RM.keyFor(a)]);
+function recFrom(d){const r={ach:{},stats:{}};if(d&&d.ach&&typeof d.ach==="object"&&!Array.isArray(d.ach))for(const k in d.ach){const v=d.ach[k];if(k.length<48&&(typeof v==="string"&&v.length<=10||typeof v==="number"&&isFinite(v)))r.ach[k]=v}
+  if(d&&d.stats&&typeof d.stats==="object"&&!Array.isArray(d.stats))for(const k in d.stats){const v=d.stats[k];if(k.length<48&&typeof v==="number"&&isFinite(v)&&v>=0)r.stats[k]=v}return r}
 function load(){try{const d=BC.store.read(slotKey(CFG.slot));if(d&&d.v===1){S.x=d.x;S.y=d.y;S.play=+d.play||0;if(d.home&&typeof d.home==="object")S.home={sh:d.home.sh||{},fu:d.home.fu||{},wall:(d.home.wall|0)%4,floor:(d.home.floor|0)%3};
   if(Array.isArray(d.garden))S.garden=[0,1,2,3,4,5].map(i=>{const p=d.garden[i];return p&&SEEDS.some(s=>s[0]===p.k)?{k:p.k,g:Math.max(0,Math.min(3,+p.g||0)),w:p.w|0}:null});S.rod=!!d.rod;S.net=!!d.net;(d.don||[]).forEach(id=>S.don[id]=1);(d.vil||[]).forEach(id=>S.vil[id]=1);S.boots=!!d.boots;S.pet=!!d.pet;S.signs=typeof d.signs==="number"?d.signs:31;S.bridge=!!d.bridge;S.shovel=!!d.shovel;S.lantern=!!d.lantern;S.clock=+d.clock||0;
   if(typeof d.seen==="string"&&d.seen.length===seen.length)for(let i=0;i<seen.length;i++)seen[i]=d.seen.charCodeAt(i)===49?1:0;else if(typeof d.seen==="string"&&d.seen.length===750)for(let i=0;i<750;i++)seen[i]=d.seen.charCodeAt(i)===49?1:0;else for(let r=0;r<15;r++)for(let c=0;c<15;c++)seen[r*30+c]=1;(d.found||[]).forEach(id=>S.found[id]=1);
-  S.started=d.started!==undefined?!!d.started:true;S.pn=cleanPet(d.pn);S.sc={};if(d.sc&&typeof d.sc==="object")for(const k of ["ph","fe","nt","rn"])if(typeof d.sc[k]==="number")S.sc[k]=d.sc[k];S.stp=Array.isArray(d.stp)?d.stp.filter(x=>typeof x==="string"):null;S.bkm=Math.max(0,+d.bkm||0);S.pin=typeof d.pin==="string"&&ITEMS.some(i=>i.id===d.pin&&!i.off)?d.pin:null;S.vl=vlFrom(d.vl);
+  S.started=d.started!==undefined?!!d.started:true;S.pn=cleanPet(d.pn);S.sc={};if(d.sc&&typeof d.sc==="object")for(const k of ["ph","fe","nt","rn"])if(typeof d.sc[k]==="number")S.sc[k]=d.sc[k];S.stp=Array.isArray(d.stp)?d.stp.filter(x=>typeof x==="string"):null;S.bkm=Math.max(0,+d.bkm||0);S.pin=typeof d.pin==="string"&&ITEMS.some(i=>i.id===d.pin&&!i.off)?d.pin:null;S.vl=vlFrom(d.vl);REC=recFrom(d);
   if(d.ch){for(const k in CHMAX)if(Number.isInteger(d.ch[k])&&d.ch[k]>=0&&d.ch[k]<CHMAX[k])S.ch[k]=d.ch[k];if(typeof d.ch.name==="string")S.ch.name=cleanName(d.ch.name)}}}catch(e){}}
 function cleanName(n){n=String(n).replace(/[\u0000-\u001f<>]/g,"").trim().slice(0,12);return n||"Robin"}
 function buildSprites(){pspr=[false,true].map(bt=>[0,1,2,3].map(d=>({f:[0,1,2,3].map(q=>playerFrame(d,q,false,bt,S.ch)),blink:playerFrame(d,0,true,bt,S.ch)})))}
-function save(){try{BC.store.write(slotKey(CFG.slot),({v:1,x:Math.round(S.x),y:Math.round(S.y),boots:S.boots,play:Math.round(S.play),home:S.home,garden:S.garden,rod:S.rod,net:S.net,don:Object.keys(S.don),vil:Object.keys(S.vil),pet:S.pet,signs:S.signs,bridge:S.bridge,shovel:S.shovel,lantern:S.lantern,clock:Math.round(S.clock),seen:Array.from(seen).join(""),started:S.started,pin:S.pin||null,pn:S.pn||"",sc:S.sc,stp:S.stp,ch:S.ch,found:Object.keys(S.found),vl:S.vl,bkm:S.bkm||0,t:Date.now()}));S.dirty=false}catch(e){}}
-function afterLoad(){if(!S.sc)S.sc={};if(!Array.isArray(S.stp))stampSync();homeFix();buildSprites();bridgeOpen=S.bridge;if(Object.keys(S.found).length>=12)S.pet=true;for(const st of SETS){if(!ITEMS.some(i=>i.set===st.id)||!ITEMS.filter(i=>i.set===st.id).every(i=>S.found[i.id]))continue;S.boots=true;if(st.area==="autumn")S.lantern=true}UNLOCK.forEach(u=>{if(S.ch[u[0]]===u[1]&&!u[4]())S.ch[u[0]]=0});if(blocked(S.x,S.y)){S.x=START.x*T+8;S.y=START.y*T+10}}
-function fresh(){epoch++;S.pin=null;S.pn="";S.bkm=0;S.sc={};S.stp=[];FB.on=false;S.vl=vlFrom(null);Object.assign(S,{x:START.x*T+8,y:START.y*T+10,dir:0,walk:0,vx:0,vy:0,moving:false,found:{},don:{},vil:{},home:{sh:{},fu:{0:"bed",1:"lamp",2:"table",4:"rug",5:"fern"},wall:0,floor:0},garden:[null,null,null,null,null,null],rod:false,net:false,boots:false,pet:false,signs:0,flash:0,play:0,bridge:false,shovel:false,lantern:false,clock:0,started:false,dirty:false});
+function save(){try{recSync();BC.store.write(slotKey(CFG.slot),({v:1,ach:REC.ach,stats:REC.stats,x:Math.round(S.x),y:Math.round(S.y),boots:S.boots,play:Math.round(S.play),home:S.home,garden:S.garden,rod:S.rod,net:S.net,don:Object.keys(S.don),vil:Object.keys(S.vil),pet:S.pet,signs:S.signs,bridge:S.bridge,shovel:S.shovel,lantern:S.lantern,clock:Math.round(S.clock),seen:Array.from(seen).join(""),started:S.started,pin:S.pin||null,pn:S.pn||"",sc:S.sc,stp:S.stp,ch:S.ch,found:Object.keys(S.found),vl:S.vl,bkm:S.bkm||0,t:Date.now()}));S.dirty=false}catch(e){}}
+function afterLoad(){if(!S.sc)S.sc={};if(!Array.isArray(S.stp))stampSync();homeFix();buildSprites();bridgeOpen=S.bridge;if(Object.keys(S.found).length>=12)S.pet=true;for(const st of SETS){if(!ITEMS.some(i=>i.set===st.id)||!ITEMS.filter(i=>i.set===st.id).every(i=>S.found[i.id]))continue;S.boots=true;if(st.area==="autumn")S.lantern=true}UNLOCK.forEach(u=>{if(S.ch[u[0]]===u[1]&&!u[4]())S.ch[u[0]]=0});if(blocked(S.x,S.y)){S.x=START.x*T+8;S.y=START.y*T+10}recUse()}
+function fresh(){epoch++;REC={ach:{},stats:{}};S.pin=null;S.pn="";S.bkm=0;S.sc={};S.stp=[];FB.on=false;S.vl=vlFrom(null);Object.assign(S,{x:START.x*T+8,y:START.y*T+10,dir:0,walk:0,vx:0,vy:0,moving:false,found:{},don:{},vil:{},home:{sh:{},fu:{0:"bed",1:"lamp",2:"table",4:"rug",5:"fern"},wall:0,floor:0},garden:[null,null,null,null,null,null],rod:false,net:false,boots:false,pet:false,signs:0,flash:0,play:0,bridge:false,shovel:false,lantern:false,clock:0,started:false,dirty:false});
   S.ch={name:"Robin",pro:0,body:0,skin:1,hs:0,hc:0,hat:0,shirt:0,bot:0,pc:0,eye:0,gl:0,face:0,pat:0,shoe:0,pack:0};seen.fill(0);PET.init=false}
 function useSlot(n){if(S.started)save();CFG.slot=n;saveCfg();fresh();load();afterLoad();hud();path=null;undoStack.length=0;refreshTitle()}
 function agoStr(t){if(!t)return "";const q=(Date.now()-t)/1000;return q<90?"just now":q<3600?Math.round(q/60)+" min ago":q<86400?Math.round(q/3600)+" h ago":q<172800?"1 day ago":Math.round(q/86400)+" days ago"}
@@ -1491,7 +1677,7 @@ function peekSlot(n){const d=BC.store.read(slotKey(n));const t=d&&d.t?" \u00b7 "
 load();
 function raining(){const p=S.clock%780;return p>=420&&p<540}
 function avail(it){if(!it.when||donCount()>=6)return true;return it.when==="night"?(!CFG.dn||nightAmt()>0.5):(!CFG.wx||raining())}
-function speed(){return S.boots?((CFG.run||PAD.b[CFG.bind.run])?112:84):62}
+function speed(){return S.boots?((CFG.run||RUNON)?112:84):62}
 let MFR=null;const PET={x:0,y:0,left:false,walk:0,alert:false,init:false,mov:false};let fadeT=0,confT=0,epoch=0;const FXP=[];
 function burst(x,y,img){if(img)FXP.push({img,x:x,y:y,vx:0,vy:-24,t:0,life:0.75});if(CFG.calm)return;const cs=["#ffffff","#f7d354","#ffd0e4","#8fd3e8"];for(let i=0;i<8;i++){const a=i/8*6.283;FXP.push({c:cs[i%4],x:x+5,y:y+5,vx:Math.cos(a)*26,vy:Math.sin(a)*26-10,t:0,life:0.45})}}
 let path=null,tapPt=null,ripT=0,radarT=0,stuckT=0,tapT=0;
@@ -1637,7 +1823,7 @@ function auInit(){if(AU.ctx){if(AU.ctx.state==="suspended"&&!document.hidden&&!A
     AU.music=c.createGain();AU.sfx=c.createGain();AU.bus=c.createGain();
     const dl=c.createDelay(1),fb=c.createGain(),wet=c.createGain();dl.delayTime.value=0.36;fb.gain.value=0.28;wet.gain.value=0.35;
     AU.bus.connect(AU.music);AU.bus.connect(dl);dl.connect(fb);fb.connect(dl);dl.connect(wet);wet.connect(AU.music);
-    AU.music.connect(c.destination);AU.sfx.connect(c.destination);auVol();AU.next=c.currentTime+0.15;setInterval(auSched,100);return true}catch(e){return false}}
+    MX=BC.mixer(c);AU.music.connect(MX.music);AU.sfx.connect(MX.sound);auVol();AU.next=c.currentTime+0.15;setInterval(auSched,100);return true}catch(e){return false}}
 function tone(dest,type,midi,t,dur,vol){const c=AU.ctx,o=c.createOscillator(),g=c.createGain();o.type=type;o.frequency.value=440*Math.pow(2,(midi-69)/12);
   g.gain.setValueAtTime(0.0001,t);g.gain.exponentialRampToValueAtTime(vol,t+0.02);g.gain.exponentialRampToValueAtTime(0.0001,t+dur);o.connect(g);g.connect(dest);o.start(t);o.stop(t+dur+0.05)}
 function auSched(){const c=AU.ctx;if(!c||c.state!=="running"||CFG.music===0)return;if(AU.next<c.currentTime)AU.next=c.currentTime+0.05;
@@ -1649,7 +1835,7 @@ function auSched(){const c=AU.ctx;if(!c||c.state!=="running"||CFG.music===0)retu
 
 /* background sounds per region (v0.14): noise beds for wind, water and rain, plus small events like birds, crickets and drips */
 const AS={on:false,bus:null,ch:{},brown:null,white:null,wn:0},ambS={t:0};
-function ambInit(){if(AS.on||!AU.ctx)return;try{const c=AU.ctx;AS.bus=c.createGain();AS.bus.gain.value=0;AS.bus.connect(c.destination);
+function ambInit(){if(AS.on||!AU.ctx)return;try{const c=AU.ctx;AS.bus=c.createGain();AS.bus.gain.value=0;AS.bus.connect(MX?MX.sound:c.destination);
   const buf=brown=>{const n=c.sampleRate*2,b=c.createBuffer(1,n,c.sampleRate),d=b.getChannelData(0);let l=0;for(let i=0;i<n;i++){const w=Math.random()*2-1;if(brown){l=(l+0.02*w)/1.02;d[i]=l*3.5}else d[i]=w*0.5}return b};
   AS.brown=buf(true);AS.white=buf(false);
   const loop=(b,type,f,q)=>{const src=c.createBufferSource();src.buffer=b;src.loop=true;const fl=c.createBiquadFilter();fl.type=type;fl.frequency.value=f;fl.Q.value=q;const g=c.createGain();g.gain.value=0;src.connect(fl);fl.connect(g);g.connect(AS.bus);src.start();return {fl,g}};
@@ -1766,9 +1952,9 @@ function markSeen(){const c=(S.x/T|0)>>2,r=(S.y/T|0)>>2;for(let dy=-3;dy<=3;dy++
 const stack=[];const topP=()=>stack[stack.length-1];let foc=null;const focMem={};
 function navEls(){const p=$(topP());return p?[...p.querySelectorAll(".nav")].filter(e=>e.offsetParent!==null):[]}
 function setFoc(e){BC.disarmAll(e);if(foc)foc.classList.remove("foc");foc=e;if(e){e.classList.add("foc");if(e.scrollIntoView)e.scrollIntoView({block:"nearest"});focMem[topP()]=e;if(e.onfoc)e.onfoc()}}
-function openPanel(id){if(stack.includes(id))return;if(id==="map")buildMap();if(id==="album")buildAlbum();if(id==="museum")buildMuseum();if(id==="journal")buildJournal();if(id==="settings")refreshSettings();if(id==="slots"){if(S.started)save();SLOTS.render()}if(id==="howto")buildHow();if(id==="dbg"&&DBG)DBG.show();if(id==="builder")refreshBuilder();if(id==="pause")$("pwho").textContent=nm()+(S.ch.pro===3?"":" ("+PR.lab[S.ch.pro]+")")+". "+SEAS[season()]+". Played "+(S.play>=3600?Math.floor(S.play/3600)+" h "+Math.floor(S.play%3600/60)+" min":Math.floor(S.play/60)+" min")+".";
+function openPanel(id){if(stack.includes(id))return;if(id==="map")buildMap();if(id==="album")buildAlbum();if(id==="museum")buildMuseum();if(id==="journal")buildJournal();if(id==="settings")refreshSettings();if(id==="slots"){if(S.started)save();SLOTS.render()}if(id==="howto")buildHow();if(id==="records")buildRecords();if(id==="remap")buildRemap();if(id==="dbg"&&DBG)DBG.show();if(id==="builder")refreshBuilder();if(id==="pause")$("pwho").textContent=nm()+(S.ch.pro===3?"":" ("+PR.lab[S.ch.pro]+")")+". "+SEAS[season()]+". Played "+(S.play>=3600?Math.floor(S.play/3600)+" h "+Math.floor(S.play%3600/60)+" min":Math.floor(S.play/60)+" min")+".";
   path=null;stickEnd();hush();if(id!=="title")$("toast").classList.remove("show");if(stack.length)$(topP()).style.visibility="hidden";stack.push(id);document.body.classList.add("panel");document.body.classList.toggle("ontitle",stack.includes("title"));$(id).style.display="flex";$(id).scrollTop=0;if(id==="title")skyStart();setFoc(navEls()[0]||null);sfx([79],"sine");menuState()}
-function closePanel(){if(!stack.length)return;BC.disarmAll();const id=stack.pop();if(id==="photo"){PH.on=false;PHD=null;cv.style.filter="";resize()}document.body.classList.toggle("ontitle",stack.includes("title"));$(id).style.display="none";$(id).style.visibility="";if(stack.length)$(topP()).style.visibility="";else document.body.classList.remove("panel");if(PAD.listen){PAD.listen=null;refreshSettings()}
+function closePanel(){if(!stack.length)return;BC.disarmAll();const id=stack.pop();if(id==="photo"){PH.on=false;PHD=null;cv.style.filter="";resize()}document.body.classList.toggle("ontitle",stack.includes("title"));$(id).style.display="none";$(id).style.visibility="";if(stack.length)$(topP()).style.visibility="";else document.body.classList.remove("panel");if(PAD.listen){PAD.listen=null}
   if(id==="builder"){$("bname").blur();$("bpet").blur();S.pn=cleanPet($("bpet").value)||S.pn||"";S.ch.name=cleanName($("bname").value);save();if(builderNew){builderNew=false;setTimeout(()=>toast(BC.input.pick("Arrows or WASD to walk. Press E near things.","Stick to walk. Press "+BN[CFG.bind.action]+" near things.","Drag to walk. Tap A near things.")),400)}}
   const m=focMem[topP()];setFoc(stack.length?(m&&m.offsetParent!==null?m:navEls()[0]||null):null);menuState()}
 /* v0.16.0 (G5.1): the Menu button stays at the top right and reads Close while the Menu row is open */
@@ -1779,7 +1965,7 @@ addEventListener("blur",()=>autoPause("Paused while you were away."));
 BC.input.onPadLost(()=>{if(stack.length){toast("The controller disconnected.");return}autoPause("The controller disconnected. Connect it and press A, or tap Resume.")});
 function focName(){return foc?(foc.id||foc.dataset.set||foc.dataset.slot||foc.dataset.dbg||foc.textContent):null}
 function closeAll(){while(stack.length)closePanel()}
-function back(){if(PAD.listen){PAD.listen=null;refreshSettings();return}if(!stack.length||topP()==="title")return;sfx([67],"sine");closePanel()}
+function back(){if(PAD.listen){PAD.listen=null;if(topP()==="remap")buildRemap();return}if(!stack.length||topP()==="title")return;sfx([67],"sine");closePanel()}
 function activate(){if(!foc)return;if(foc.act)foc.act();else if(foc.adj)foc.adj(1,true);else foc.click()}
 function nav(dir){const els=navEls();if(!els.length)return;if(!foc||!els.includes(foc)){setFoc(els[0]);return}
   if((dir==="left"||dir==="right")&&foc.adj){foc.adj(dir==="left"?-1:1,false);return}
@@ -1850,7 +2036,7 @@ function phClamp(){const vw=cv.width/IK,vh=cv.height/IK;PH.ox=Math.max(-vw*0.6,M
 function phFilter(d){PH.f=(PH.f+d+PHF.length)%PHF.length;phRefresh();sfx([84],"sine")}
 function phZoom(d){PH.zi=(PH.zi+d+PHZ.length)%PHZ.length;phRefresh();resize();sfx([79],"sine")}
 function phHide(){PH.hide=!PH.hide;phRefresh();sfx([74],"sine")}
-function phTick(dt){let dx=PAD.x,dy=PAD.y;if(keys.arrowleft||keys.a)dx-=1;if(keys.arrowright||keys.d)dx+=1;if(keys.arrowup||keys.w)dy-=1;if(keys.arrowdown||keys.s)dy+=1;if(dx||dy){PH.ox+=dx*260*dt;PH.oy+=dy*260*dt;phClamp()}}
+function phTick(dt){let dx=PAD.x,dy=PAD.y;if(keys.arrowleft||kd("left"))dx-=1;if(keys.arrowright||kd("right"))dx+=1;if(keys.arrowup||kd("up"))dy-=1;if(keys.arrowdown||kd("down"))dy+=1;if(dx||dy){PH.ox+=dx*260*dt;PH.oy+=dy*260*dt;phClamp()}}
 function phSnap(){try{const c=document.createElement("canvas");c.width=cv.width;c.height=cv.height;const g=c.getContext("2d"),f=PHF[PH.f][1];if(f&&("filter" in g))g.filter=f;g.drawImage(cv,0,0);g.filter="none";
     if(PH.label){const k=Math.max(1,Math.min(c.width,c.height)/500),t="Pixel Hollow  \u00b7  "+region().name+"  \u00b7  Day "+day();g.font="600 "+Math.round(15*k)+"px system-ui,sans-serif";g.textAlign="right";g.fillStyle="rgba(0,0,0,.5)";g.fillText(t,c.width-14*k+1,c.height-14*k+1);g.fillStyle="rgba(255,244,220,.92)";g.fillText(t,c.width-14*k,c.height-14*k)}
     const n=new Date(),z=v=>String(v).padStart(2,"0"),name="PixelHollow_"+n.getFullYear()+z(n.getMonth()+1)+z(n.getDate())+"_"+z(n.getHours())+z(n.getMinutes())+z(n.getSeconds())+".jpg",url=c.toDataURL("image/jpeg",0.92);
@@ -1874,6 +2060,8 @@ $("palbum").addEventListener("click",()=>openPanel("album"));$("alclose").addEve
 BC.confirmPress($("aldel"),"Press again to remove",()=>{if(alSel<0)return;const a=albumGet();a.splice(alSel,1);albumPut(a);buildAlbum();setFoc(navEls()[0]||null)});
 $("pchar").addEventListener("click",()=>openPanel("builder"));$("pvil").addEventListener("click",openAlmanac);
 $("pset").addEventListener("click",()=>openPanel("settings"));
+$("precords").addEventListener("click",()=>openPanel("records"));$("rback").addEventListener("click",()=>back());$("rmback").addEventListener("click",()=>back());
+BC.confirmPress($("rmreset"),"Press again to reset every key and button",()=>{RM.reset();syncBind();buildRemap();sfx([72])});$("rmreset").act=()=>$("rmreset").click();
 $("ptitle").addEventListener("click",()=>{if(S.started)save();closeAll();showTitle()});
 $("pmap").addEventListener("click",()=>openPanel("map"));
 $("mapclose").addEventListener("click",()=>closePanel());
@@ -1924,7 +2112,7 @@ const STAMPS=[["first","First Find","Find your first treasure","daisy",()=>count
   ["fest","Festival Friend","Join all four festivals","g_wheat",()=>[0,1,2,3].every(i=>vl().fest[i])],["well","Old Well","Restore the Old Well","v_globe",()=>!!vl().well],["chef","Home Cook","Cook 4 different recipes","v_pie",()=>Object.keys(vl().cooked).length>=4]];
 function stampCount(k){S.sc[k]=(S.sc[k]||0)+1;S.dirty=true}
 const stampHas=st=>{try{return !!st[4]()}catch(e){return false}};
-let stampT=0;function stampTick(dt){stampT+=dt;if(stampT<1.2||!S.started)return;stampT=0;for(const st of STAMPS){if(S.stp.includes(st[0])||!stampHas(st))continue;S.stp.push(st[0]);S.dirty=true;if(!stack.length)toast("New stamp: "+st[1]+"!");break}}
+let stampT=0;function stampTick(dt){stampT+=dt;if(stampT<1.2||!S.started)return;stampT=0;for(const st of STAMPS){if(S.stp.includes(st[0])||!stampHas(st))continue;S.stp.push(st[0]);if(ACH)ACH.earn(st[0]);S.dirty=true;if(!stack.length)toast("New stamp: "+st[1]+"!");break}}
 function stampSync(){S.stp=STAMPS.filter(stampHas).map(st=>st[0])}
 function buildStamps(box){const g=document.createElement("div");g.className="grid";
   for(const st of STAMPS){const has=stampHas(st),d=document.createElement("div");d.className="slot nav stamp"+(has?"":" no");const c=document.createElement("canvas");c.width=c.height=96;const x=c.getContext("2d");
@@ -2079,22 +2267,46 @@ function kitApply(key,v){
   if(kitSetup)return;
   const map={music:"music",sound:"sfx",alv:"amb",text_size:"ts",rumble:"vib",reduce_motion:"calm"};
   if(key==="fps")return;applyCfg(map[key]||key);if(key==="xmas")sfx(CFG.xmas?[72,76,79,84]:[72],"sine")}
+/* Records (G4.10, G4.11): the stamps are the achievements, so the Journal and Records always agree. The game says
+   "New stamp" itself, so there is no second note. Stamps from before this version show as Earned with no date. */
+const STATS=[{id:"finds",name:"Treasures found"},{id:"sets",name:"Sets complete"},{id:"stamps",name:"Stamps"},{id:"hearts",name:"Hearts"},{id:"days",name:"Days in the Hollow"},{id:"photos",name:"Photos taken"}];
+function recSetup(){ACH=BC.achievements(STAMPS.map(st=>({id:st[0],name:st[1],text:st[2]+"."})),REC,null);STS=BC.stats(STATS,REC)}
+function recUse(){if(!ACH)return;if(Array.isArray(S.stp))for(const id of S.stp)if(typeof REC.ach[id]!=="string")REC.ach[id]="";ACH.use(REC);STS.use(REC)}
+function recSync(){if(!STS)return;try{STS.set("finds",count());STS.set("sets",setsDone());STS.set("stamps",(S.stp||[]).length);STS.set("hearts",totalHearts());STS.set("days",day());STS.set("photos",(S.sc&&S.sc.ph)||0);STS.set("time",S.play||0)}catch(e){}}
+function recRow(box,name,sub,val){const r=document.createElement("div");r.className="srow nav";r.innerHTML="<span class='nm'></span><span class='val'></span>";r.children[0].textContent=name;if(sub){const m=document.createElement("small");m.textContent=sub;r.children[0].appendChild(m)}r.children[1].textContent=val;box.appendChild(r);return r}
+function buildRecords(){recSync();const b=$("rrows");b.textContent="";$("rsum").textContent=ACH.count()+" of "+ACH.list.length+" stamps";b.appendChild(h2("Stamps"));
+  ACH.rows().forEach(r=>recRow(b,r[0],r[1],r[2]?"Earned "+r[2]:(ACH.has(ACH.list.find(a=>a.name===r[0]).id)?"Earned":(r[3]||"Not yet"))));
+  b.appendChild(h2("Stats"));STS.rows().forEach(r=>recRow(b,r[0],"",r[1]))}
+/* Change controls (G5.22, G5.23). Walking is keys only (the stick and D-pad always walk). Menu is a key only (Menu and View
+   always open it). B always goes back, so it cannot be picked. */
+const RMACT=[{action:"up",name:"Walk up",key:"KeyW"},{action:"down",name:"Walk down",key:"KeyS"},{action:"left",name:"Walk left",key:"KeyA"},{action:"right",name:"Walk right",key:"KeyD"},
+  {action:"action",name:"Act",key:"KeyE",pad:0},{action:"journal",name:"Journal",key:"KeyJ",pad:3},{action:"map",name:"Map",key:"KeyM",pad:2},{action:"run",name:"Run",key:"ShiftLeft",pad:5,hold:true},{action:"menu",name:"Menu",key:"KeyP"}];
+const RMPAD=["action","journal","map","run"];
+function syncBind(){if(!RM)return;for(const a of RMPAD){const i=RM.padFor(a);if(typeof i==="number")CFG.bind[a]=i}CFG.bind.menu=9;CFG.bind.back=1;saveCfg();setBN()}
+function remapSetup(){const fresh=!BC.store.has("pixelhollow_controls");RM=BC.remap({key:"pixelhollow_controls",actions:RMACT});
+  if(fresh&&CFG.bind)for(const a of RMPAD){const i=CFG.bind[a];if(typeof i==="number"&&i!==1&&i!==8&&i!==9&&RM.padFor(a)!==i)RM.rebind(a,"pad",i)}syncBind()}
+function buildRemap(){const b=$("rmrows"),f=foc&&foc.dataset?foc.dataset.rm:null;b.textContent="";
+  RMACT.forEach(a=>{const pad=RMPAD.includes(a.action)?RM.label(a.action,"pad"):a.action==="menu"?"Menu, View":"Stick, D-pad";
+    const r=recRow(b,a.name,"",PAD.listen===a.action?"Press a key"+(RMPAD.includes(a.action)?" or button":""):RM.label(a.action,"key")+"  /  "+pad);r.dataset.rm=a.action;
+    r.act=()=>{PAD.listen=PAD.listen===a.action?null:a.action;buildRemap()};r.addEventListener("click",()=>r.act())});
+  const t=recRow(b,"Run style","Hold to run, or press once to start and again to stop",RM.toggles.run?"Toggle":"Hold");t.dataset.rm="toggle";
+  t.act=()=>{RM.setToggle("run",!RM.toggles.run);buildRemap()};t.addEventListener("click",()=>t.act());
+  if(f&&topP()==="remap"){const e=b.querySelector("[data-rm='"+f+"']");if(e)setFoc(e)}}
 function setupKit(){
+  BC.errors.version=VERSION;recSetup();recUse();remapSetup();
   const D=CFG_DEF,tog=(key,text)=>({key,text,first:D[key]}),ch=(key,text,names)=>({key,text,names,first:D[key]});
   SET=BC.settings({values:CFG,save:saveCfg,apply:kitApply,list:$("srows"),row:"srow nav",head:"h2",note:"ver",
     keys:{music:"mlv",sound:"slv",rumble:"vib",text_size:"tsz",reduce_motion:"calm"},
     name:"Pixel Hollow",version:VERSION,about:"Font: Pixelify Sans, SIL Open Font License 1.1. No data collected: see Privacy on the game page.",
     shake:false,reduceMotion:true,blocked:()=>toast("Full screen was blocked. Press F or try again."),
-    tester:BC.debugAvailable()?()=>openPanel("dbg"):null,onReset:()=>{CFG.bind={action:0,journal:3,menu:9,back:1,map:2,run:5};setBN()}});
+    tester:BC.debugAvailable()?()=>openPanel("dbg"):null,onReset:()=>{syncBind()}});
   SET.add({key:"alv",text:"Ambience",names:BC.LEVELS,first:2});SET.add(tog("vb","Voice blips"));
   SET.add({node:h2("Touch controls")});SET.add(ch("stick","Joystick",["Floating","Fixed","Tap to walk"]));SET.add(ch("size","Control size",["Small","Medium","Large"]));SET.add(ch("hand","Layout",["Right hand","Left hand"]));
   SET.add({node:h2("Play")});SET.add(tog("run","Auto-run"));SET.add(tog("radar","Treasure radar"));SET.add(tog("compass","Compass dots on map"));SET.add(ch("pet","Companion",["Off","Dog","Cat"]));
   SET.add({node:h2("Display")});SET.add(ch("mood","Mood",["Moody","Bright"]));SET.add(tog("crisp","Pixel outlines"));SET.add(ch("zoom","Camera",["Close","Normal","Wide"]));SET.add(tog("dn","Day and night"));SET.add(tog("wx","Rain"));
   SET.add(ch("season","Season",["Cycle","Spring","Summer","Autumn","Winter"]));SET.add(ch("spk","Sparkles",["Classic","Bold","Blue","Pink"]));SET.add(ch("font","Font",["Pixel","Classic"]));SET.add(tog("xmas","Christmas theme"));
   SET.add({node:h2("Controller")});const st=document.createElement("div");st.id="padstat";SET.add({node:st});SET.add(ch("plbl","Button labels",["Auto","Xbox","PlayStation","Nintendo / Retroid"]));
-  [["action","Action / Confirm"],["journal","Journal"],["map","Map"],["run","Run (hold)"],["menu","Menu / Pause"],["back","Back / Cancel"]].forEach(([b,n])=>{const r=document.createElement("button");r.className="srow nav";r.innerHTML="<span class='nm'></span><span class='val'></span>";r.children[0].textContent=n;r.dataset.set="bind_"+b;
-    r.addEventListener("click",()=>{PAD.listen=PAD.listen===b?null:b;refreshSettings()});srefresh.push(()=>{r.children[1].textContent=PAD.listen===b?"Press a button":BN[CFG.bind[b]]});SET.add({node:r})});
-  const rb=document.createElement("button");rb.className="btn nav ghost";rb.textContent="Reset controller buttons";rb.addEventListener("click",()=>{CFG.bind={action:0,journal:3,menu:9,back:1,map:2,run:5};applyCfg();refreshSettings()});SET.add({node:rb});
+  SET.add({text:"Change controls",act:()=>openPanel("remap")});
   SET.add({node:h2("Save data")});SET.add({text:"Backup and restore",act:()=>{$("bkout").value=makeBackup();$("bkin").value="";$("bkmsg").textContent="";$("bkshare").style.display=window.Android&&Android.share?"":"none";openPanel("backup")}});
   SET.add({text:"Controls",act:()=>openPanel("howto")});
   SET.finish(V=>{if(!CFG_OLD)return;V.mlv=lvOf(CFG.music);V.slv=lvOf(CFG.sfx);V.alv=lvOf(CFG.amb);V.tsz=Math.max(0,Math.min(2,CFG.ts-1))});
@@ -2109,7 +2321,7 @@ function setupKit(){
 function buildHow(){const b=$("hbody"),X=LBL.xbox,B=CFG.bind,cur=BC.input.last;b.textContent="";
   const sec=(head,lines,on)=>{const d=document.createElement("div");d.className="nav";d.appendChild(h2(head+(on?" (in use)":"")));lines.forEach(l=>{const p=document.createElement("p");p.textContent=l;d.appendChild(p)});b.appendChild(d)};
   sec("What to do",["Walk the Hollow and find treasures. Each find goes in your journal.","Finish a set to earn an upgrade, such as Trail Boots or a Lantern. Upgrades open new places.","Nothing can hurt you and nothing runs out. Take your time."]);
-  sec("Keyboard",["Arrows or WASD: walk. E, Space or Enter: act near things.","J: journal. M: map. Esc or P: the Menu. F: full screen in a browser.","In menus: arrows move, Enter chooses, Esc goes back."],cur==="keys");
+  const K=a=>RM?RM.label(a,"key"):"";sec("Keyboard",["Arrows or "+K("up")+K("left")+K("down")+K("right")+": walk. Hold "+K("run")+": run. "+K("action")+", Space or Enter: act near things.",K("journal")+": journal. "+K("map")+": map. Esc or "+K("menu")+": the Menu. F: full screen in a browser.","In menus: arrows move, Enter chooses, Esc goes back. Settings > Change controls picks other keys."],cur==="keys");
   sec("Xbox controller",["Left stick or D-pad: walk. "+X[B.action]+": act near things. Hold "+X[B.run]+": run.",X[B.journal]+": journal. "+X[B.map]+": map. Menu or View: the Menu.","In menus: the D-pad moves, A chooses, B goes back. LB and RB turn journal pages."],cur==="pad");
   sec("Touch",["Drag on the screen to walk, or pick Tap to walk in Settings.","Tap the A button near things. The Menu button sits at the top right."],cur==="touch")}
 /* Tester tools (G5.9, G5.10): test builds only. The page carries a salted hash of the code, never the code */
@@ -2120,7 +2332,7 @@ function dbgTestSave(){epoch++;fresh();S.started=true;S.ch.name="Tester";ITEMS.s
 function setupDebug(){if(!BC.debugAvailable())return;
   DBG=BC.debug({box:$("dbgbox"),btn:"btn nav",ghost:"btn nav ghost",head:"h2",note:"sub",info:{name:"Pixel Hollow",version:VERSION,code:VERSION_CODE},close:()=>closePanel(),
     unlocked:()=>setTimeout(()=>setFoc(navEls()[0]||null),0),
-    report:()=>({Place:region().name+" at tile "+(S.x/T|0)+", "+(S.y/T|0),Slot:CFG.slot,Treasures:count()+" of "+ITEMS.length,Day:day()+", "+SEAS[season()],"Open panels":stack.join(" ")||"none"})});
+    report:()=>({Errors:BC.errors.text(10),Place:region().name+" at tile "+(S.x/T|0)+", "+(S.y/T|0),Slot:CFG.slot,Treasures:count()+" of "+ITEMS.length,Day:day()+", "+SEAS[season()],"Open panels":stack.join(" ")||"none"})});
   [["Start",START.x,START.y],["Cabin door",CABIN.x+2,CABIN.y+CABIN.h],["Museum door",MUS.x+2,MUS.y+MUS.h],["The Cave",CAVE_IN.x,CAVE_IN.y],["Deep Cave",DEEP_IN.x,DEEP_IN.y],["Snowy Peaks",SNOW_IN.x,SNOW_IN.y],["Sunny Canyon",DES_IN.x,DES_IN.y]].forEach(g=>DBG.action("Go to",g[0],()=>dbgGo(g[1],g[2],g[0])));
   SIGNS.forEach((s,i)=>{if(s.name)DBG.action("Go to","Sign: "+s.name,()=>travel(i))});
   [["boots","Trail Boots"],["lantern","Lantern"],["rod","Fishing rod"],["net","Bug net"],["shovel","Shovel"],["pet","Companion"]].forEach(([k,n])=>DBG.toggle("Tools",n,()=>!!S[k],v=>{S[k]=v;S.dirty=true;save()}));
@@ -2136,7 +2348,7 @@ function setupDebug(){if(!BC.debugAvailable())return;
   DBG.choice("Options","Season",["Cycle","Spring","Summer","Autumn","Winter"],()=>CFG.season,i=>{CFG.season=i;applyCfg("season");SET.refresh()});
   DBG.saveTools(dbgReset,dbgTestSave)}
 function refreshSettings(){if(SET)SET.refresh();srefresh.forEach(f=>f());$("padstat").textContent=PAD.name?"Connected: "+PAD.name.slice(0,48)+". "+FAMN[padFam()]+" button names.":"No controller found yet. Press any button on it. Pick a row below, then press the button you want."}
-function setBind(n,i){const old=CFG.bind[n];for(const k in CFG.bind)if(CFG.bind[k]===i)CFG.bind[k]=old;CFG.bind[n]=i;PAD.listen=null;applyCfg();refreshSettings();sfx([84,88])}
+function setBind(n,i){if(i===1||!RMPAD.includes(n)){PAD.listen=null;buildRemap();return}RM.rebind(n,"pad",i);PAD.listen=null;syncBind();applyCfg();buildRemap();sfx([84,88])}
 function hudLabels(){$("mbtn").textContent=topP()==="pause"?"Close":BC.input.last==="pad"?BN[CFG.bind.menu]+" Menu":"Menu"}
 
 /* ---------- input ---------- */
@@ -2162,9 +2374,9 @@ function pollPad(dt){const b=PAD.b,prev=PAD.p;for(let i=0;i<16;i++){prev[i]=b[i]
     const gx=gp.axes[0]||0,gy=gp.axes[1]||0;if(Math.hypot(gx,gy)>Math.hypot(ax,ay)){ax=gx;ay=gy}}}catch(e){}
   if(name!==PAD.name){PAD.name=name;setBN()}
   const m=Math.hypot(ax,ay),dz=0.22;if(m<dz){ax=ay=0}else{const k=Math.min(1,(m-dz)/(1-dz))/m;ax*=k;ay*=k}
-  PAD.x=ax+(b[15]?1:0)-(b[14]?1:0);PAD.y=ay+(b[13]?1:0)-(b[12]?1:0);
+  PAD.x=ax+(b[15]?1:0)-(b[14]?1:0);PAD.y=ay+(b[13]?1:0)-(b[12]?1:0);RUNON=RM?RM.held("run",!!b[CFG.bind.run]||kd("run")):false;
   if(b.some(v=>v)||m>=dz){if(!PAD.on)setPad(true);devUsed("pad");auInit()}
-  if(PAD.listen){for(let i=0;i<12;i++)if(b[i]&&!prev[i]){setBind(PAD.listen,i);break}return}
+  if(PAD.listen){for(let i=0;i<12;i++)if(i!==8&&i!==9&&b[i]&&!prev[i]){setBind(PAD.listen,i);break}return}
   const hit=n=>{const i=CFG.bind[n];return b[i]&&!prev[i]};
   let d=null;if(PAD.y<-0.55)d="up";else if(PAD.y>0.55)d="down";else if(PAD.x<-0.55)d="left";else if(PAD.x>0.55)d="right";
   let fire=null;if(d!==PAD.navD){PAD.navD=d;PAD.navT=0.38;fire=d}else if(d){PAD.navT-=dt;if(PAD.navT<=0){PAD.navT=0.15;fire=d}}
@@ -2175,18 +2387,18 @@ function pollPad(dt){const b=PAD.b,prev=PAD.p;for(let i=0;i<16;i++){prev[i]=b[i]
 addEventListener("keydown",e=>{const k=e.key.toLowerCase();auInit();if(!/INPUT|TEXTAREA/.test((e.target&&e.target.tagName)||""))devUsed("keys");
   if(e.target&&/INPUT|TEXTAREA/.test(e.target.tagName)){if(k==="enter"||k==="escape"){e.target.blur();e.preventDefault()}return}
   keyMode(true);
-  if(PAD.listen){if(k==="escape")back();e.preventDefault();return}
+  if(PAD.listen){if(k==="escape"){PAD.listen=null;buildRemap()}else if(e.code&&!e.repeat&&RM.rebind(PAD.listen,"key",e.code)){PAD.listen=null;syncBind();buildRemap();sfx([84,88])}e.preventDefault();return}
   if(topP()==="dbg"&&DBG&&DBG.key(k)){e.preventDefault();return}
   if(k==="f"&&BC.fullscreen.can()){if(!e.repeat)toggleFull();e.preventDefault();return}
-  if(PH.on&&topP()==="photo"){e.preventDefault();if(["arrowleft","arrowright","arrowup","arrowdown","w","a","s","d"].includes(k)){keys[k]=1;return}if(e.repeat)return;
+  if(PH.on&&topP()==="photo"){e.preventDefault();if(["arrowleft","arrowright","arrowup","arrowdown"].includes(k)||(RM&&["up","down","left","right"].includes(RM.actionForKey(e.code)))){keys[k]=1;codes[e.code]=1;return}if(e.repeat)return;
     if(k==="e"||k==="enter"||k===" ")phSnap();else if(k==="q")phFilter(1);else if(k==="h")phHide();else if(k==="z")phZoom(1);else if(k==="l"){PH.label=!PH.label;phRefresh()}else if(k==="escape"||k==="backspace")back();return}
   if(stack.length){const dir={arrowup:"up",w:"up",arrowdown:"down",s:"down",arrowleft:"left",a:"left",arrowright:"right",d:"right"}[k];
     if(dir){nav(dir);e.preventDefault()}else if(k==="enter"||k===" "||k==="e"){if(!e.repeat)activate();e.preventDefault()}
     else if(k==="escape"||k==="backspace"){if(!e.repeat)back();e.preventDefault()}else if((k==="j"&&topP()==="journal")||(k==="m"&&topP()==="map")){back()}return}
-  keys[k]=1;if(e.repeat)return;
-  if(k===" "||k==="enter"||k==="e"){e.preventDefault();action()}else if(k==="j")openPanel("journal");else if(k==="m")openPanel("map");else if(k==="escape"||k==="p")openPanel("pause")});
-addEventListener("keyup",e=>{if(e.target&&/INPUT|TEXTAREA/.test(e.target.tagName))return;keys[e.key.toLowerCase()]=0;if(stack.length&&e.key===" ")e.preventDefault()});
-addEventListener("blur",()=>{for(const k in keys)keys[k]=0});
+  keys[k]=1;codes[e.code]=1;if(e.repeat)return;const ra=RM?RM.actionForKey(e.code):"";
+  if(ra==="action"||k===" "||k==="enter"){e.preventDefault();action()}else if(ra==="journal")openPanel("journal");else if(ra==="map")openPanel("map");else if(ra==="menu"||k==="escape")openPanel("pause")});
+addEventListener("keyup",e=>{codes[e.code]=0;if(e.target&&/INPUT|TEXTAREA/.test(e.target.tagName))return;keys[e.key.toLowerCase()]=0;if(stack.length&&e.key===" ")e.preventDefault()});
+addEventListener("blur",()=>{for(const k in keys)keys[k]=0;for(const k in codes)codes[k]=0});
 document.addEventListener("pointerdown",()=>{auInit();keyMode(false);devUsed("touch");if(PAD.on){PAD.on=false;hudLabels()}const ae=document.activeElement;if(ae&&ae.blur&&!/INPUT|TEXTAREA/.test(ae.tagName))ae.blur()},true);
 function stickEnd(){stickId=null;jx=jy=0;if(CFG.stick===2)return;if(CFG.stick===1)$("knob").style.transform="translate(0,0)";else $("stick").style.display="none"}
 cv.addEventListener("pointerdown",e=>{if(PH.on){PHD={x:e.clientX,y:e.clientY,ox:PH.ox,oy:PH.oy,id:e.pointerId};try{cv.setPointerCapture(e.pointerId)}catch(_){}return}if(dlg){dlgNext();return}if(stickId!==null)return;const s=$("stick");
@@ -2250,7 +2462,7 @@ function update(dt){S.t+=dt;
   for(const p of S.garden)if(p&&p.g<3)p.g=Math.min(3,p.g+dt/45*(S.vl&&S.vl.well?2:1));
   vTick(dt);stampTick(dt);
   let dx=jx+PAD.x,dy=jy+PAD.y;
-  if(keys.arrowleft||keys.a)dx-=1;if(keys.arrowright||keys.d)dx+=1;if(keys.arrowup||keys.w)dy-=1;if(keys.arrowdown||keys.s)dy+=1;
+  if(keys.arrowleft||kd("left"))dx-=1;if(keys.arrowright||kd("right"))dx+=1;if(keys.arrowup||kd("up"))dy-=1;if(keys.arrowdown||kd("down"))dy+=1;
   let ev=1;if(CFG.gfx===1&&(dx||dy)){const ax=dx,ay=dy,m0=Math.hypot(ax,ay);dx=ax/(ITW/2)+ay/(ITH/2);dy=ay/(ITH/2)-ax/(ITW/2);const m1=Math.hypot(dx,dy)||1;ev=0.72*(m1/m0)*(ITW/2)/Math.SQRT2;dx=dx/m1*m0;dy=dy/m1*m0}
   let m=Math.hypot(dx,dy);
   if(m>0.05)path=null;
@@ -3172,7 +3384,7 @@ let last=performance.now();
 function frame(now){if(PH.on)phTick(Math.max(0,Math.min(0.05,(now-last)/1000)));const dt=Math.max(0,Math.min(0.05,(now-last)/1000));last=now;if(CFG.calm){confT=0;if(S.flash>0.25)S.flash=0.25;if(fadeT>0.15)fadeT=0.15}if(fadeT>0)fadeT=Math.max(0,fadeT-dt);if(confT>0)confT=Math.max(0,confT-dt);for(let i=FXP.length-1;i>=0;i--){const p=FXP[i];p.t+=dt;p.x+=p.vx*dt;p.y+=p.vy*dt;if(p.t>p.life)FXP.splice(i,1)}pollPad(dt);for(let i=0;i<BC.speed;i++)update(dt);ambTick(dt);if(CFG.gfx===1)renderIso();else render();calTitle();if(topP()==="builder")drawPreview();else if(topP()==="map")drawMap();requestAnimationFrame(frame)}
 setupKit();afterLoad();applyLook();setBN();{const im=new Image();im.onload=()=>{const g=$("temb").getContext("2d");g.imageSmoothingEnabled=false;g.clearRect(0,0,256,256);g.drawImage(im,0,0,256,256)};im.src=ICON_URI}/* v0.16.0: the title shows the game's own icon (G6.10) */addEventListener("resize",resize);addEventListener("resize",()=>{if(stack.includes("title"))skyStart()});resize();hud();hudLabels();showTitle();requestAnimationFrame(frame);$("status-progress").remove();
 window.__safe=(t,r,b,l)=>{setSA(t,r,b,l);layoutTouch();if(topP()==="map")requestAnimationFrame(fitMap)};
-if(BC.testing)window.__game={SET:()=>SET,SLOTS:()=>SLOTS,DBG:()=>DBG,VERSION,focName,autoPause,XSPOTS,XDECO,CRIT,spotCrit,updateCrit,STAMPS,stampHas,stampSync,calTitle,calMonth,padFam,setBN,LBL,albumGet,albumAdd,backupTip,peekSlot,agoStr,VIC,vicon,reqList,REQ,placeName,travelTo,PETN,cleanPet,SA,setSA,CLEARED,CASES,MUS_IN,CURATOR,exhibit,enterMuseum,AS,ambTick,EXN,PH,FB,hintFor,pinSpot,togglePin,throwBall,openPhoto,phSnap,deep:()=>({PIT,PIT_OUT,BRAM,DEEP_IN,DLAD}),caveRg,PROPS,STOVE,BENCH,RECIPES,CRAFTS,vl,day,hearts,totalHearts,festNow,merchantOpen,propAct,openStove,openBench,openBoard,openCart,readMail,petAnimal,dishCount,hintText,emblem,ip:(x,y)=>ip(x,y),isoState:()=>({IK,ICX,ICY,n:ICACHE.size}),makeBackup,restoreBackup,FXP,VIL,ARCH,BOAT,DBOAT,SNOW_IN,DES_IN,season,regAt,hop,talk,REG,DISP,FSLOT,GARD,FURN,HOME_IN,region,tendPlot,enterHome,F,MUS,ROD,NET,donate,waterAhead,PET,TUNNELS,avail,findPath,getPath:()=>path,useSlot,UNLOCK,RIP,AMB,nearest,wob,S,ITEMS,SIGNS,SETS,solidTile,collect,T,CFG,PAD,stack,NP,reachFrom,ground,obj,MW,MH,SHOVEL,CAVE_IN,BRX,BRIDGE_Y,seen,openBridge:v=>{bridgeOpen=v},sprites:()=>pspr,playerFrame};
+if(BC.testing)window.__game={REC:()=>REC,ACH:()=>ACH,STS:()=>STS,RM:()=>RM,MX:()=>MX,ST:()=>S,RUN:()=>RUNON,kd,openPanel,makeBackup,restoreBackup,stampTick,recSync,SET:()=>SET,SLOTS:()=>SLOTS,DBG:()=>DBG,VERSION,focName,autoPause,XSPOTS,XDECO,CRIT,spotCrit,updateCrit,STAMPS,stampHas,stampSync,calTitle,calMonth,padFam,setBN,LBL,albumGet,albumAdd,backupTip,peekSlot,agoStr,VIC,vicon,reqList,REQ,placeName,travelTo,PETN,cleanPet,SA,setSA,CLEARED,CASES,MUS_IN,CURATOR,exhibit,enterMuseum,AS,ambTick,EXN,PH,FB,hintFor,pinSpot,togglePin,throwBall,openPhoto,phSnap,deep:()=>({PIT,PIT_OUT,BRAM,DEEP_IN,DLAD}),caveRg,PROPS,STOVE,BENCH,RECIPES,CRAFTS,vl,day,hearts,totalHearts,festNow,merchantOpen,propAct,openStove,openBench,openBoard,openCart,readMail,petAnimal,dishCount,hintText,emblem,ip:(x,y)=>ip(x,y),isoState:()=>({IK,ICX,ICY,n:ICACHE.size}),makeBackup,restoreBackup,FXP,VIL,ARCH,BOAT,DBOAT,SNOW_IN,DES_IN,season,regAt,hop,talk,REG,DISP,FSLOT,GARD,FURN,HOME_IN,region,tendPlot,enterHome,F,MUS,ROD,NET,donate,waterAhead,PET,TUNNELS,avail,findPath,getPath:()=>path,useSlot,UNLOCK,RIP,AMB,nearest,wob,S,ITEMS,SIGNS,SETS,solidTile,collect,T,CFG,PAD,stack,NP,reachFrom,ground,obj,MW,MH,SHOVEL,CAVE_IN,BRX,BRIDGE_Y,seen,openBridge:v=>{bridgeOpen=v},sprites:()=>pspr,playerFrame};
 </script>
 </body>
 </html>
