@@ -193,7 +193,7 @@ body:not(.iso) #title .ver{color:rgba(241,231,208,.6)}
 </head>
 <body>
 <div id="status-progress"><div><b>Pixel Hollow</b><span>Waking the Hollow</span><i></i></div></div>
-<script>/*bc-debug-gate*/window.BC_GATE={salt:"a613000f8236d12f",hash:"3346b7ed4570d5ccf53975779323a05292a2978fc4227529a32e93923ff2d3eb"};</script>
+<script>/*bc-debug-gate*/window.BC_GATE={salt:"f8ab9d765c96782d",hash:"fd494622b594ff33e21458065839bed7f7ae2b3d5144a9265a51027bdbc07f24"};</script>
 <script>
 /* BC kit for plain HTML games (G5.9 to G5.17, G6.13, G7.8). Pulled from game-studio/common/web into web/bc_common/.
    Never edit it in a game (G10.3). tools/common/build_html.py writes it into the game's page where the page has the
@@ -1032,7 +1032,7 @@ BC.titleTrack = function (ctx, dest, id) {
 /* v0.15.0: split out of Helena Hollow. Copies the old browser save, settings and album once, so a browser player keeps their progress. */
 (function(){try{if(localStorage.getItem("pixelhollow_moved"))return;for(const o of ["wandervalley_save_v1","wandervalley_save_v1_s2","wandervalley_save_v1_s3","wandervalley_cfg_v1","wandervalley_album_v1"]){const n="pixelhollow"+o.slice(12);if(localStorage.getItem(n)===null&&localStorage.getItem(o)!==null)localStorage.setItem(n,localStorage.getItem(o))}localStorage.setItem("pixelhollow_moved","1")}catch(e){}})();
 /* ---------- helpers ---------- */
-const VERSION="0.19.0",VERSION_CODE=4;const ICON_URI="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMAAAADACAYAAABS3GwHAAAESElEQVR42u3dz4sWdRzA8c/IIwRmaqzgKdftcX1aFbfooOJKB5EIikUIJSSiQ2KnFBSpDh5KRMH15F49hNRFOkuIoJQn28hs2x7CoEOQpK0FQqH+A98R5mGenh/f1+s4+/DMw8y+9zt8mGe2GHvutUcBmVriECAAEAAIAAQAuWhEFI4CVgAQAAgABAACgGHXKIrhnAK1f/g4ub258RNnHSsACAABOAQIAAQA+Smao6/7RliNfr75UXL7+k2fOg59eBysALgEAgGAAEAAkI1i/bo3ujoFWvj+w+T28c0nHP2IWPjurfTx2XLBwbECgABAACAAEABEnVOgafcCRY7Tp32Rnj59bgUAAYAAQAAgAAjPBRp8P83tTW7fMPlFZn/6RpObc/t9sALgEggEAAIAAUA2ig3P73EvEFYAEAAIAAQAAoBwLxD0zo9zR5LbX5g8bQUAAYAAQAAgAKiiaDXfdC8QVgAQAAgABAACgHAv0P/r1reHk9snXjxTy/v/89d1Z/0Jlq3YagUAAYAAQAAgABhGxcT43qG8F+jve98kt+9uar4Tl9oPk9ufXrnNCgACAAGAAEAAEO4F6r77d7+OKtOel0afcdY7shjp6VB62rZ81XYrAAgABAACAAFAmAL1TmtsxFnvwI3bi5VePyi/V1YAXAKBAEAAIADIRmNYGyj7BtOldttZ97fVCgACQAAOAQIAAUC4F2hY/No+lf5B+3xy88GnPktun32wP/0+zXcqvX+psvcpcfC3Xd39nBU/z9rm0XAvELgEAgGAAEAAEKZAvVNxyjHb3h+1TGOaNX3OErNRz/SmtilT+EYYuAQCAYAAQAAwEIotG98e6P8RdvePK85iH1q1+hUrAAgABAACAAFAeC5Q912/uCO5/ctzN3vyeU5+da+W9zm2a2VPPv/0+5uS27fuuea5QOASCAQAAgABQPhGGNHp84ui2nN4ejUdCt8IA5dAIAAQAAgAwhSI6HiqE312L1CYAoFLIBAACAAEAGEKNEhaYyM92e/590YG4/i8uiZMgcAlEAgABAACgDAF6rqpmYeVXn9xX7X3n//ljrP+pONz7k6l5wKV2Xk2/dDxq4eWWAFAACAAEAAIAGIYnw49NfNfpdffmk9PIX5f+LOWz3Pj9qKz3oHpiq8vO49TM9Xuibp6qGEFAAGAAEAAIACoQ/Hy5IFK/yl+x5l/a5kGlCmb9qwZfza5ff74nLPYh1rHJ2s5vxOtalOja4eXWgFAACAAEAAIAFKKDy6/+6ibU52oadpTF/sd7v1WnRpZAXAJBAIAAYAAIBuNuqY6phD22w/7tQKAAEAAIAAQAETpc4FMIew33/1aAXAJBAIAAYAAIEyBTCHsN4P9WgFwCQQCAAGAACCynwKZQthvDvu1AuASCAQAAgABQDYapgH2m/N+rQC4BAIBgABAAJCNhmmA/ea8XysALoFAACAAEABk4zGuQCY7FUXxeQAAAABJRU5ErkJggg=="; // G6.11: same as android/app/build.gradle and the game page
+const VERSION="0.19.1",VERSION_CODE=6;const ICON_URI="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMAAAADACAYAAABS3GwHAAAESElEQVR42u3dz4sWdRzA8c/IIwRmaqzgKdftcX1aFbfooOJKB5EIikUIJSSiQ2KnFBSpDh5KRMH15F49hNRFOkuIoJQn28hs2x7CoEOQpK0FQqH+A98R5mGenh/f1+s4+/DMw8y+9zt8mGe2GHvutUcBmVriECAAEAAIAAQAuWhEFI4CVgAQAAgABAACgGHXKIrhnAK1f/g4ub258RNnHSsACAABOAQIAAQA+Smao6/7RliNfr75UXL7+k2fOg59eBysALgEAgGAAEAAkI1i/bo3ujoFWvj+w+T28c0nHP2IWPjurfTx2XLBwbECgABAACAAEABEnVOgafcCRY7Tp32Rnj59bgUAAYAAQAAgAAjPBRp8P83tTW7fMPlFZn/6RpObc/t9sALgEggEAAIAAUA2ig3P73EvEFYAEAAIAAQAAoBwLxD0zo9zR5LbX5g8bQUAAYAAQAAgAKiiaDXfdC8QVgAQAAgABAACgHAv0P/r1reHk9snXjxTy/v/89d1Z/0Jlq3YagUAAYAAQAAgABhGxcT43qG8F+jve98kt+9uar4Tl9oPk9ufXrnNCgACAAGAAEAAEO4F6r77d7+OKtOel0afcdY7shjp6VB62rZ81XYrAAgABAACAAFAmAL1TmtsxFnvwI3bi5VePyi/V1YAXAKBAEAAIADIRmNYGyj7BtOldttZ97fVCgACQAAOAQIAAUC4F2hY/No+lf5B+3xy88GnPktun32wP/0+zXcqvX+psvcpcfC3Xd39nBU/z9rm0XAvELgEAgGAAEAAEKZAvVNxyjHb3h+1TGOaNX3OErNRz/SmtilT+EYYuAQCAYAAQAAwEIotG98e6P8RdvePK85iH1q1+hUrAAgABAACAAFAeC5Q912/uCO5/ctzN3vyeU5+da+W9zm2a2VPPv/0+5uS27fuuea5QOASCAQAAgABQPhGGNHp84ui2nN4ejUdCt8IA5dAIAAQAAgAwhSI6HiqE312L1CYAoFLIBAACAAEAGEKNEhaYyM92e/590YG4/i8uiZMgcAlEAgABAACgDAF6rqpmYeVXn9xX7X3n//ljrP+pONz7k6l5wKV2Xk2/dDxq4eWWAFAACAAEAAIAGIYnw49NfNfpdffmk9PIX5f+LOWz3Pj9qKz3oHpiq8vO49TM9Xuibp6qGEFAAGAAEAAIACoQ/Hy5IFK/yl+x5l/a5kGlCmb9qwZfza5ff74nLPYh1rHJ2s5vxOtalOja4eXWgFAACAAEAAIAFKKDy6/+6ibU52oadpTF/sd7v1WnRpZAXAJBAIAAYAAIBuNuqY6phD22w/7tQKAAEAAIAAQAETpc4FMIew33/1aAXAJBAIAAYAAIEyBTCHsN4P9WgFwCQQCAAGAACCynwKZQthvDvu1AuASCAQAAgABQDYapgH2m/N+rQC4BAIBgABAAJCNhmmA/ea8XysALoFAACAAEABk4zGuQCY7FUXxeQAAAABJRU5ErkJggg=="; // G6.11: same as android/app/build.gradle and the game page
 const T=16, MW=120, MH=140, SAVE_KEY="pixelhollow_save_v1";const SA={t:0,r:0,b:0,l:0};
 function rng(seed){return function(){seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
 function hash(x,y){let h=(Math.imul(x,73856093)^Math.imul(y,19349663))>>>0;h^=h>>>13;h=Math.imul(h,0x5bd1e995)>>>0;return (h^(h>>>15))>>>0}
@@ -1906,9 +1906,10 @@ window.addEventListener("pagehide",save);
 
 /* ---------- audio ---------- */
 const AU={ctx:null,music:null,sfx:null,bus:null,step:0,next:0};
-const CH=[[60,64,67,71],[57,60,64,67],[53,57,60,64],[55,59,62,65],[60,64,67,71],[52,55,59,62],[53,57,60,64],[55,59,62,65]];
-const ARP=[0,1,2,3,2,1,2,1];
-const MEL=[[76,0,79,0,81,0,79,0],[76,0,0,72,0,0,74,0],[72,0,74,0,76,0,0,0],[74,0,0,74,0,79,0,0],[84,0,81,0,79,0,76,0],[79,0,0,76,0,0,74,0],[72,0,76,0,81,0,79,0],[74,0,0,0,79,0,0,0]];
+/* v0.19.1: Pixel Hollow's own gameplay tune in F major, so it no longer shares By Lantern's Glow's tune (G5.21) */
+const CH=[[53,57,60,64],[50,53,57,60],[55,58,62,65],[48,52,55,58],[57,60,64,67],[50,53,57,60],[58,62,65,69],[48,52,55,60]];
+const ARP=[0,2,1,3,0,2,1,3];
+const MEL=[[81,0,0,77,79,0,81,0],[84,0,81,0,77,0,0,0],[82,0,0,79,0,82,84,0],[81,0,79,0,76,0,0,0],[76,0,79,0,81,0,84,0],[86,0,0,84,81,0,0,0],[82,0,81,0,79,0,77,0],[79,0,0,0,76,0,0,0]];
 function auVol(){if(!AU.ctx)return;AU.music.gain.value=CFG.music/10*0.55;AU.sfx.gain.value=CFG.sfx/10}
 /* G5.21 (v0.19.0): the start screen plays its own title track, "Airship Serenity", and the game's own tune comes back on Play */
 let TT=null;
@@ -1925,8 +1926,8 @@ function auSched(){const c=AU.ctx;if(!c||c.state!=="running"||CFG.music===0)retu
   while(AU.next<c.currentTime+0.35){const s=AU.step%64,bar=s>>3,i=s&7,ch=CH[bar],t=AU.next;
     if(i===0){tone(AU.bus,"sine",ch[0]-12,t,2.7,0.15);tone(AU.bus,"sine",ch[2]-12,t,2.7,0.05)}
     tone(AU.bus,"triangle",ch[ARP[i]],t,0.5,0.04);
-    const m=MEL[bar][i];if(m)tone(AU.bus,"sine",m,t,0.9,0.085);
-    AU.step++;AU.next+=0.357}}
+    const m=MEL[bar][i];if(m)tone(AU.bus,"triangle",m,t,0.8,0.1);
+    AU.step++;AU.next+=0.32}}
 
 /* background sounds per region (v0.14): noise beds for wind, water and rain, plus small events like birds, crickets and drips */
 const AS={on:false,bus:null,ch:{},brown:null,white:null,wn:0},ambS={t:0};

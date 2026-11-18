@@ -1,9 +1,10 @@
 # Pixel Hollow: backlog
 
-Updated 2026-11-18 with v0.19.0. BC decides the order.
+Updated 2026-11-18 with v0.19.1. BC decides the order.
 
 ## Done
 
+- v0.19.1 (2026-11-18): Pixel Hollow's own gameplay tune in F major (asked for by BC, G5.21). It no longer shares By Lantern's Glow's tune.
 - v0.19.0 (2026-11-18), Release 8 and the title track (kit 1.14.0): Back at the top left of every full-screen card through the kit `BC.header` (asked for by BC, G5.30). The fit check passes at 12 sizes upright and sideways (G6.18). The start screen plays "Airship Serenity" (asked for by BC, G5.21).
 
 ### Judgment calls in v0.19.0 (BC to confirm)
