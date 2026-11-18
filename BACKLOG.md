@@ -1,8 +1,18 @@
 # Pixel Hollow: backlog
 
-Updated 2026-11-18 with v0.18.0. BC decides the order.
+Updated 2026-11-18 with v0.19.0. BC decides the order.
 
 ## Done
+
+- v0.19.0 (2026-11-18), Release 8 and the title track (kit 1.14.0): Back at the top left of every full-screen card through the kit `BC.header` (asked for by BC, G5.30). The fit check passes at 12 sizes upright and sideways (G6.18). The start screen plays "Airship Serenity" (asked for by BC, G5.21).
+
+### Judgment calls in v0.19.0 (BC to confirm)
+
+1. Your character keeps Done (not Back) at the top left: it confirms the look.
+2. The Journal's "< Back" page button became "< Prev", so it is not mistaken for the panel's Back.
+3. The title track is inlined in the page as base64, so the page and the APK stay one file. The page grew from about 0.45 MB to about 2.8 MB.
+4. A browser that cannot decode Ogg Vorbis keeps the game's own tune on the start screen.
+5. Photo mode's Done bar stays at the bottom: it is a bar over the picture, not a panel.
 
 - v0.18.0 (Release 7, kit 1.13.0): Records with the 18 stamps and 7 stats, Change controls for keys and buttons, Run with Hold or Toggle, old-save checks, the error log in Copy bug report and sound through the kit mixer.
 - v0.1 to v0.14.8 as Helena Hollow, the 2D game with a pixel view and an angled view: six regions, 148 finds in 28 sets, museum, cabin, garden, fishing, bugs, neighbors, festivals, cooking, the merchant, photo mode, the Christmas theme.
