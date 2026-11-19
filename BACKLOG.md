@@ -4,6 +4,8 @@ Updated 2026-11-18 with v0.19.1. BC decides the order.
 
 ## Done
 
+- v0.19.2 (2026-11-18): start screen title (G5.21 Title, asked for by BC). The name sits in the dead center, above the buttons, in Jersey 10 (SIL Open Font License 1.1), on the start screen, the game page and the Game Shelf card. Kit 1.15.0.
+
 - v0.19.1 (2026-11-18): Pixel Hollow's own gameplay tune in F major (asked for by BC, G5.21). It no longer shares By Lantern's Glow's tune.
 - v0.19.0 (2026-11-18), Release 8 and the title track (kit 1.14.0): Back at the top left of every full-screen card through the kit `BC.header` (asked for by BC, G5.30). The fit check passes at 12 sizes upright and sideways (G6.18). The start screen plays "Airship Serenity" (asked for by BC, G5.21).
 
